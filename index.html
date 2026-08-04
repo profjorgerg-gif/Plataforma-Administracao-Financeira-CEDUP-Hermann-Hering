@@ -3939,7 +3939,7 @@
   }
 
   function downloadBackup(){
-    const payload = { geradoEm: new Date().toISOString(), usuarios, turmas, auditoria };
+    const payload = { geradoEm: new Date().toISOString(), usuarios, turmas, auditoria, atribuicoesEstudoCaso };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -3968,10 +3968,11 @@
     reader.onload = () => {
       try {
         const data = JSON.parse(reader.result);
-        if(!confirm('Restaurar este backup vai substituir todos os usuários, turmas e o log de auditoria carregados agora nesta plataforma. Deseja continuar?')) return;
+        if(!confirm('Restaurar este backup vai substituir todos os usuários, turmas, atribuições de estudo de caso e o log de auditoria carregados agora nesta plataforma. Deseja continuar?')) return;
         if(Array.isArray(data.usuarios)){ usuarios.length = 0; usuarios.push(...data.usuarios); }
         if(Array.isArray(data.turmas)){ turmas.length = 0; turmas.push(...data.turmas); }
         if(Array.isArray(data.auditoria)){ auditoria.length = 0; auditoria.push(...data.auditoria); }
+        if(Array.isArray(data.atribuicoesEstudoCaso)){ atribuicoesEstudoCaso.length = 0; atribuicoesEstudoCaso.push(...data.atribuicoesEstudoCaso); }
         nextUserId = usuarios.reduce((max,u) => Math.max(max, u.id||0), 0) + 1;
         if(!usuarios.find(u => u.id === activeUserId)){ activeUserId = usuarios.length ? usuarios[0].id : null; }
         auditoria.unshift({ data:nowFormatted(), usuario:currentActiveUserName(), turma:'—', tipo:'Backup', descricao:'Restaurou um backup na plataforma' });
@@ -4025,14 +4026,20 @@
       <div class="page-head">
         <p class="code">Gestão</p>
         <h2>Backup</h2>
-        <p class="ementa">Baixe o backup completo dos dados desta plataforma (usuários, turmas e auditoria) e envie por e-mail para o professor.</p>
+        <p class="ementa">Baixe o backup completo dos dados desta plataforma (usuários, turmas, atribuições de estudo de caso e auditoria) e envie por e-mail para o professor.</p>
+      </div>
+
+      <div class="release-wait" style="border-left-color:#D98B7A;">
+        <p><strong>Importante: esta plataforma não tem banco de dados.</strong></p>
+        <p>Usuários, turmas e atribuições criados aqui existem só na memória deste navegador enquanto a página está aberta. Ao atualizar a página, trocar de navegador/computador, ou quando o <code>index.html</code> do site é substituído por uma nova versão, tudo volta ao ponto de partida (só os 3 usuários padrão).</p>
+        <p><strong>Antes de subir um novo <code>index.html</code> no GitHub</strong>, baixe um backup aqui (passo 1 abaixo). Depois de subir o arquivo novo, use "Restaurar um backup neste navegador" para trazer de volta os usuários e turmas que você tinha criado.</p>
       </div>
 
       <div class="step-card">
         <div class="step-num">1</div>
         <div class="step-body">
           <h4>Baixar o backup completo</h4>
-          <p>Gera um arquivo único (.json) com usuários, turmas e o log de auditoria deste navegador.</p>
+          <p>Gera um arquivo único (.json) com usuários, turmas, atribuições de estudo de caso e o log de auditoria deste navegador.</p>
           <button class="btn primary" onclick="downloadBackup()">↓ Baixar backup completo (.json)</button>
           <div class="info-strip">Último backup gerado neste navegador: <strong>${lastBackupInfo || 'Nenhum backup gerado ainda neste navegador'}</strong></div>
         </div>
@@ -4074,7 +4081,7 @@
 
       <section class="block">
         <h3>Restaurar um backup neste navegador</h3>
-        <p class="ementa" style="margin-bottom:14px;">Use apenas se estiver recuperando dados de um backup anterior — isso <strong>substitui</strong> tudo que estiver carregado nesta plataforma agora.</p>
+        <p class="ementa" style="margin-bottom:14px;">Use depois de subir uma nova versão do <code>index.html</code>, ou para recuperar dados de um backup anterior — isso <strong>substitui</strong> usuários, turmas, atribuições de estudo de caso e auditoria carregados agora nesta plataforma.</p>
         <input type="file" id="restore-file-input" accept=".json" style="display:none" onchange="restoreBackupFile(event)">
         <button class="btn secondary" onclick="document.getElementById('restore-file-input').click()">Restaurar backup (.json)</button>
       </section>
