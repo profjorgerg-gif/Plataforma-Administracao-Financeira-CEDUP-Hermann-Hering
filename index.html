@@ -387,6 +387,14 @@
     border-radius:0;
   }
   .content-toggle-row{ display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 20px 0; }
+  .manual-frame{
+    width:100%;
+    height:78vh;
+    min-height:520px;
+    border:1px solid var(--border-strong);
+    border-radius:10px;
+    background:var(--bg-panel);
+  }
   .content-list{ display:flex; flex-direction:column; gap:12px; }
   .content-card{
     background:var(--bg-panel);
@@ -3335,6 +3343,7 @@
   function renderToc(){
     const toc = document.getElementById('toc');
     toc.innerHTML = '';
+    const isAluno = currentUser && currentUser.papelKey === 'aluno';
 
     const home = document.createElement('button');
     home.className = 'toc-item home' + (activeIndex === -1 ? ' active' : '');
@@ -3355,14 +3364,35 @@
       toc.appendChild(btn);
     });
 
+    const divider3 = document.createElement('div');
+    divider3.className = 'toc-divider';
+    toc.appendChild(divider3);
+
+    const ajudaLabel = document.createElement('p');
+    ajudaLabel.className = 'toc-section-label';
+    ajudaLabel.textContent = 'Ajuda';
+    toc.appendChild(ajudaLabel);
+
+    const manualAlunoBtn = document.createElement('button');
+    manualAlunoBtn.className = 'toc-item' + (activeIndex === 'manual-aluno' ? ' active' : '');
+    manualAlunoBtn.innerHTML = `<span class="toc-title">Manual do Aluno</span>`;
+    manualAlunoBtn.addEventListener('click', () => { activeIndex = 'manual-aluno'; render(); closeMobileMenu(); });
+    toc.appendChild(manualAlunoBtn);
+
+    if(!isAluno){
+      const manualProfBtn = document.createElement('button');
+      manualProfBtn.className = 'toc-item' + (activeIndex === 'manual-professor' ? ' active' : '');
+      manualProfBtn.innerHTML = `<span class="toc-title">Manual do Professor</span>`;
+      manualProfBtn.addEventListener('click', () => { activeIndex = 'manual-professor'; render(); closeMobileMenu(); });
+      toc.appendChild(manualProfBtn);
+    }
+
     const divider2 = document.createElement('div');
     divider2.className = 'toc-divider';
 
     const mgmtLabel = document.createElement('p');
     mgmtLabel.className = 'toc-section-label';
     mgmtLabel.textContent = 'Gestão';
-
-    const isAluno = currentUser && currentUser.papelKey === 'aluno';
 
     if(!isAluno){
       toc.appendChild(divider2);
@@ -4049,6 +4079,32 @@
     if(section) section.scrollIntoView({behavior:'smooth'});
   }
 
+  function renderManual(tipo){
+    const main = document.getElementById('main');
+    const isAlunoManual = tipo === 'aluno';
+    const arquivo = isAlunoManual ? 'manual-do-aluno.pdf' : 'manual-do-professor.pdf';
+    const titulo = isAlunoManual ? 'Manual do Aluno' : 'Manual do Professor';
+    const desc = isAlunoManual
+      ? 'Guia rápido de cadastro, navegação pelos módulos e uso do estudo de caso final — a mesma referência que você encontra dentro da plataforma.'
+      : 'Documentação completa dos acessos de Professor e Usuário Mestre: turmas, usuários, aprovações, atribuição de estudos de caso, relatórios, backup e auditoria.';
+
+    main.innerHTML = `
+      <button class="back-btn" onclick="goToModule(-1)">← Voltar ao início</button>
+      <div class="page-head">
+        <p class="code">Ajuda</p>
+        <h2>${titulo}</h2>
+        <p class="ementa">${desc}</p>
+      </div>
+      <section class="block">
+        <div class="content-toggle-row">
+          <a class="btn primary" href="${arquivo}" target="_blank" rel="noopener">↗ Abrir PDF em nova aba</a>
+          <a class="btn secondary" href="${arquivo}" download>⭳ Baixar PDF</a>
+        </div>
+        <iframe src="${arquivo}" class="manual-frame" title="${titulo}"></iframe>
+      </section>
+    `;
+  }
+
   function renderRelatorios(){
     const main = document.getElementById('main');
     const cards = relatorios.map(r => `
@@ -4372,7 +4428,7 @@
   }
 
   function render(){
-    const mgmtKeys = ['turmas','usuarios','aprovacoes','relatorios','backup','auditoria'];
+    const mgmtKeys = ['turmas','usuarios','aprovacoes','relatorios','backup','auditoria','manual-professor'];
     if(currentUser && currentUser.papelKey === 'aluno' && mgmtKeys.includes(activeIndex)){
       activeIndex = -1;
     }
@@ -4385,6 +4441,8 @@
     else if(activeIndex === 'relatorios'){ renderRelatorios(); }
     else if(activeIndex === 'backup'){ renderBackup(); }
     else if(activeIndex === 'auditoria'){ renderAuditoria(); }
+    else if(activeIndex === 'manual-aluno'){ renderManual('aluno'); }
+    else if(activeIndex === 'manual-professor'){ renderManual('professor'); }
     else { renderModule(); }
   }
 
