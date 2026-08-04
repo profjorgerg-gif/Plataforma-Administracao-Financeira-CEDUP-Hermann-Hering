@@ -1478,7 +1478,178 @@
         ]
       },
     ] },
-    { code:"6.0",  title:"Análise do Ponto de Equilíbrio",                 ementa:"Custos fixos e variáveis, margem de contribuição e ponto de equilíbrio contábil, econômico e financeiro.", subtopics:[], caseStudy:true },
+    { code:"6.0",  title:"Análise do Ponto de Equilíbrio",                 ementa:"Custos fixos e variáveis, margem de contribuição e ponto de equilíbrio contábil, econômico e financeiro.", subtopics:[
+      "Conceito de Ponto de Equilíbrio e sua importância na gestão financeira",
+      "Margem de Contribuição Unitária (MCU) e Percentual (MC%)",
+      "Ponto de Equilíbrio Contábil (PEC)",
+      "Ponto de Equilíbrio em Receita (PER)",
+      "Ponto de Equilíbrio Econômico (PEE)",
+      "Ponto de Equilíbrio Financeiro (PEF)",
+    ], caseStudy:true, teoriaDesc:"Slides do Prof. Jorge Cardoso incluídos", teoriaArquivo:"modulo6-teoria.pdf", exerciciosDesc:"3 estudos de caso incluídos", exerciciosArquivo:"modulo6-exercicios.docx", content:[
+      {
+        heading:"Análise do Ponto de Equilíbrio",
+        paragraphs:[
+          "A <strong>Análise do Ponto de Equilíbrio (PE)</strong> é uma das ferramentas mais utilizadas na Administração Financeira para avaliar a relação entre custos, despesas, volume de produção/vendas e receitas.",
+          "Seu objetivo é identificar o nível mínimo de vendas necessário para que a empresa consiga cobrir todos os seus custos e despesas, sem apresentar lucro ou prejuízo — ou seja, o ponto em que <strong>Receita Total = Custos Totais</strong>.",
+          "Essa análise é fundamental para auxiliar gestores na tomada de decisões estratégicas, como definição de preços, controle de custos, planejamento da produção e avaliação da viabilidade de novos projetos."
+        ]
+      },
+      {
+        heading:"Margem de Contribuição",
+        paragraphs:[
+          "<strong>Margem de Contribuição Unitária (MCU):</strong> MCU = PVU − CVU, onde PVU é o Preço de Venda Unitário e CVU é o Custo Variável Unitário. Determina quanto cada unidade vendida contribui para cobrir os custos fixos e gerar lucro. Quanto maior, melhor.",
+          "<strong>Margem de Contribuição Percentual (MC%):</strong> MC% = MCU / PVU. Mensura essa contribuição em termos percentuais da receita, facilitando comparações e decisões estratégicas. Quanto maior, melhor."
+        ]
+      },
+      {
+        heading:"Ponto de Equilíbrio Contábil (PEC)",
+        paragraphs:[
+          "PEC = CF / MCU, onde CF são os Custos Fixos Totais.",
+          "Indica a quantidade de unidades que devem ser vendidas para que a empresa cubra todos os seus custos fixos e variáveis, sem apresentar lucro ou prejuízo. Quanto menor, melhor (menos esforço para equilibrar)."
+        ]
+      },
+      {
+        heading:"Ponto de Equilíbrio em Receita (PER)",
+        paragraphs:[
+          "PER = CF / MC%.",
+          "Mostra qual deve ser o valor mínimo de receita que a empresa precisa alcançar para cobrir os custos fixos, considerando a margem de contribuição percentual. Quanto menor, melhor."
+        ]
+      },
+      {
+        heading:"Ponto de Equilíbrio Econômico (PEE)",
+        paragraphs:[
+          "PEE = (CF + RL) / MCU, onde RL é a Remuneração desejada do capital (lucro alvo).",
+          "Representa o volume de vendas necessário para cobrir os custos fixos e ainda gerar o lucro desejado. Quanto menor, melhor (atinge o lucro-alvo com menos vendas)."
+        ]
+      },
+      {
+        heading:"Ponto de Equilíbrio Financeiro (PEF)",
+        paragraphs:[
+          "PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Indica o volume de vendas necessário para cobrir os custos fixos descontando as despesas que não geram saída de caixa, como depreciação e amortização. Quanto menor, melhor (menos pressão sobre o caixa)."
+        ]
+      },
+      {
+        heading:"Interpretação dos Resultados",
+        paragraphs:[
+          "<strong>Abaixo do ponto de equilíbrio:</strong> a empresa está operando com prejuízo, pois as receitas não cobrem os custos totais.",
+          "<strong>No ponto de equilíbrio:</strong> a empresa não tem lucro, nem prejuízo; cobre apenas os custos.",
+          "<strong>Acima do ponto de equilíbrio:</strong> a empresa gera lucro, já que a receita excede os custos totais.",
+          "<strong>Exemplo prático:</strong> PVU R$ 120,00, CVU R$ 70,00, CF R$ 60.000,00, RL R$ 30.000,00, Despesas sem desembolso R$ 10.000,00 → MCU = R$ 50,00, PEC = 1.200 unidades, MC% = 41,67%, PER = R$ 144.000,00, PEE = 1.800 unidades, PEF = 1.000 unidades."
+        ]
+      },
+      {
+        heading:"Tabela Unificada de Fórmulas e Interpretação dos Resultados",
+        downloadArquivo:"modulo6-tabela-formulas.pdf", downloadLabel:"Baixar tabela unificada (PDF)",
+        html:`<p>Tabela de referência rápida: reúne, para cada indicador da análise do ponto de equilíbrio, o conceito, a fórmula, o objetivo, a finalidade e a condição ideal.</p>
+        <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Conceito</th>
+              <th>Fórmula</th>
+              <th>Objetivo</th>
+              <th>Condição ideal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>MCU</strong><br>Margem de Contribuição Unitária</td>
+              <td>Diferença entre o preço de venda e o custo variável unitário.</td>
+              <td>MCU = PVU − CVU</td>
+              <td>Determinar quanto cada unidade contribui para cobrir custos fixos e gerar lucro.</td>
+              <td>Quanto MAIOR, melhor (maior contribuição por unidade)</td>
+            </tr>
+            <tr>
+              <td><strong>PEC</strong><br>Ponto de Equilíbrio Contábil</td>
+              <td>Quantidade de vendas para zerar o lucro.</td>
+              <td>PEC = CF / MCU</td>
+              <td>Identificar o volume mínimo sem lucro nem prejuízo.</td>
+              <td>Quanto MENOR, melhor (menos esforço para equilibrar)</td>
+            </tr>
+            <tr>
+              <td><strong>MC%</strong><br>Margem de Contribuição Percentual</td>
+              <td>Percentual da receita que sobra após custos variáveis.</td>
+              <td>MC% = MCU / PVU</td>
+              <td>Mensurar a contribuição em percentual.</td>
+              <td>Quanto MAIOR, melhor (maior eficiência nas vendas)</td>
+            </tr>
+            <tr>
+              <td><strong>PER</strong><br>Ponto de Equilíbrio em Receita</td>
+              <td>Faturamento necessário para equilíbrio.</td>
+              <td>PER = CF / MC%</td>
+              <td>Determinar o faturamento mínimo para cobrir custos.</td>
+              <td>Quanto MENOR, melhor (menos faturamento para equilibrar)</td>
+            </tr>
+            <tr>
+              <td><strong>PEE</strong><br>Ponto de Equilíbrio Econômico</td>
+              <td>Volume de vendas para atingir o lucro desejado.</td>
+              <td>PEE = (CF + RL) / MCU</td>
+              <td>Identificar quanto vender para alcançar o lucro-alvo.</td>
+              <td>Quanto MENOR, melhor (atinge o lucro com menos vendas)</td>
+            </tr>
+            <tr>
+              <td><strong>PEF</strong><br>Ponto de Equilíbrio Financeiro</td>
+              <td>Volume de vendas para cobrir despesas com saída de caixa.</td>
+              <td>PEF = (CF − Desp. sem desembolso) / MCU</td>
+              <td>Determinar o nível de vendas necessário para manter o caixa equilibrado.</td>
+              <td>Quanto MENOR, melhor (menos pressão sobre o caixa)</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>`
+      }
+    ], exercicios:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Litoral Eletro Componentes",
+        contexto:"A Litoral Eletro Componentes atua no setor de eletrônicos e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 82.000,00","Preço de Venda Unitário (PVU): R$ 195,00","Custo Variável Unitário (CVU): R$ 117,00","Lucro Alvo Desejado (RL): R$ 41.000,00","Despesas sem desembolso (Depreciação): R$ 13.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Litoral Eletro Componentes.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Rota Norte Ferragens",
+        contexto:"A Rota Norte Ferragens atua no setor de materiais de construção e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 64.500,00","Preço de Venda Unitário (PVU): R$ 148,00","Custo Variável Unitário (CVU): R$ 92,00","Lucro Alvo Desejado (RL): R$ 32.000,00","Despesas sem desembolso (Depreciação): R$ 9.500,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Rota Norte Ferragens.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Estrela do Sul Utilidades",
+        contexto:"A Estrela do Sul Utilidades atua no setor de utilidades domésticas e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 97.200,00","Preço de Venda Unitário (PVU): R$ 168,00","Custo Variável Unitário (CVU): R$ 103,00","Lucro Alvo Desejado (RL): R$ 48.600,00","Despesas sem desembolso (Depreciação): R$ 18.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Estrela do Sul Utilidades.",
+        ]
+      },
+    ] },
     { code:"7.0",  title:"Administração de Ativos Permanentes",            ementa:"Gestão de ativos imobilizados, depreciação e decisões de investimento em capital fixo.", subtopics:[], caseStudy:true },
     { code:"8.0",  title:"Estrutura de Capital e Custo de Capital",        ementa:"Fontes de financiamento, composição entre capital próprio e de terceiros, e custo médio ponderado de capital.", subtopics:[], caseStudy:true },
     { code:"9.0",  title:"Planejamento Financeiro e Análise de Investimentos", ementa:"Orçamento, projeções financeiras e métodos de avaliação de investimentos (VPL, TIR, payback).", subtopics:[], caseStudy:true },
