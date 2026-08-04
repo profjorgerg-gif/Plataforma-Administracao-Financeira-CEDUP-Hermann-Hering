@@ -344,31 +344,62 @@
   }
   .content-item{ margin-bottom:26px; }
   .content-item:last-child{ margin-bottom:0; }
-  .content-item h4{
+  .content-item h4,
+  .content-card summary h4{
     font-family:'Fraunces', serif;
     font-weight:600;
     font-size:18px;
-    margin:0 0 10px 0;
+    margin:0;
     color:var(--ink);
     display:flex;
     align-items:center;
     gap:10px;
     flex-wrap:wrap;
   }
-  .content-item p{
+  .content-item p,
+  .content-card-body p{
     font-size:14.5px;
     line-height:1.75;
     color:var(--ink-soft);
     margin:0 0 10px 0;
   }
-  .content-item p:last-child{ margin-bottom:0; }
-  .content-item p strong{ color:var(--ink); font-weight:600; }
-  .content-item p.example{
+  .content-item p:last-child,
+  .content-card-body p:last-child{ margin-bottom:0; }
+  .content-item p strong,
+  .content-card-body p strong{ color:var(--ink); font-weight:600; }
+  .content-item p.example,
+  .content-card-body p.example{
     background:var(--bg-panel);
     border-left:3px solid var(--gold);
     padding:10px 14px;
     border-radius:0;
   }
+  .content-toggle-row{ display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 20px 0; }
+  .content-list{ display:flex; flex-direction:column; gap:12px; }
+  .content-card{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:0 18px;
+  }
+  .content-card[open]{ border-color:var(--border-strong); padding-bottom:18px; }
+  .content-card summary{
+    padding:16px 0;
+    cursor:pointer;
+    list-style:none;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .content-card summary::-webkit-details-marker{ display:none; }
+  .content-card summary::before{
+    content:'▸';
+    color:var(--gold-text);
+    font-size:12px;
+    flex-shrink:0;
+  }
+  .content-card[open] summary::before{ content:'▾'; }
+  .content-card-body{ padding-top:2px; }
   .ledger-lines{ list-style:none; margin:0; padding:0; }
   .ledger-lines li{
     display:flex;
@@ -3268,6 +3299,14 @@
 
   function goToModule(i){ activeIndex = i; render(); window.scrollTo(0,0); }
 
+  function expandirTodosConteudo(){
+    document.querySelectorAll('#main .content-card').forEach(d => { d.open = true; });
+  }
+
+  function recolherTodosConteudo(){
+    document.querySelectorAll('#main .content-card').forEach(d => { d.open = false; });
+  }
+
   function renderHome(){
     const main = document.getElementById('main');
     main.innerHTML = `
@@ -3328,15 +3367,26 @@
       const teoriaDownloadBtn = m.teoriaArquivo
         ? `<a class="btn primary exercise-download" href="${m.teoriaArquivo}" download>⭳ Baixar slides (PDF)</a>`
         : '';
-      contentHtml = `<section class="block"><h3>Conteúdo do módulo</h3>${teoriaDownloadBtn}<div>` +
-        m.content.map(c => {
-          const badge = c.added ? '<span class="badge-added">Complemento sugerido</span>' : '';
-          const body = c.html ? c.html : c.paragraphs.map(p => `<p${p.startsWith('<strong>Exemplo') ? ' class="example"' : ''}>${p}</p>`).join('');
-          const itemDownload = c.downloadArquivo
-            ? `<a class="btn primary exercise-download" href="${c.downloadArquivo}" download>⭳ ${c.downloadLabel || 'Baixar (PDF)'}</a>`
-            : '';
-          return `<div class="content-item"><h4>${c.heading}${badge}</h4>${body}${itemDownload}</div>`;
-        }).join('') + `</div></section>`;
+      const contentItemsHtml = m.content.map((c, i) => {
+        const badge = c.added ? '<span class="badge-added">Complemento sugerido</span>' : '';
+        const body = c.html ? c.html : c.paragraphs.map(p => `<p${p.startsWith('<strong>Exemplo') ? ' class="example"' : ''}>${p}</p>`).join('');
+        const itemDownload = c.downloadArquivo
+          ? `<a class="btn primary exercise-download" href="${c.downloadArquivo}" download>⭳ ${c.downloadLabel || 'Baixar (PDF)'}</a>`
+          : '';
+        return `<details class="content-card"${i === 0 ? ' open' : ''}>
+          <summary><h4>${c.heading}${badge}</h4></summary>
+          <div class="content-card-body">${body}${itemDownload}</div>
+        </details>`;
+      }).join('');
+      contentHtml = `<section class="block">
+        <h3>Conteúdo do módulo</h3>
+        ${teoriaDownloadBtn}
+        <div class="content-toggle-row">
+          <button type="button" class="btn secondary" onclick="expandirTodosConteudo()">Abrir todos os tópicos</button>
+          <button type="button" class="btn secondary" onclick="recolherTodosConteudo()">Recolher todos os tópicos</button>
+        </div>
+        <div class="content-list">${contentItemsHtml}</div>
+      </section>`;
     }
 
     let subtopicsHtml;
