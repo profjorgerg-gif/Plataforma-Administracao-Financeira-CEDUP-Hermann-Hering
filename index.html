@@ -3228,6 +3228,48 @@
 
   let activeIndex = -1;
 
+  // ---------- Persistência local (localStorage deste navegador) ----------
+  const STORAGE_KEY = 'admfin_cedup_platform_v1';
+  const SESSION_KEY = 'admfin_cedup_session_v1';
+
+  function salvarEstado(){
+    try {
+      const payload = { usuarios, turmas, auditoria, atribuicoesEstudoCaso, nextUserId, nextTurmaId };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch(e) { /* localStorage indisponível (modo privado, cookies bloqueados etc.) — segue só em memória */ }
+  }
+
+  function carregarEstado(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      if(Array.isArray(data.usuarios) && data.usuarios.length){ usuarios.length = 0; usuarios.push(...data.usuarios); }
+      if(Array.isArray(data.turmas) && data.turmas.length){ turmas.length = 0; turmas.push(...data.turmas); }
+      if(Array.isArray(data.auditoria)){ auditoria.length = 0; auditoria.push(...data.auditoria); }
+      if(Array.isArray(data.atribuicoesEstudoCaso)){ atribuicoesEstudoCaso.length = 0; atribuicoesEstudoCaso.push(...data.atribuicoesEstudoCaso); }
+      if(typeof data.nextUserId === 'number') nextUserId = data.nextUserId;
+      if(typeof data.nextTurmaId === 'number') nextTurmaId = data.nextTurmaId;
+    } catch(e) { /* dados salvos corrompidos ou ilegíveis — ignora e segue com os padrões */ }
+  }
+
+  function salvarSessao(){
+    try {
+      if(currentUser){ localStorage.setItem(SESSION_KEY, String(currentUser.id)); }
+      else { localStorage.removeItem(SESSION_KEY); }
+    } catch(e) { /* localStorage indisponível */ }
+  }
+
+  function carregarSessaoSalva(){
+    try {
+      const idStr = localStorage.getItem(SESSION_KEY);
+      if(!idStr) return null;
+      return usuarios.find(u => u.id === Number(idStr)) || null;
+    } catch(e) { return null; }
+  }
+
+  carregarEstado();
+
   const appEl = document.getElementById('app');
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const sidebarScrim = document.getElementById('sidebar-scrim');
@@ -3930,6 +3972,7 @@
   function logAudit(tipo, turma, descricao){
     auditoria.unshift({ data:nowFormatted(), usuario:currentActiveUserName(), turma:turma || '—', tipo, descricao });
     if(auditoria.length > 1000) auditoria.length = 1000;
+    salvarEstado();
   }
 
   function downloadBackup(){
@@ -3970,6 +4013,7 @@
         nextUserId = usuarios.reduce((max,u) => Math.max(max, u.id||0), 0) + 1;
         if(!usuarios.find(u => u.id === activeUserId)){ activeUserId = usuarios.length ? usuarios[0].id : null; }
         auditoria.unshift({ data:nowFormatted(), usuario:currentActiveUserName(), turma:'—', tipo:'Backup', descricao:'Restaurou um backup na plataforma' });
+        salvarEstado();
         renderBackup();
         alert('Backup restaurado com sucesso.');
       } catch(e){
@@ -4000,6 +4044,7 @@
         pending--;
         if(pending === 0){
           auditoria.unshift({ data:nowFormatted(), usuario:currentActiveUserName(), turma:'—', tipo:'Backup', descricao:`Consolidou ${files.length} backup(s) recebido(s)` });
+          salvarEstado();
           renderBackup();
         }
       };
@@ -4284,6 +4329,7 @@
     currentUser = user;
     activeUserId = user.id;
     logAudit('Login', user.turma, `${user.nome} entrou na plataforma`);
+    salvarSessao();
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'grid';
     showLoginForm();
@@ -4299,6 +4345,7 @@
     currentUser = null;
     activeUserId = null;
     activeIndex = -1;
+    salvarSessao();
     document.getElementById('app').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('login-error').style.display = 'none';
@@ -4362,6 +4409,15 @@
     usuarios.push(novoUsuario);
     doLogin(novoUsuario);
     logAudit('Cadastro', novoUsuario.turma, `${nome} se cadastrou como Aluno`);
+  }
+
+  // Restaura a sessão salva neste navegador (se houver), sem exigir login de novo a cada F5.
+  const sessaoRestaurada = carregarSessaoSalva();
+  if(sessaoRestaurada){
+    currentUser = sessaoRestaurada;
+    activeUserId = sessaoRestaurada.id;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'grid';
   }
 
   render();
