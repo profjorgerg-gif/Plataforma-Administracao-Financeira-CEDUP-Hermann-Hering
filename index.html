@@ -3389,13 +3389,6 @@
       </section>`;
     }
 
-    let subtopicsHtml;
-    if(m.subtopics.length === 0){
-      subtopicsHtml = `<li class="empty-hint"><span class="n"></span> Subtópicos deste módulo a incluir.</li>`;
-    } else {
-      subtopicsHtml = m.subtopics.map((s, i) => `<li><span class="n">${i+1}.${String(i+1).padStart(2,'0')}</span> ${s}</li>`).join('');
-    }
-
     let exerciciosHtml = '';
     let liberacaoPanelHtml = '';
     const isAlunoAtual = currentUser && currentUser.papelKey === 'aluno';
@@ -3528,8 +3521,13 @@
 
       exerciciosHtml = `<section class="block">
         <h3>Exercícios</h3>
-        ${downloadBtn}
-        <ol class="exercise-list">${perguntasHtml}</ol>
+        <details class="content-card">
+          <summary><h4>${m.exercicios.length} questões — clique para abrir</h4></summary>
+          <div class="content-card-body">
+            ${downloadBtn}
+            <ol class="exercise-list">${perguntasHtml}</ol>
+          </div>
+        </details>
       </section>`;
     }
 
@@ -3561,10 +3559,6 @@
         </div>
       </div>
       ${contentHtml}
-      <section class="block">
-        <h3>Subtópicos</h3>
-        <ul class="ledger-lines">${subtopicsHtml}</ul>
-      </section>
       ${exerciciosHtml}
       ${liberacaoPanelHtml}
       <section class="block">
