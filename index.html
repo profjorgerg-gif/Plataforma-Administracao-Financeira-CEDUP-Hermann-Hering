@@ -708,25 +708,51 @@
   .release-wait p:last-child{ margin-bottom:0; }
   .release-wait-partial{ border-left-color:var(--border-strong); font-size:13px; padding:12px 16px; }
   .filial-release-list{ display:flex; flex-direction:column; gap:10px; }
-  .filial-release-row{
+  .filial-card{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .filial-card[open]{ border-color:var(--border-strong); }
+  .filial-card summary{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:14px;
     flex-wrap:wrap;
-    background:var(--bg-panel);
-    border:1px solid var(--border);
-    border-radius:8px;
     padding:12px 16px;
+    cursor:pointer;
+    list-style:none;
   }
-  .filial-release-info{ display:flex; flex-direction:column; gap:6px; min-width:0; }
-  .filial-release-name{
+  .filial-card summary::-webkit-details-marker{ display:none; }
+  .filial-card summary::before{
+    content:'▸';
+    color:var(--gold-text);
+    margin-right:8px;
+    font-size:11px;
+  }
+  .filial-card[open] summary::before{ content:'▾'; }
+  .filial-summary-name{
     font-family:'IBM Plex Mono', monospace;
     font-size:12px;
     color:var(--gold-text);
     letter-spacing:.03em;
+    white-space:nowrap;
   }
-  .filial-release-badges{ display:flex; flex-wrap:wrap; gap:6px; }
+  .filial-summary-badges{ display:flex; flex-wrap:wrap; gap:6px; }
+  .filial-card-body{
+    padding:0 16px 16px 16px;
+    border-top:1px solid var(--border);
+  }
+  .filial-assign-controls{
+    display:flex;
+    align-items:flex-end;
+    gap:12px;
+    flex-wrap:wrap;
+    margin:14px 0 18px 0;
+  }
+  .filial-assign-controls .form-field{ margin-bottom:0; min-width:180px; flex:1 1 180px; }
   .release-badge{
     display:inline-flex;
     align-items:center;
@@ -3028,34 +3054,31 @@
   ];
   let nextTurmaId = 3;
 
-  // Liberações do estudo de caso final (módulo 12): controla quais filiais
-  // cada turma/aluno pode acessar até o professor liberar.
-  let liberacoesEstudoCaso = [];
-  let nextLiberacaoId = 1;
+  // Atribuição do estudo de caso final (módulo 12): o professor escolhe, para
+  // cada aluno, qual das 10 empresas/filiais ele vai resolver. Um estudo por aluno.
+  let atribuicoesEstudoCaso = []; // { alunoId, filialIndex, atribuidoEm }
 
-  function liberarFilial(filialIndex, tipo, valor){
-    if(!valor) return;
-    const jaExiste = liberacoesEstudoCaso.some(l => l.filialIndex === filialIndex && l.tipo === tipo && l.valor === valor);
-    if(jaExiste) return;
-    liberacoesEstudoCaso.push({ id: nextLiberacaoId++, filialIndex, tipo, valor, liberadoEm: nowFormatted() });
-    const alvoLabel = tipo === 'turma' ? `turma ${valor}` : `aluno ${(usuarios.find(u=>u.id===Number(valor))||{}).nome || valor}`;
-    logAudit('Edição', tipo === 'turma' ? valor : '—', `Liberou o estudo de caso (Filial ${String(filialIndex+1).padStart(2,'0')}) para ${alvoLabel}`);
+  function estudoCasoDoAluno(alunoId){
+    const a = atribuicoesEstudoCaso.find(x => x.alunoId === alunoId);
+    return a ? a.filialIndex : null;
   }
 
-  function revogarLiberacao(id){
-    const idx = liberacoesEstudoCaso.findIndex(l => l.id === id);
+  function atribuirEstudoCaso(filialIndex, alunoId){
+    const aluno = usuarios.find(u => u.id === alunoId);
+    if(!aluno) return;
+    const idx = atribuicoesEstudoCaso.findIndex(x => x.alunoId === alunoId);
+    if(idx > -1) atribuicoesEstudoCaso.splice(idx, 1);
+    atribuicoesEstudoCaso.push({ alunoId, filialIndex, atribuidoEm: nowFormatted() });
+    logAudit('Edição', aluno.turma, `Atribuiu o estudo de caso da Filial ${String(filialIndex+1).padStart(2,'0')} para ${aluno.nome}`);
+  }
+
+  function removerAtribuicaoEstudoCaso(alunoId){
+    const idx = atribuicoesEstudoCaso.findIndex(x => x.alunoId === alunoId);
     if(idx === -1) return;
-    const l = liberacoesEstudoCaso[idx];
-    liberacoesEstudoCaso.splice(idx, 1);
-    const alvoLabel = l.tipo === 'turma' ? `turma ${l.valor}` : `aluno ${(usuarios.find(u=>u.id===Number(l.valor))||{}).nome || l.valor}`;
-    logAudit('Edição', l.tipo === 'turma' ? l.valor : '—', `Revogou a liberação do estudo de caso (Filial ${String(l.filialIndex+1).padStart(2,'0')}) para ${alvoLabel}`);
-  }
-
-  function filialLiberadaParaUsuario(filialIndex, usuario){
-    if(!usuario) return false;
-    return liberacoesEstudoCaso.some(l => l.filialIndex === filialIndex &&
-      ((l.tipo === 'turma' && l.valor === usuario.turma) || (l.tipo === 'aluno' && Number(l.valor) === usuario.id))
-    );
+    const a = atribuicoesEstudoCaso[idx];
+    const aluno = usuarios.find(u => u.id === alunoId);
+    atribuicoesEstudoCaso.splice(idx, 1);
+    logAudit('Edição', aluno ? aluno.turma : '—', `Removeu a atribuição do estudo de caso da Filial ${String(a.filialIndex+1).padStart(2,'0')} de ${aluno ? aluno.nome : alunoId}`);
   }
 
   const capabilities = [
@@ -3267,121 +3290,93 @@
     const isAlunoAtual = currentUser && currentUser.papelKey === 'aluno';
 
     if(m.integrador && m.exercicios && m.exercicios.length){
-      // Módulo 12 (Estudos de Caso): acesso por filial controlado por liberação do professor.
+      // Módulo 12 (Estudos de Caso): um estudo de caso por aluno, escolhido pelo professor.
       if(isAlunoAtual){
-        const indicesLiberados = m.exercicios.map((q, i) => i).filter(i => filialLiberadaParaUsuario(i, currentUser));
-        if(indicesLiberados.length === 0){
+        const filialIndex = estudoCasoDoAluno(currentUser.id);
+        if(filialIndex === null){
           exerciciosHtml = `<section class="block">
-            <h3>Estudos de caso</h3>
+            <h3>Estudo de caso</h3>
             <div class="release-wait">
-              <p><strong>Aguardando liberação do professor.</strong></p>
-              <p>Este módulo tem ${m.exercicios.length} estudos de caso (Filiais 01 a ${String(m.exercicios.length).padStart(2,'0')}), mas nenhum foi liberado para você ainda. Assim que o professor liberar um estudo de caso para a sua turma ou para você especificamente, ele aparecerá aqui.</p>
+              <p><strong>Aguardando atribuição do professor.</strong></p>
+              <p>Este módulo reúne 10 estudos de caso — cada aluno recebe um estudo diferente, escolhido pelo professor. Assim que o professor atribuir um estudo de caso para você, ele aparecerá aqui.</p>
             </div>
           </section>`;
         } else {
-          const perguntasHtml = indicesLiberados.map(i => {
-            const q = m.exercicios[i];
-            const tipoClass = 'tipo-' + q.tipo.toLowerCase().replace(/[^a-zà-ú]+/g, '-').replace(/^-+|-+$/g, '');
-            const dadosHtml = q.dados.map(grupo => `
-              <div class="case-data-group">
-                <p class="case-data-label">${grupo.label}</p>
-                <ul class="case-data-items">${grupo.itens.map(it => `<li>${it}</li>`).join('')}</ul>
-              </div>`).join('');
-            const tarefasHtml = q.tarefas.map((t, j) => `<li><span class="opt-letter">${j+1}</span>${t}</li>`).join('');
-            return `<li>
-              <span class="exercise-tipo ${tipoClass}">${q.tipo}</span>
-              <p class="exercise-text"><strong>Empresa: ${q.empresa}</strong></p>
-              <p class="exercise-text">${q.contexto}</p>
-              <div class="case-data-grid">${dadosHtml}</div>
-              <p class="case-tarefas-label">Tarefas</p>
-              <ul class="exercise-options case-tarefas">${tarefasHtml}</ul>
-            </li>`;
-          }).join('');
-          const pendentes = m.exercicios.length - indicesLiberados.length;
-          const pendenteNote = pendentes > 0
-            ? `<div class="release-wait release-wait-partial"><p>${indicesLiberados.length} de ${m.exercicios.length} estudos de caso liberados para você. Os demais aparecerão aqui assim que o professor liberar.</p></div>`
-            : '';
+          const q = m.exercicios[filialIndex];
           const downloadBtn = m.exerciciosArquivo
             ? `<a class="btn primary exercise-download" href="${m.exerciciosArquivo}" download>⭳ Baixar exercícios (Word) — preencha seu nome e envie ao professor</a>`
             : '';
           exerciciosHtml = `<section class="block">
-            <h3>Estudos de caso</h3>
-            ${pendenteNote}
+            <h3>Seu estudo de caso</h3>
             ${downloadBtn}
-            <ol class="exercise-list">${perguntasHtml}</ol>
+            <ol class="exercise-list">${renderCaseStudyItem(q)}</ol>
           </section>`;
         }
       } else {
-        // Professor / Usuário Mestre: vê todos os estudos de caso e controla as liberações.
-        const perguntasHtml = m.exercicios.map((q, i) => {
-          const tipoClass = 'tipo-' + q.tipo.toLowerCase().replace(/[^a-zà-ú]+/g, '-').replace(/^-+|-+$/g, '');
-          const dadosHtml = q.dados.map(grupo => `
-            <div class="case-data-group">
-              <p class="case-data-label">${grupo.label}</p>
-              <ul class="case-data-items">${grupo.itens.map(it => `<li>${it}</li>`).join('')}</ul>
-            </div>`).join('');
-          const tarefasHtml = q.tarefas.map((t, j) => `<li><span class="opt-letter">${j+1}</span>${t}</li>`).join('');
-          return `<li>
-            <span class="exercise-tipo ${tipoClass}">${q.tipo}</span>
-            <p class="exercise-text"><strong>Empresa: ${q.empresa}</strong></p>
-            <p class="exercise-text">${q.contexto}</p>
-            <div class="case-data-grid">${dadosHtml}</div>
-            <p class="case-tarefas-label">Tarefas</p>
-            <ul class="exercise-options case-tarefas">${tarefasHtml}</ul>
-          </li>`;
+        // Professor / Usuário Mestre: escolhe turma → aluno e atribui um estudo de caso por vez.
+        const turmaOptions = turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
+        const alunos = usuarios.filter(u => u.papelKey === 'aluno');
+
+        const filialRows = m.exercicios.map((q, i) => {
+          const atribuidosNestaFilial = atribuicoesEstudoCaso.filter(a => a.filialIndex === i)
+            .map(a => usuarios.find(u => u.id === a.alunoId)).filter(Boolean);
+          const atribuidosBadges = atribuidosNestaFilial.length
+            ? atribuidosNestaFilial.map(u => `<span class="release-badge">${u.nome} (${u.turma}) <button type="button" onclick="removerAtribuicaoUI(${u.id})" aria-label="Remover">×</button></span>`).join('')
+            : `<span class="release-badge none">Ninguém atribuído ainda</span>`;
+
+          return `<details class="filial-card">
+            <summary>
+              <span class="filial-summary-name">Filial ${String(i+1).padStart(2,'0')}</span>
+              <span class="filial-summary-badges">${atribuidosBadges}</span>
+            </summary>
+            <div class="filial-card-body">
+              <div class="filial-assign-controls">
+                <div class="form-field">
+                  <label>Turma</label>
+                  <select id="atribuir-turma-${i}" onchange="atualizarAlunoSelect(${i})">${turmaOptions}</select>
+                </div>
+                <div class="form-field">
+                  <label>Aluno</label>
+                  <select id="atribuir-aluno-${i}"></select>
+                </div>
+                <button type="button" class="btn secondary" onclick="atribuirEstudoUI(${i})">Atribuir a este aluno</button>
+              </div>
+              <ol class="exercise-list">${renderCaseStudyItem(q)}</ol>
+            </div>
+          </details>`;
         }).join('');
 
         const downloadBtn = m.exerciciosArquivo
-          ? `<a class="btn primary exercise-download" href="${m.exerciciosArquivo}" download>⭳ Baixar exercícios (Word) — preencha seu nome e envie ao professor</a>`
+          ? `<a class="btn primary exercise-download" href="${m.exerciciosArquivo}" download>⭳ Baixar exercícios (Word) — todos os estudos de caso</a>`
           : '';
 
         exerciciosHtml = `<section class="block">
-          <h3>Estudos de caso</h3>
+          <h3>Estudos de caso — atribuição por aluno</h3>
+          <p class="ementa">Cada aluno recebe apenas um dos 10 estudos abaixo. Escolha a turma, depois o aluno, e clique em "Atribuir". Clique no nome de uma filial para abrir e conferir o conteúdo completo antes de atribuir.</p>
           ${downloadBtn}
-          <ol class="exercise-list">${perguntasHtml}</ol>
-        </section>`;
-
-        const turmaOptions = turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
-        const alunoOptions = usuarios.filter(u => u.papelKey === 'aluno')
-          .map(u => `<option value="${u.id}">${u.nome} (${u.turma})</option>`).join('');
-
-        const filialRows = m.exercicios.map((q, i) => {
-          const liberacoesDaFilial = liberacoesEstudoCaso.filter(l => l.filialIndex === i);
-          const badges = liberacoesDaFilial.length
-            ? liberacoesDaFilial.map(l => {
-                const label = l.tipo === 'turma' ? `Turma: ${l.valor}` : `Aluno: ${(usuarios.find(u=>u.id===Number(l.valor))||{}).nome || l.valor}`;
-                return `<span class="release-badge">${label} <button type="button" onclick="revogarLiberacaoUI(${l.id})" aria-label="Revogar">×</button></span>`;
-              }).join('')
-            : `<span class="release-badge none">Ainda não liberado</span>`;
-          return `<div class="filial-release-row">
-            <div class="filial-release-info">
-              <span class="filial-release-name">Filial ${String(i+1).padStart(2,'0')}</span>
-              <div class="filial-release-badges">${badges}</div>
-            </div>
-            <button type="button" class="btn secondary" onclick="liberarFilialUI(${i})">Liberar para o destino selecionado</button>
-          </div>`;
-        }).join('');
-
-        liberacaoPanelHtml = `<section class="block">
-          <h3>Liberação dos estudos de caso para os alunos</h3>
-          <p class="ementa">Enquanto uma filial não for liberada, os alunos veem apenas uma mensagem de espera nesta página. Escolha o destino abaixo e clique em "Liberar" na filial desejada — dá para liberar mais de uma filial para o mesmo destino, ou a mesma filial para vários destinos.</p>
-          <div class="panel-card">
-            <div class="form-grid">
-              <div class="form-field">
-                <label>Liberar para</label>
-                <select id="liberacao-tipo" onchange="toggleLiberacaoTipo()">
-                  <option value="turma">Turma inteira</option>
-                  <option value="aluno">Aluno específico</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label id="liberacao-valor-label">Turma</label>
-                <select id="liberacao-valor">${turmaOptions}</select>
-              </div>
-            </div>
-          </div>
           <div class="filial-release-list">${filialRows}</div>
         </section>`;
+
+        if(alunos.length){
+          const linhas = alunos.map(u => {
+            const fi = estudoCasoDoAluno(u.id);
+            const estudoLabel = fi === null ? '<span class="release-badge none">Não atribuído</span>' : `Filial ${String(fi+1).padStart(2,'0')}`;
+            const acao = fi === null ? '' : `<button class="btn secondary" onclick="removerAtribuicaoUI(${u.id})">Remover</button>`;
+            return `<tr><td>${u.nome}</td><td>${u.turma}</td><td>${estudoLabel}</td><td>${acao}</td></tr>`;
+          }).join('');
+          liberacaoPanelHtml = `<section class="block">
+            <h3>Resumo das atribuições</h3>
+            <table class="data-table">
+              <thead><tr><th>Aluno</th><th>Turma</th><th>Estudo de caso</th><th></th></tr></thead>
+              <tbody>${linhas}</tbody>
+            </table>
+          </section>`;
+        } else {
+          liberacaoPanelHtml = `<section class="block">
+            <h3>Resumo das atribuições</h3>
+            <p class="ementa">Nenhum aluno cadastrado ainda. Cadastre alunos na página <strong>Usuários</strong> (ou peça para eles se cadastrarem pela tela de login) para poder atribuir estudos de caso.</p>
+          </section>`;
+        }
       }
     } else if(m.exercicios && m.exercicios.length){
       const perguntasHtml = m.exercicios.map((q, i) => {
@@ -3460,32 +3455,51 @@
         <div class="materials-grid">${materialsHtml}</div>
       </section>
     `;
-  }
 
-  function toggleLiberacaoTipo(){
-    const tipo = document.getElementById('liberacao-tipo').value;
-    const label = document.getElementById('liberacao-valor-label');
-    const valorSel = document.getElementById('liberacao-valor');
-    if(tipo === 'turma'){
-      label.textContent = 'Turma';
-      valorSel.innerHTML = turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
-    } else {
-      label.textContent = 'Aluno';
-      valorSel.innerHTML = usuarios.filter(u => u.papelKey === 'aluno')
-        .map(u => `<option value="${u.id}">${u.nome} (${u.turma})</option>`).join('');
+    if(m.integrador && m.exercicios && !isAlunoAtual){
+      m.exercicios.forEach((q, i) => atualizarAlunoSelect(i));
     }
   }
 
-  function liberarFilialUI(filialIndex){
-    const tipo = document.getElementById('liberacao-tipo').value;
-    const valor = document.getElementById('liberacao-valor').value;
-    if(!valor){ alert('Cadastre ao menos uma turma ou um aluno antes de liberar.'); return; }
-    liberarFilial(filialIndex, tipo, valor);
+  function renderCaseStudyItem(q){
+    const tipoClass = 'tipo-' + q.tipo.toLowerCase().replace(/[^a-zà-ú]+/g, '-').replace(/^-+|-+$/g, '');
+    const dadosHtml = q.dados.map(grupo => `
+      <div class="case-data-group">
+        <p class="case-data-label">${grupo.label}</p>
+        <ul class="case-data-items">${grupo.itens.map(it => `<li>${it}</li>`).join('')}</ul>
+      </div>`).join('');
+    const tarefasHtml = q.tarefas.map((t, j) => `<li><span class="opt-letter">${j+1}</span>${t}</li>`).join('');
+    return `<li>
+      <span class="exercise-tipo ${tipoClass}">${q.tipo}</span>
+      <p class="exercise-text"><strong>Empresa: ${q.empresa}</strong></p>
+      <p class="exercise-text">${q.contexto}</p>
+      <div class="case-data-grid">${dadosHtml}</div>
+      <p class="case-tarefas-label">Tarefas</p>
+      <ul class="exercise-options case-tarefas">${tarefasHtml}</ul>
+    </li>`;
+  }
+
+  function atualizarAlunoSelect(i){
+    const turmaSel = document.getElementById(`atribuir-turma-${i}`);
+    const alunoSel = document.getElementById(`atribuir-aluno-${i}`);
+    if(!turmaSel || !alunoSel) return;
+    const turma = turmaSel.value;
+    const alunosDaTurma = usuarios.filter(u => u.papelKey === 'aluno' && u.turma === turma);
+    alunoSel.innerHTML = alunosDaTurma.length
+      ? alunosDaTurma.map(u => `<option value="${u.id}">${u.nome}</option>`).join('')
+      : '<option value="">Nenhum aluno nesta turma</option>';
+  }
+
+  function atribuirEstudoUI(filialIndex){
+    const alunoSel = document.getElementById(`atribuir-aluno-${filialIndex}`);
+    const alunoId = Number(alunoSel.value);
+    if(!alunoId){ alert('Selecione uma turma que já tenha ao menos um aluno cadastrado.'); return; }
+    atribuirEstudoCaso(filialIndex, alunoId);
     renderModule();
   }
 
-  function revogarLiberacaoUI(id){
-    revogarLiberacao(id);
+  function removerAtribuicaoUI(alunoId){
+    removerAtribuicaoEstudoCaso(alunoId);
     renderModule();
   }
 
