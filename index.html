@@ -154,6 +154,34 @@
     margin-bottom:18px;
   }
   .back-btn:hover{ background:var(--bg-panel); color:var(--ink); border-color:var(--gold); }
+  .module-nav-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:stretch;
+    gap:12px;
+    margin-top:28px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    flex-wrap:wrap;
+  }
+  .module-nav-btn{
+    flex:1 1 240px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--bg-panel);
+    border:1px solid var(--border-strong);
+    color:var(--ink-soft);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    padding:14px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    text-align:left;
+    line-height:1.4;
+  }
+  .module-nav-btn:hover{ background:var(--bg-panel-strong); color:var(--ink); border-color:var(--gold); }
+  .module-nav-btn.next{ justify-content:flex-end; text-align:right; }
   .eyebrow{
     font-family:'IBM Plex Mono', monospace;
     font-size:12px;
@@ -3462,6 +3490,15 @@
     if(m.caseStudy){ materialCards.push({ label:"Estudo de caso", desc:"Caso aplicado — a incluir" }); }
     const materialsHtml = materialCards.map(c => `<div class="material-card"><div class="label">${c.label}</div><div class="desc">${c.desc}</div></div>`).join('');
 
+    const temAnterior = activeIndex > 0;
+    const temProximo = activeIndex < modules.length - 1;
+    const navAnteriorHtml = temAnterior
+      ? `<button class="module-nav-btn prev" onclick="goToModule(${activeIndex - 1})">← ${modules[activeIndex - 1].code} ${modules[activeIndex - 1].title}</button>`
+      : `<button class="module-nav-btn prev" onclick="goToModule(-1)">← Voltar ao início</button>`;
+    const navProximoHtml = temProximo
+      ? `<button class="module-nav-btn next" onclick="goToModule(${activeIndex + 1})">${modules[activeIndex + 1].code} ${modules[activeIndex + 1].title} →</button>`
+      : `<button class="module-nav-btn next" onclick="goToModule(-1)">Voltar ao início →</button>`;
+
     main.innerHTML = `
       <button class="back-btn" onclick="goToModule(-1)">← Voltar ao início</button>
       <div class="page-head">
@@ -3484,6 +3521,10 @@
         <h3>Materiais do módulo</h3>
         <div class="materials-grid">${materialsHtml}</div>
       </section>
+      <div class="module-nav-row">
+        ${navAnteriorHtml}
+        ${navProximoHtml}
+      </div>
     `;
 
     if(m.integrador && m.exercicios && !isAlunoAtual){
