@@ -3063,26 +3063,31 @@
 
     const divider2 = document.createElement('div');
     divider2.className = 'toc-divider';
-    toc.appendChild(divider2);
 
     const mgmtLabel = document.createElement('p');
     mgmtLabel.className = 'toc-section-label';
     mgmtLabel.textContent = 'Gestão';
-    toc.appendChild(mgmtLabel);
 
-    [
-      { key:'turmas', label:'Turmas' },
-      { key:'usuarios', label:'Usuários' },
-      { key:'relatorios', label:'Relatórios' },
-      { key:'backup', label:'Backup' },
-      { key:'auditoria', label:'Auditoria' },
-    ].forEach(item => {
-      const btn = document.createElement('button');
-      btn.className = 'toc-item' + (activeIndex === item.key ? ' active' : '');
-      btn.innerHTML = `<span class="toc-title">${item.label}</span>`;
-      btn.addEventListener('click', () => { activeIndex = item.key; render(); closeMobileMenu(); });
-      toc.appendChild(btn);
-    });
+    const isAluno = currentUser && currentUser.papelKey === 'aluno';
+
+    if(!isAluno){
+      toc.appendChild(divider2);
+      toc.appendChild(mgmtLabel);
+
+      [
+        { key:'turmas', label:'Turmas' },
+        { key:'usuarios', label:'Usuários' },
+        { key:'relatorios', label:'Relatórios' },
+        { key:'backup', label:'Backup' },
+        { key:'auditoria', label:'Auditoria' },
+      ].forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'toc-item' + (activeIndex === item.key ? ' active' : '');
+        btn.innerHTML = `<span class="toc-title">${item.label}</span>`;
+        btn.addEventListener('click', () => { activeIndex = item.key; render(); closeMobileMenu(); });
+        toc.appendChild(btn);
+      });
+    }
   }
 
   function goToModule(i){ activeIndex = i; render(); window.scrollTo(0,0); }
@@ -3804,6 +3809,10 @@
   }
 
   function render(){
+    const mgmtKeys = ['turmas','usuarios','relatorios','backup','auditoria'];
+    if(currentUser && currentUser.papelKey === 'aluno' && mgmtKeys.includes(activeIndex)){
+      activeIndex = -1;
+    }
     renderToc();
     renderSidebarUser();
     if(activeIndex === -1){ renderHome(); }
