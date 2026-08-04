@@ -752,7 +752,40 @@
     flex-wrap:wrap;
     margin:14px 0 18px 0;
   }
-  .filial-assign-controls .form-field{ margin-bottom:0; min-width:180px; flex:1 1 180px; }
+  .filial-assign-controls .form-field{ margin-bottom:0; min-width:180px; flex:1 1 180px; max-width:280px; }
+  .filial-aluno-checklist{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    background:var(--bg-deep);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:6px 4px;
+    margin-bottom:14px;
+    max-height:220px;
+    overflow-y:auto;
+  }
+  .checklist-item{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:7px 10px;
+    border-radius:6px;
+    font-size:13px;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .checklist-item:hover{ background:var(--bg-panel); }
+  .checklist-item input[type="checkbox"]{ accent-color:var(--gold); width:15px; height:15px; flex-shrink:0; }
+  .checklist-all{
+    border-bottom:1px solid var(--border);
+    border-radius:0;
+    color:var(--gold-text);
+    font-weight:500;
+    margin-bottom:2px;
+  }
+  .checklist-note{ color:var(--ink-faint); font-size:11.5px; }
+  .checklist-empty{ color:var(--ink-faint); font-size:13px; padding:8px 10px; margin:0 0 14px 0; }
   .release-badge{
     display:inline-flex;
     align-items:center;
@@ -3333,14 +3366,11 @@
               <div class="filial-assign-controls">
                 <div class="form-field">
                   <label>Turma</label>
-                  <select id="atribuir-turma-${i}" onchange="atualizarAlunoSelect(${i})">${turmaOptions}</select>
+                  <select id="atribuir-turma-${i}" onchange="atualizarAlunoChecklist(${i})">${turmaOptions}</select>
                 </div>
-                <div class="form-field">
-                  <label>Aluno</label>
-                  <select id="atribuir-aluno-${i}"></select>
-                </div>
-                <button type="button" class="btn secondary" onclick="atribuirEstudoUI(${i})">Atribuir a este aluno</button>
               </div>
+              <div class="filial-aluno-checklist" id="atribuir-alunos-${i}"></div>
+              <button type="button" class="btn secondary" onclick="atribuirEstudoUI(${i})">Atribuir aos alunos selecionados</button>
               <ol class="exercise-list">${renderCaseStudyItem(q)}</ol>
             </div>
           </details>`;
@@ -3457,7 +3487,7 @@
     `;
 
     if(m.integrador && m.exercicios && !isAlunoAtual){
-      m.exercicios.forEach((q, i) => atualizarAlunoSelect(i));
+      m.exercicios.forEach((q, i) => atualizarAlunoChecklist(i));
     }
   }
 
@@ -3479,22 +3509,48 @@
     </li>`;
   }
 
-  function atualizarAlunoSelect(i){
+  function atualizarAlunoChecklist(i){
     const turmaSel = document.getElementById(`atribuir-turma-${i}`);
-    const alunoSel = document.getElementById(`atribuir-aluno-${i}`);
-    if(!turmaSel || !alunoSel) return;
+    const wrap = document.getElementById(`atribuir-alunos-${i}`);
+    if(!turmaSel || !wrap) return;
     const turma = turmaSel.value;
     const alunosDaTurma = usuarios.filter(u => u.papelKey === 'aluno' && u.turma === turma);
-    alunoSel.innerHTML = alunosDaTurma.length
-      ? alunosDaTurma.map(u => `<option value="${u.id}">${u.nome}</option>`).join('')
-      : '<option value="">Nenhum aluno nesta turma</option>';
+    if(!alunosDaTurma.length){
+      wrap.innerHTML = `<p class="checklist-empty">Nenhum aluno cadastrado nesta turma ainda.</p>`;
+      return;
+    }
+    const itemsHtml = alunosDaTurma.map(u => {
+      const filialAtual = estudoCasoDoAluno(u.id);
+      const nota = filialAtual !== null
+        ? ` <span class="checklist-note">(já tem a Filial ${String(filialAtual+1).padStart(2,'0')} — será substituída)</span>`
+        : '';
+      return `<label class="checklist-item">
+        <input type="checkbox" class="aluno-cb" value="${u.id}">
+        <span>${u.nome}${nota}</span>
+      </label>`;
+    }).join('');
+    wrap.innerHTML = `
+      <label class="checklist-item checklist-all">
+        <input type="checkbox" class="select-all-cb" onchange="toggleAllAlunos(${i}, this.checked)">
+        <span>Selecionar todos os alunos desta turma</span>
+      </label>
+      ${itemsHtml}
+    `;
+  }
+
+  function toggleAllAlunos(i, checked){
+    const wrap = document.getElementById(`atribuir-alunos-${i}`);
+    if(!wrap) return;
+    wrap.querySelectorAll('.aluno-cb').forEach(cb => { cb.checked = checked; });
   }
 
   function atribuirEstudoUI(filialIndex){
-    const alunoSel = document.getElementById(`atribuir-aluno-${filialIndex}`);
-    const alunoId = Number(alunoSel.value);
-    if(!alunoId){ alert('Selecione uma turma que já tenha ao menos um aluno cadastrado.'); return; }
-    atribuirEstudoCaso(filialIndex, alunoId);
+    const wrap = document.getElementById(`atribuir-alunos-${filialIndex}`);
+    const idsSelecionados = wrap
+      ? Array.from(wrap.querySelectorAll('.aluno-cb:checked')).map(cb => Number(cb.value))
+      : [];
+    if(!idsSelecionados.length){ alert('Selecione ao menos um aluno para atribuir este estudo de caso.'); return; }
+    idsSelecionados.forEach(alunoId => atribuirEstudoCaso(filialIndex, alunoId));
     renderModule();
   }
 
