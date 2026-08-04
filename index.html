@@ -2329,7 +2329,180 @@
         ]
       },
     ] },
-    { code:"11.0", title:"Análise de Quocientes Financeiros",              ementa:"Indicadores de liquidez, endividamento, rentabilidade e atividade.", subtopics:[], caseStudy:true },
+    { code:"11.0", title:"Análise de Quocientes Financeiros",              ementa:"Indicadores de liquidez, endividamento, rentabilidade e atividade.", subtopics:[
+      "Liquidez: Liquidez Corrente (LC) e Liquidez Seca (LS)",
+      "Endividamento: Participação de Capitais de Terceiros (PCT) e Composição do Endividamento (CE)",
+      "Rentabilidade: Margem Líquida (ML), ROA e ROE",
+      "Eficiência Operacional: Giro do Ativo (GA)",
+      "Resultados ideais e referências de mercado para cada quociente",
+      "Prática: cálculo e interpretação de um conjunto completo de quocientes financeiros",
+    ], caseStudy:true, teoriaDesc:"Slides do Prof. Jorge Cardoso incluídos", teoriaArquivo:"modulo11-teoria.pdf", exerciciosDesc:"3 estudos de caso incluídos", exerciciosArquivo:"modulo11-exercicios.docx", content:[
+      {
+        heading:"Análise de Quocientes Financeiros: Conceito e Finalidade",
+        paragraphs:[
+          "A <strong>Análise de Quocientes Financeiros</strong> é uma das ferramentas mais utilizadas na Administração Financeira para avaliar a situação econômica e a performance de uma empresa. Os quocientes (ou índices) são extraídos das Demonstrações Contábeis — Balanço Patrimonial (BP) e Demonstração do Resultado do Exercício (DRE) — e transformam números absolutos em informações comparativas.",
+          "<strong>Finalidade:</strong> avaliar liquidez (capacidade de pagamento de curto prazo), medir endividamento (dependência de capital de terceiros), verificar rentabilidade (retorno sobre vendas, ativos e patrimônio líquido) e analisar eficiência operacional (uso dos ativos na geração de receitas)."
+        ]
+      },
+      {
+        heading:"Grupo 1 — Liquidez",
+        paragraphs:[
+          "<strong>Liquidez Corrente (LC):</strong> LC = Ativo Circulante ÷ Passivo Circulante. Indica quanto a empresa possui de ativos de curto prazo para cada R$ 1,00 de dívida de curto prazo. <strong>Resultado ideal:</strong> acima de 1,0, preferencialmente entre 1,5 e 2,0 — valores muito altos (acima de 3) podem indicar excesso de recursos parados.",
+          "<strong>Liquidez Seca (LS):</strong> LS = (Ativo Circulante − Estoques) ÷ Passivo Circulante. Mostra a capacidade de pagar dívidas de curto prazo sem depender da venda de estoques. <strong>Resultado ideal:</strong> acima de 1,0."
+        ]
+      },
+      {
+        heading:"Grupo 2 — Endividamento",
+        paragraphs:[
+          "<strong>Participação de Capitais de Terceiros (PCT):</strong> PCT = Passivo Exigível ÷ Patrimônio Líquido. Revela o grau de dependência de capitais de terceiros em relação ao capital próprio. <strong>Resultado ideal:</strong> quanto menor, melhor — até 0,5 é excelente, entre 0,5 e 1,0 é aceitável, acima de 1,0 indica dependência elevada de capital de terceiros.",
+          "<strong>Composição do Endividamento (CE):</strong> CE = Passivo Circulante ÷ Passivo Total. Mostra a proporção das dívidas que vencem no curto prazo em relação ao total das dívidas. <strong>Resultado ideal:</strong> quanto menor, melhor — abaixo de 50% indica maior prazo para pagamento das obrigações."
+        ]
+      },
+      {
+        heading:"Grupo 3 — Rentabilidade",
+        paragraphs:[
+          "<strong>Margem Líquida (ML):</strong> ML = Lucro Líquido ÷ Receita Líquida de Vendas × 100. Mostra a porcentagem de lucro líquido obtido sobre as vendas realizadas. <strong>Resultado ideal:</strong> quanto maior, melhor — como referência, comércio gira em torno de 5% a 15%, indústria de 10% a 20%, e serviços podem superar 20%.",
+          "<strong>Rentabilidade do Ativo (ROA):</strong> ROA = Lucro Líquido ÷ Ativo Total × 100. Mede o retorno que a empresa gera sobre o total de seus ativos. <strong>Resultado ideal:</strong> acima de 5% é bom; acima de 10% é muito bom.",
+          "<strong>Rentabilidade do Patrimônio Líquido (ROE):</strong> ROE = Lucro Líquido ÷ Patrimônio Líquido × 100. Avalia o retorno que os sócios obtêm sobre o capital investido. <strong>Resultado ideal:</strong> acima de 10% é bom; acima de 15% é excelente."
+        ]
+      },
+      {
+        heading:"Grupo 4 — Eficiência Operacional",
+        paragraphs:[
+          "<strong>Giro do Ativo (GA):</strong> GA = Receita Líquida de Vendas ÷ Ativo Total. Indica quantas vezes o ativo total da empresa se transformou em vendas no período. <strong>Resultado ideal:</strong> quanto maior, melhor — acima de 1 significa que o ativo gerou vendas superiores ao seu próprio valor no período. Empresas comerciais tendem a ter giro mais alto; indústrias e empresas intensivas em ativos, giro mais moderado."
+        ]
+      },
+      {
+        heading:"Importância dos Cálculos",
+        paragraphs:[
+          "Os quocientes financeiros permitem comparar períodos da mesma empresa (análise temporal) e comparar a empresa com concorrentes ou com a média do setor (análise setorial).",
+          "Servem como base para decisões financeiras — investimentos, captação de recursos, política de crédito e distribuição de lucros — e ajudam na avaliação de riscos e na análise de sustentabilidade financeira.",
+          "<strong>Em resumo:</strong> a Análise de Quocientes Financeiros transforma informações contábeis em indicadores quantitativos que facilitam a avaliação objetiva da saúde financeira da empresa."
+        ]
+      },
+      {
+        heading:"Tabela Unificada de Fórmulas e Interpretação dos Resultados",
+        downloadArquivo:"modulo11-tabela-formulas.pdf", downloadLabel:"Baixar tabela unificada (PDF)",
+        html:`<p>Tabela de referência rápida: reúne, para cada quociente financeiro, a fórmula, o objetivo e o resultado mais favorável (ideal).</p>
+        <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Conceito</th>
+              <th>Fórmula</th>
+              <th>Objetivo</th>
+              <th>Resultado ideal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>LC</strong><br>Liquidez Corrente</td>
+              <td>Ativos de curto prazo para cada R$ 1,00 de dívida de curto prazo.</td>
+              <td>LC = Ativo Circulante ÷ Passivo Circulante</td>
+              <td>Avaliar a capacidade de pagamento de curto prazo.</td>
+              <td>Entre 1,5 e 2,0</td>
+            </tr>
+            <tr>
+              <td><strong>LS</strong><br>Liquidez Seca</td>
+              <td>Capacidade de pagamento sem depender da venda de estoques.</td>
+              <td>LS = (Ativo Circulante − Estoques) ÷ Passivo Circulante</td>
+              <td>Medir a liquidez imediata, excluindo estoques.</td>
+              <td>Acima de 1,0</td>
+            </tr>
+            <tr>
+              <td><strong>PCT</strong><br>Participação de Capitais de Terceiros</td>
+              <td>Grau de dependência de capital de terceiros em relação ao capital próprio.</td>
+              <td>PCT = Passivo Exigível ÷ Patrimônio Líquido</td>
+              <td>Medir o nível de endividamento da empresa.</td>
+              <td>Menor que 1,0 (até 0,5 é excelente)</td>
+            </tr>
+            <tr>
+              <td><strong>CE</strong><br>Composição do Endividamento</td>
+              <td>Proporção das dívidas que vencem no curto prazo.</td>
+              <td>CE = Passivo Circulante ÷ Passivo Total</td>
+              <td>Avaliar o prazo médio das obrigações da empresa.</td>
+              <td>Menor que 50%</td>
+            </tr>
+            <tr>
+              <td><strong>ML</strong><br>Margem Líquida</td>
+              <td>Percentual de lucro líquido sobre as vendas.</td>
+              <td>ML = Lucro Líquido ÷ Receita Líquida × 100</td>
+              <td>Medir a lucratividade das vendas.</td>
+              <td>Quanto maior, melhor (5% a 20%, conforme o setor)</td>
+            </tr>
+            <tr>
+              <td><strong>ROA</strong><br>Rentabilidade do Ativo</td>
+              <td>Retorno gerado sobre o total de ativos.</td>
+              <td>ROA = Lucro Líquido ÷ Ativo Total × 100</td>
+              <td>Medir a eficiência no uso dos ativos.</td>
+              <td>Acima de 10%</td>
+            </tr>
+            <tr>
+              <td><strong>ROE</strong><br>Rentabilidade do Patrimônio Líquido</td>
+              <td>Retorno obtido pelos sócios sobre o capital investido.</td>
+              <td>ROE = Lucro Líquido ÷ Patrimônio Líquido × 100</td>
+              <td>Medir o retorno ao acionista/sócio.</td>
+              <td>Acima de 15%</td>
+            </tr>
+            <tr>
+              <td><strong>GA</strong><br>Giro do Ativo</td>
+              <td>Quantas vezes o ativo se transformou em vendas.</td>
+              <td>GA = Receita Líquida ÷ Ativo Total</td>
+              <td>Medir a eficiência operacional da empresa.</td>
+              <td>Acima de 1</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>`
+      }
+    ], exercicios:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Litoral Bebidas Naturais",
+        contexto:"A Litoral Bebidas Naturais deseja avaliar sua saúde financeira com um conjunto completo de quocientes de liquidez, endividamento, rentabilidade e eficiência operacional.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 300.000,00","Estoques: R$ 80.000,00","Passivo Circulante: R$ 150.000,00","Empréstimos de Longo Prazo: R$ 100.000,00","Patrimônio Líquido: R$ 350.000,00","Ativo Total: R$ 600.000,00","Receita Líquida de Vendas: R$ 900.000,00","Lucro Líquido: R$ 90.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: com base nos resultados ideais de cada quociente, avalie se a Litoral Bebidas Naturais está em boa situação financeira, destacando qualquer ponto de atenção.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Vargem Grande Confecções",
+        contexto:"A Vargem Grande Confecções enfrenta dificuldades financeiras e contratou uma consultoria para calcular seus quocientes financeiros e identificar os principais riscos.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 200.000,00","Estoques: R$ 90.000,00","Passivo Circulante: R$ 180.000,00","Empréstimos de Longo Prazo: R$ 120.000,00","Patrimônio Líquido: R$ 150.000,00","Ativo Total: R$ 450.000,00","Receita Líquida de Vendas: R$ 520.000,00","Lucro Líquido: R$ 15.600,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: compare cada quociente calculado com os resultados ideais e liste, em ordem de gravidade, os principais riscos financeiros da Vargem Grande Confecções.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Estação Verde Alimentos Orgânicos",
+        contexto:"A Estação Verde Alimentos Orgânicos é reconhecida por seu bom desempenho financeiro e quer usar seus quocientes como referência de boas práticas para outras unidades da rede.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 180.000,00","Estoques: R$ 30.000,00","Passivo Circulante: R$ 100.000,00","Empréstimos de Longo Prazo: R$ 50.000,00","Patrimônio Líquido: R$ 230.000,00","Ativo Total: R$ 380.000,00","Receita Líquida de Vendas: R$ 560.000,00","Lucro Líquido: R$ 78.400,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: mesmo com bons resultados gerais, identifique se algum quociente da Estação Verde Alimentos Orgânicos merece atenção e explique por quê.",
+        ]
+      },
+    ] },
     { code:"12.0", title:"Estudos de Caso",                                ementa:"Estudo de caso final, com cálculos, integrando os conteúdos dos módulos 2 a 11: fluxo de caixa, mercado de capitais, crédito e cobrança, ciclo operacional, ponto de equilíbrio, ativos permanentes, estrutura e custo de capital, planejamento e análise de investimentos, análise horizontal/vertical e quocientes financeiros.", subtopics:[
       "Elaboração do fluxo de caixa da empresa do caso",
       "Análise das opções de mercado de capitais disponíveis para a empresa",
