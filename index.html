@@ -131,6 +131,18 @@
     line-height:1.4;
   }
   .toc-item.active .toc-title{ font-weight:500; color:var(--ink); }
+  .toc-badge{
+    margin-left:auto;
+    background:var(--gold);
+    color:var(--bg-deep);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    font-weight:700;
+    line-height:1;
+    padding:3px 7px;
+    border-radius:20px;
+    flex-shrink:0;
+  }
   .sidebar-foot{
     padding:16px 24px 0 24px;
     border-top:1px solid var(--border);
@@ -873,6 +885,31 @@
   }
   .release-badge button:hover{ opacity:1; }
 
+  .approval-list{ display:flex; flex-direction:column; gap:12px; }
+  .approval-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    background:var(--bg-panel);
+    border:1px solid var(--gold);
+    border-radius:10px;
+    padding:16px 18px;
+  }
+  .approval-info{ min-width:0; }
+  .approval-name{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    color:var(--ink);
+    font-size:14.5px;
+    margin-bottom:4px;
+  }
+  .approval-detail{ font-size:12.5px; color:var(--ink-faint); }
+  .approval-actions{ display:flex; gap:8px; flex-shrink:0; }
+
   .audit-filters{
     display:flex;
     flex-wrap:wrap;
@@ -1118,6 +1155,14 @@
       </div>
       <button class="btn primary login-submit" onclick="submitRegister()">Cadastrar</button>
       <div class="login-links"><a onclick="showLoginForm()">Já tenho conta — entrar</a></div>
+    </div>
+
+    <div id="register-pending-box" style="display:none;">
+      <div class="release-wait" style="text-align:left;">
+        <p><strong>Cadastro enviado!</strong></p>
+        <p>Seu cadastro foi enviado para aprovação do professor. Assim que ele aprovar, você já poderá entrar com o e-mail e a senha que acabou de cadastrar.</p>
+      </div>
+      <button class="btn secondary login-submit" onclick="showLoginForm()">Voltar para o login</button>
     </div>
 
     <div class="login-links" id="login-footer-link">
@@ -3191,9 +3236,9 @@
   };
 
   const usuarios = [
-    { id:1, nome:"Aluno Exemplo", papel:"Aluno", papelKey:"aluno", matricula:"Matrícula 2026001", turma:"ADM 2026/1", email:"aluno@exemplo.com", senha:"aluno123" },
-    { id:2, nome:"Prof. Esp. Jorge Lima Cardoso", papel:"Professor", papelKey:"professor", matricula:"Registro (exemplo)", turma:"— (todas as turmas)", email:"623251@profe.sed.sc.gov.br", senha:"professor123" },
-    { id:3, nome:"Admin Sistema", papel:"Usuário Mestre", papelKey:"mestre", matricula:"—", turma:"—", email:"admin@administracaofinanceira.local", senha:"mestre123" },
+    { id:1, nome:"Aluno Exemplo", papel:"Aluno", papelKey:"aluno", matricula:"Matrícula 2026001", turma:"ADM 2026/1", email:"aluno@exemplo.com", senha:"aluno123", status:"aprovado" },
+    { id:2, nome:"Prof. Esp. Jorge Lima Cardoso", papel:"Professor", papelKey:"professor", matricula:"Registro (exemplo)", turma:"— (todas as turmas)", email:"623251@profe.sed.sc.gov.br", senha:"professor123", status:"aprovado" },
+    { id:3, nome:"Admin Sistema", papel:"Usuário Mestre", papelKey:"mestre", matricula:"—", turma:"—", email:"admin@administracaofinanceira.local", senha:"mestre123", status:"aprovado" },
   ];
   let nextUserId = 4;
   let activeUserId = null;
@@ -3323,16 +3368,20 @@
       toc.appendChild(divider2);
       toc.appendChild(mgmtLabel);
 
+      const pendentesCount = usuarios.filter(u => u.status === 'pendente').length;
+
       [
         { key:'turmas', label:'Turmas' },
         { key:'usuarios', label:'Usuários' },
+        { key:'aprovacoes', label:'Aprovações', badge: pendentesCount },
         { key:'relatorios', label:'Relatórios' },
         { key:'backup', label:'Backup' },
         { key:'auditoria', label:'Auditoria' },
       ].forEach(item => {
         const btn = document.createElement('button');
         btn.className = 'toc-item' + (activeIndex === item.key ? ' active' : '');
-        btn.innerHTML = `<span class="toc-title">${item.label}</span>`;
+        const badgeHtml = item.badge ? `<span class="toc-badge">${item.badge}</span>` : '';
+        btn.innerHTML = `<span class="toc-title">${item.label}</span>${badgeHtml}`;
         btn.addEventListener('click', () => { activeIndex = item.key; render(); closeMobileMenu(); });
         toc.appendChild(btn);
       });
@@ -3902,6 +3951,8 @@
       turma: turmaEscolhida,
       email,
       senha,
+      status: 'aprovado',
+      criadoEm: nowFormatted(),
     });
     logAudit('Criação', turmaEscolhida, `Cadastrou o usuário ${nome} (${papelLabel})`);
     renderUsuarios();
@@ -3926,6 +3977,71 @@
       logAudit('Exclusão', removido.turma, `Excluiu o usuário ${removido.nome} (${removido.papel})`);
     }
     renderUsuarios();
+  }
+
+  function renderAprovacoes(){
+    const main = document.getElementById('main');
+    const pendentes = usuarios.filter(u => u.status === 'pendente');
+    const aprovados = usuarios.filter(u => u.status === 'aprovado' || !u.status);
+
+    const pendentesHtml = pendentes.length
+      ? pendentes.map(u => `
+        <div class="approval-row">
+          <div class="approval-info">
+            <div class="approval-name">${u.nome} <span class="role-badge role-${u.papelKey}">${u.papel}</span></div>
+            <div class="approval-detail">${u.email || '—'} · ${u.turma}</div>
+            <div class="approval-detail">Cadastrado em ${u.criadoEm || '—'}</div>
+          </div>
+          <div class="approval-actions">
+            <button class="btn primary" onclick="aprovarUsuario(${u.id})">✓ Aprovar</button>
+            <button class="btn danger" onclick="recusarUsuario(${u.id})">Recusar</button>
+          </div>
+        </div>`).join('')
+      : `<p class="ementa">Nenhum cadastro pendente no momento.</p>`;
+
+    const aprovadosRows = aprovados.length
+      ? aprovados.map(u => `<tr><td>${u.nome}</td><td>${u.papel}</td><td>${u.email || '—'}</td><td>${u.turma}</td></tr>`).join('')
+      : `<tr><td colspan="4" style="color:var(--ink-faint);font-style:italic;">Nenhum usuário aprovado ainda.</td></tr>`;
+
+    main.innerHTML = `
+      <button class="back-btn" onclick="goToModule(-1)">← Voltar ao início</button>
+      <div class="page-head">
+        <p class="code">Gestão</p>
+        <h2>Aprovações</h2>
+        <p class="ementa">Aprove ou recuse os cadastros feitos por alunos na tela de login. Enquanto um cadastro não for aprovado, a pessoa não consegue entrar na plataforma.</p>
+      </div>
+
+      <section class="block">
+        <h3>Pendentes (${pendentes.length})</h3>
+        <div class="approval-list">${pendentesHtml}</div>
+      </section>
+
+      <section class="block">
+        <h3>Usuários aprovados (${aprovados.length})</h3>
+        <table class="data-table">
+          <thead><tr><th>Nome</th><th>Papel</th><th>E-mail</th><th>Turma</th></tr></thead>
+          <tbody>${aprovadosRows}</tbody>
+        </table>
+      </section>
+    `;
+  }
+
+  function aprovarUsuario(id){
+    const u = usuarios.find(x => x.id === id);
+    if(!u) return;
+    u.status = 'aprovado';
+    logAudit('Edição', u.turma, `Aprovou o cadastro de ${u.nome} (${u.papel})`);
+    renderAprovacoes();
+  }
+
+  function recusarUsuario(id){
+    const idx = usuarios.findIndex(x => x.id === id);
+    if(idx === -1) return;
+    const u = usuarios[idx];
+    if(!confirm(`Recusar e remover o cadastro de ${u.nome}? Essa ação não pode ser desfeita.`)) return;
+    usuarios.splice(idx, 1);
+    logAudit('Exclusão', u.turma, `Recusou o cadastro de ${u.nome} (${u.papel})`);
+    renderAprovacoes();
   }
 
   function showPermissions(){
@@ -4256,7 +4372,7 @@
   }
 
   function render(){
-    const mgmtKeys = ['turmas','usuarios','relatorios','backup','auditoria'];
+    const mgmtKeys = ['turmas','usuarios','aprovacoes','relatorios','backup','auditoria'];
     if(currentUser && currentUser.papelKey === 'aluno' && mgmtKeys.includes(activeIndex)){
       activeIndex = -1;
     }
@@ -4265,6 +4381,7 @@
     if(activeIndex === -1){ renderHome(); }
     else if(activeIndex === 'turmas'){ renderTurmas(); }
     else if(activeIndex === 'usuarios'){ renderUsuarios(); }
+    else if(activeIndex === 'aprovacoes'){ renderAprovacoes(); }
     else if(activeIndex === 'relatorios'){ renderRelatorios(); }
     else if(activeIndex === 'backup'){ renderBackup(); }
     else if(activeIndex === 'auditoria'){ renderAuditoria(); }
@@ -4322,6 +4439,14 @@
       showLoginErrorMsg('login-error', 'E-mail ou senha incorretos. Verifique e tente novamente.');
       return;
     }
+    if(user.status === 'pendente'){
+      showLoginErrorMsg('login-error', 'Seu cadastro ainda está aguardando aprovação do professor. Você será avisado quando puder entrar.');
+      return;
+    }
+    if(user.status === 'recusado'){
+      showLoginErrorMsg('login-error', 'Seu cadastro não foi aprovado. Entre em contato com o professor.');
+      return;
+    }
     doLogin(user);
   }
 
@@ -4358,6 +4483,7 @@
   function showRegisterForm(){
     document.getElementById('login-form-box').style.display = 'none';
     document.getElementById('register-form-box').style.display = 'block';
+    document.getElementById('register-pending-box').style.display = 'none';
     document.getElementById('login-footer-link').style.display = 'none';
     const turmaSel = document.getElementById('register-turma');
     turmaSel.innerHTML = '<option value="">Selecione a turma...</option>' +
@@ -4367,6 +4493,7 @@
   function showLoginForm(){
     document.getElementById('login-form-box').style.display = 'block';
     document.getElementById('register-form-box').style.display = 'none';
+    document.getElementById('register-pending-box').style.display = 'none';
     document.getElementById('login-footer-link').style.display = 'block';
     document.getElementById('register-error').style.display = 'none';
     const nomeEl = document.getElementById('register-nome');
@@ -4405,10 +4532,14 @@
       turma: turmaEl.value || '—',
       email: email.toLowerCase(),
       senha,
+      status: 'pendente',
+      criadoEm: nowFormatted(),
     };
     usuarios.push(novoUsuario);
-    doLogin(novoUsuario);
-    logAudit('Cadastro', novoUsuario.turma, `${nome} se cadastrou como Aluno`);
+    logAudit('Cadastro', novoUsuario.turma, `${nome} solicitou cadastro como Aluno (aguardando aprovação)`);
+    document.getElementById('register-form-box').style.display = 'none';
+    document.getElementById('login-footer-link').style.display = 'none';
+    document.getElementById('register-pending-box').style.display = 'block';
   }
 
   // Restaura a sessão salva neste navegador (se houver), sem exigir login de novo a cada F5.
