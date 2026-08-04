@@ -1819,7 +1819,183 @@
         ]
       },
     ] },
-    { code:"8.0",  title:"Estrutura de Capital e Custo de Capital",        ementa:"Fontes de financiamento, composição entre capital próprio e de terceiros, e custo médio ponderado de capital.", subtopics:[], caseStudy:true },
+    { code:"8.0",  title:"Estrutura de Capital e Custo de Capital",        ementa:"Fontes de financiamento, composição entre capital próprio e de terceiros, e custo médio ponderado de capital.", subtopics:[
+      "Estrutura de capital: capital próprio × capital de terceiros",
+      "Custo do capital de terceiros (Kd) e benefício fiscal",
+      "Custo do capital próprio (Ke) pelo modelo CAPM",
+      "Custo Médio Ponderado de Capital (WACC)",
+      "Critério de decisão de investimento: TIR × WACC",
+      "Prática: cálculo do WACC e efeito da alavancagem sobre a decisão",
+    ], caseStudy:true, teoriaDesc:"Slides do Prof. Jorge Cardoso incluídos", teoriaArquivo:"modulo8-teoria.pdf", exerciciosDesc:"3 estudos de caso incluídos", exerciciosArquivo:"modulo8-exercicios.docx", content:[
+      {
+        heading:"Estrutura de Capital",
+        paragraphs:[
+          "A <strong>Estrutura de Capital</strong> representa a proporção entre recursos próprios e recursos de terceiros que uma empresa utiliza para financiar suas atividades.",
+          "<strong>Capital Próprio (E):</strong> investimentos dos sócios, ações, reservas e lucros retidos.",
+          "<strong>Capital de Terceiros (D):</strong> empréstimos bancários, financiamentos, debêntures, entre outros.",
+          "Do ponto de vista dos cálculos, essa estrutura é expressa em percentuais ou pesos aplicados em relação ao total do capital. <strong>Exemplo:</strong> uma empresa pode ter 60% de capital próprio e 40% de capital de terceiros — essas proporções são essenciais nos cálculos do custo médio ponderado."
+        ]
+      },
+      {
+        heading:"Custo de Capital: Kd e Ke",
+        paragraphs:[
+          "O <strong>Custo de Capital</strong> indica quanto custa para a empresa obter recursos financeiros de cada fonte.",
+          "<strong>Custo do Capital de Terceiros (Kd):</strong> corresponde à taxa de juros dos empréstimos, ajustada pelo benefício fiscal, pois os juros são dedutíveis do Imposto de Renda. Kd_líquido = Kd × (1 − IR).",
+          "<strong>Custo do Capital Próprio (Ke):</strong> é o retorno mínimo exigido pelos sócios ou acionistas, calculado a partir de modelos como o CAPM (Capital Asset Pricing Model)."
+        ]
+      },
+      {
+        heading:"Custo do Capital Próprio pelo Modelo CAPM",
+        paragraphs:[
+          "Ke = Rf + β × (Rm − Rf)",
+          "<strong>Rf</strong> (taxa livre de risco): retorno de um investimento considerado sem risco, como títulos públicos.",
+          "<strong>Rm</strong> (retorno de mercado): retorno médio esperado do mercado como um todo.",
+          "<strong>β</strong> (beta): mede o risco da empresa em relação ao mercado. Quanto maior o beta, maior o risco (e maior o Ke exigido pelos acionistas); quanto menor, menor o risco."
+        ]
+      },
+      {
+        heading:"Custo Médio Ponderado de Capital (WACC)",
+        paragraphs:[
+          "O <strong>WACC</strong> (Weighted Average Cost of Capital) é a taxa que combina os custos de cada fonte de recursos, ponderados pela participação de cada uma na estrutura de capital.",
+          "WACC = (E/V × Ke) + (D/V × Kd_líquido), onde V = E + D.",
+          "<strong>Exemplo simplificado:</strong> Estrutura de 50% capital próprio e 50% dívida, Ke = 12% a.a., Kd = 10% a.a. com IR de 25% → Kd_líquido = 10% × 0,75 = 7,5%. WACC = (0,5 × 12%) + (0,5 × 7,5%) = 6% + 3,75% = 9,75% a.a. Esse percentual representa o custo médio dos recursos da empresa — a taxa mínima de retorno que um projeto precisa gerar para ser viável."
+        ]
+      },
+      {
+        heading:"Critério de Decisão de Investimento (TIR × WACC)",
+        paragraphs:[
+          "O WACC funciona como a taxa mínima de atratividade para avaliar projetos de investimento, comparando-a com a Taxa Interna de Retorno (TIR) do projeto.",
+          "<strong>Se TIR &gt; WACC:</strong> o projeto deve ser aceito, pois seu retorno supera o custo de capital e gera valor para a empresa.",
+          "<strong>Se TIR &lt; WACC:</strong> o projeto deve ser rejeitado, pois não cobre o custo de capital investido.",
+          "Quanto maior a diferença entre a TIR e o WACC, mais atrativo é o projeto."
+        ]
+      },
+      {
+        heading:"Efeito da Alavancagem na Estrutura de Capital",
+        paragraphs:[
+          "A <strong>alavancagem financeira</strong> (aumento da participação de capital de terceiros na estrutura) altera simultaneamente o risco e o custo de capital da empresa.",
+          "Um maior endividamento tende a elevar o risco percebido pelo mercado, o que pode aumentar o beta (β) e, consequentemente, o Ke exigido pelos acionistas — além de poder elevar o próprio custo da dívida (Kd) cobrado por credores.",
+          "Por outro lado, o capital de terceiros costuma ser mais barato que o capital próprio (efeito do benefício fiscal), o que pode reduzir o WACC quando a alavancagem aumenta moderadamente.",
+          "<strong>Conclusão importante:</strong> aumentar a dívida nem sempre reduz o WACC — se o maior endividamento elevar significativamente o risco (β) e o custo da dívida, o WACC pode subir e tornar um projeto antes viável em inviável."
+        ]
+      },
+      {
+        heading:"Interpretação dos Resultados",
+        paragraphs:[
+          "<strong>WACC baixo</strong> indica uma estrutura de capital mais barata, favorecendo a aceitação de mais projetos de investimento.",
+          "<strong>WACC alto</strong> exige projetos com retornos mais elevados para serem viáveis, restringindo as opções de investimento da empresa.",
+          "<strong>Exemplo prático (efeito da alavancagem):</strong> Ke = 14% a.a., Kd = 12% a.a. antes do IR, IR = 25% → Kd_líquido = 9%. Com estrutura 60% E / 40% D: WACC = (0,60 × 14%) + (0,40 × 9%) = 12,00% a.a. Com estrutura 40% E / 60% D: WACC = (0,40 × 14%) + (0,60 × 9%) = 11,00% a.a. — o WACC caiu com mais dívida. Porém, se o custo da nova dívida subir para 15% antes do IR (Kd_líquido = 11,25%), o WACC da estrutura 40/60 sobe para 12,35% a.a., superando o cenário inicial."
+        ]
+      },
+      {
+        heading:"Tabela Unificada de Fórmulas e Interpretação dos Resultados",
+        downloadArquivo:"modulo8-tabela-formulas.pdf", downloadLabel:"Baixar tabela unificada (PDF)",
+        html:`<p>Tabela de referência rápida: reúne, para cada indicador da estrutura e custo de capital, o conceito, a fórmula, o objetivo e a interpretação.</p>
+        <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Conceito</th>
+              <th>Fórmula</th>
+              <th>Objetivo</th>
+              <th>Interpretação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>V</strong><br>Valor Total do Capital</td>
+              <td>Soma do capital próprio e de terceiros.</td>
+              <td>V = E + D</td>
+              <td>Determinar a base para o cálculo dos pesos.</td>
+              <td>Referência para calcular E/V e D/V</td>
+            </tr>
+            <tr>
+              <td><strong>E/V e D/V</strong><br>Pesos da Estrutura</td>
+              <td>Proporção de cada fonte de financiamento sobre o total.</td>
+              <td>E/V e D/V, onde V = E + D</td>
+              <td>Ponderar o custo de cada fonte no WACC.</td>
+              <td>Quanto maior D/V, maior o peso da dívida no custo médio</td>
+            </tr>
+            <tr>
+              <td><strong>Ke</strong><br>Custo do Capital Próprio</td>
+              <td>Retorno mínimo exigido pelos acionistas (Modelo CAPM).</td>
+              <td>Ke = Rf + β (Rm − Rf)</td>
+              <td>Estimar o custo de oportunidade do capital próprio.</td>
+              <td>Quanto maior o β, maior o risco e maior o Ke exigido</td>
+            </tr>
+            <tr>
+              <td><strong>Kd_líquido</strong><br>Custo da Dívida após IR</td>
+              <td>Custo real da dívida, descontado o benefício fiscal.</td>
+              <td>Kd_líquido = Kd × (1 − IR)</td>
+              <td>Apurar o custo efetivo do capital de terceiros.</td>
+              <td>Quanto maior o IR, menor o custo líquido da dívida</td>
+            </tr>
+            <tr>
+              <td><strong>WACC</strong><br>Custo Médio Ponderado de Capital</td>
+              <td>Combina Ke e Kd_líquido conforme os pesos da estrutura.</td>
+              <td>WACC = (E/V × Ke) + (D/V × Kd_líquido)</td>
+              <td>Definir a taxa mínima de atratividade para novos projetos.</td>
+              <td>Quanto menor, melhor (mais projetos se tornam viáveis)</td>
+            </tr>
+            <tr>
+              <td><strong>TIR × WACC</strong><br>Critério de Decisão</td>
+              <td>Comparação entre o retorno do projeto e o custo de capital.</td>
+              <td>Se TIR &gt; WACC → aceitar; se TIR &lt; WACC → rejeitar</td>
+              <td>Decidir sobre a viabilidade do investimento.</td>
+              <td>Quanto maior a diferença TIR − WACC, mais atrativo o projeto</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>`
+      }
+    ], exercicios:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Planalto Têxtil Industrial",
+        contexto:"A Planalto Têxtil Industrial avalia um projeto de expansão com TIR estimada de 12,2% a.a. e deseja calcular o WACC de sua estrutura de capital atual para decidir sobre o investimento.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 1.200.000,00","Capital de Terceiros (D): R$ 800.000,00","Taxa livre de risco (Rf): 5% a.a.","Retorno de mercado (Rm): 13% a.a.","Beta (β): 1,1","Custo da dívida antes do IR (Kd): 12% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 12,2% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: explique, com base nos pesos E/V e D/V, como a estrutura de capital da Planalto Têxtil Industrial influenciou o resultado do WACC.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Cascata Química Industrial",
+        contexto:"A Cascata Química Industrial possui uma estrutura de capital mais alavancada que a de outras empresas do setor e avalia o mesmo tipo de projeto, com TIR estimada de 12,2% a.a.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 900.000,00","Capital de Terceiros (D): R$ 1.100.000,00","Taxa livre de risco (Rf): 5% a.a.","Retorno de mercado (Rm): 13% a.a.","Beta (β): 1,3","Custo da dívida antes do IR (Kd): 14% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 12,2% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: compare o β, o Kd e o WACC da Cascata Química Industrial com os resultados obtidos para a Planalto Têxtil Industrial e explique o efeito da maior alavancagem sobre a decisão de investimento.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Vertente Alimentos Naturais",
+        contexto:"A Vertente Alimentos Naturais planeja um investimento em nova linha de produção, com TIR estimada de 11% a.a., e precisa avaliar se sua estrutura de capital atual sustenta esse projeto.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 1.400.000,00","Capital de Terceiros (D): R$ 600.000,00","Taxa livre de risco (Rf): 6% a.a.","Retorno de mercado (Rm): 14% a.a.","Beta (β): 0,8","Custo da dívida antes do IR (Kd): 10% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 11% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: considerando que a diferença entre a TIR e o WACC é pequena, avalie o grau de risco dessa decisão para a Vertente Alimentos Naturais.",
+        ]
+      },
+    ] },
     { code:"9.0",  title:"Planejamento Financeiro e Análise de Investimentos", ementa:"Orçamento, projeções financeiras e métodos de avaliação de investimentos (VPL, TIR, payback).", subtopics:[], caseStudy:true },
     { code:"10.0", title:"Análise Horizontal e Vertical",                  ementa:"Técnicas de análise das demonstrações contábeis por evolução temporal e por composição.", subtopics:[], caseStudy:true },
     { code:"11.0", title:"Análise de Quocientes Financeiros",              ementa:"Indicadores de liquidez, endividamento, rentabilidade e atividade.", subtopics:[], caseStudy:true },
