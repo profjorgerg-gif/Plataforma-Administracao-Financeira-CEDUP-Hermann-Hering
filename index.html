@@ -1996,7 +1996,187 @@
         ]
       },
     ] },
-    { code:"9.0",  title:"Planejamento Financeiro e Análise de Investimentos", ementa:"Orçamento, projeções financeiras e métodos de avaliação de investimentos (VPL, TIR, payback).", subtopics:[], caseStudy:true },
+    { code:"9.0",  title:"Planejamento Financeiro e Análise de Investimentos", ementa:"Orçamento, projeções financeiras e métodos de avaliação de investimentos (VPL, TIR, payback).", subtopics:[
+      "Planejamento financeiro: fluxo de caixa projetado, NCG e liquidez corrente",
+      "Análise de investimentos: Payback",
+      "Valor Presente Líquido (VPL)",
+      "Taxa Interna de Retorno (TIR) e Índice de Lucratividade (IL)",
+      "Integração entre planejamento financeiro e análise de investimentos",
+      "Prática: projeção financeira e avaliação de viabilidade de um projeto",
+    ], caseStudy:true, teoriaDesc:"Slides do Prof. Jorge Cardoso incluídos", teoriaArquivo:"modulo9-teoria.pdf", exerciciosDesc:"3 estudos de caso incluídos", exerciciosArquivo:"modulo9-exercicios.docx", content:[
+      {
+        heading:"Planejamento Financeiro: Conceito e Finalidade",
+        paragraphs:[
+          "O <strong>Planejamento Financeiro</strong> é o processo de organizar, projetar e controlar os recursos financeiros de uma empresa para garantir sua sustentabilidade e crescimento.",
+          "Envolve a previsão de receitas, custos, despesas e investimentos, buscando equilibrar três dimensões: <strong>rentabilidade</strong> (gerar retorno), <strong>liquidez</strong> (ter recursos disponíveis) e <strong>segurança</strong> (reduzir riscos financeiros)."
+        ]
+      },
+      {
+        heading:"Fluxo de Caixa Projetado (FC)",
+        paragraphs:[
+          "FC = Entradas − Saídas",
+          "Projeta, para um período futuro, a diferença entre os recursos que devem entrar (vendas, recebimentos) e os que devem sair (pagamentos, despesas) do caixa da empresa. <strong>Quanto mais positivo, melhor</strong>: indica folga de caixa para honrar compromissos e investir."
+        ]
+      },
+      {
+        heading:"Necessidade de Capital de Giro (NCG) e Liquidez Corrente (LC)",
+        paragraphs:[
+          "<strong>Necessidade de Capital de Giro:</strong> NCG = (Contas a Receber + Estoques) − Contas a Pagar. Indica o volume de recursos que a empresa precisa manter disponível para sustentar seu ciclo operacional. <strong>Quanto menor, melhor</strong>: menor dependência de capital de giro adicional.",
+          "<strong>Índice de Liquidez Corrente:</strong> LC = Ativo Circulante ÷ Passivo Circulante. Mede a capacidade da empresa de pagar suas obrigações de curto prazo com seus bens e direitos de curto prazo. <strong>LC acima de 1,0</strong> indica capacidade de cobrir as dívidas de curto prazo; <strong>abaixo de 1,0</strong> sinaliza risco de insuficiência de caixa.",
+          "<strong>Observação:</strong> o Ponto de Equilíbrio (PE = Custos Fixos ÷ Margem de Contribuição Unitária) também integra o planejamento financeiro e foi estudado em detalhe no Módulo 6.0."
+        ]
+      },
+      {
+        heading:"Análise de Investimentos: Payback",
+        paragraphs:[
+          "A <strong>Análise de Investimentos</strong> busca avaliar se um projeto ou aplicação financeira é viável, comparando retorno e risco — fundamental para decidir onde alocar os recursos.",
+          "<strong>Payback:</strong> Payback = Investimento Inicial ÷ Fluxo de Caixa Anual. Indica o tempo necessário para recuperar o valor investido. <strong>Quanto menor, melhor</strong>: menor exposição ao risco ao longo do tempo.",
+          "<strong>Limitação:</strong> o payback simples não considera o valor do dinheiro no tempo nem os fluxos de caixa após o período de recuperação — por isso é usado em conjunto com o VPL e a TIR."
+        ]
+      },
+      {
+        heading:"Valor Presente Líquido (VPL)",
+        paragraphs:[
+          "VPL = Σ [FCt ÷ (1+i)ᵗ] − I0, onde FCt é o fluxo de caixa de cada período t, i é a Taxa Mínima de Atratividade (TMA) e I0 é o investimento inicial.",
+          "Traz todos os fluxos de caixa futuros a valor presente, descontados pela TMA, e subtrai o investimento inicial. <strong>Se VPL &gt; 0</strong>, o projeto é viável — gera valor acima do exigido pela TMA. <strong>Se VPL &lt; 0</strong>, o projeto deve ser rejeitado.",
+          "<strong>Exemplo prático:</strong> Investimento Inicial de R$ 50.000,00, fluxos de caixa anuais de R$ 15.000,00 por 5 anos, TMA de 10% a.a. → VPL = 15.000/1,10 + 15.000/1,10² + 15.000/1,10³ + 15.000/1,10⁴ + 15.000/1,10⁵ − 50.000 ≈ R$ 6.861,79. Como VPL &gt; 0, o projeto é viável."
+        ]
+      },
+      {
+        heading:"Taxa Interna de Retorno (TIR) e Índice de Lucratividade (IL)",
+        paragraphs:[
+          "<strong>Taxa Interna de Retorno (TIR):</strong> é a taxa de desconto que torna o VPL igual a zero — representa a rentabilidade efetiva do projeto. <strong>Se TIR &gt; TMA</strong>, o projeto é viável (mesmo critério de decisão estudado no Módulo 8.0, comparando TIR com o WACC).",
+          "<strong>Índice de Lucratividade (IL):</strong> IL = Valor Presente dos Fluxos de Caixa ÷ Investimento Inicial. Mostra quanto cada R$ 1,00 investido retorna em valor presente. <strong>Se IL &gt; 1</strong>, o projeto é viável (o mesmo resultado indicado por um VPL positivo); <strong>quanto maior o IL, mais eficiente</strong> o uso do capital investido."
+        ]
+      },
+      {
+        heading:"Integração dos Conceitos",
+        paragraphs:[
+          "O planejamento financeiro garante que a empresa tenha equilíbrio de caixa e condições de operar. A análise de investimentos mostra onde alocar os recursos de forma eficiente.",
+          "Os dois processos são complementares: não adianta planejar bem o fluxo de caixa se os investimentos forem mal escolhidos, e não adianta escolher bons investimentos sem planejamento adequado do caixa para sustentá-los ao longo do tempo."
+        ]
+      },
+      {
+        heading:"Tabela Unificada de Fórmulas e Interpretação dos Resultados",
+        downloadArquivo:"modulo9-tabela-formulas.pdf", downloadLabel:"Baixar tabela unificada (PDF)",
+        html:`<p>Tabela de referência rápida: reúne, para cada indicador de planejamento financeiro e análise de investimentos, o conceito, a fórmula, o objetivo e a interpretação.</p>
+        <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Conceito</th>
+              <th>Fórmula</th>
+              <th>Objetivo</th>
+              <th>Interpretação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>FC</strong><br>Fluxo de Caixa Projetado</td>
+              <td>Diferença entre entradas e saídas previstas de caixa.</td>
+              <td>FC = Entradas − Saídas</td>
+              <td>Projetar o saldo de caixa de um período futuro.</td>
+              <td>Quanto mais positivo, melhor (folga de caixa)</td>
+            </tr>
+            <tr>
+              <td><strong>NCG</strong><br>Necessidade de Capital de Giro</td>
+              <td>Recursos necessários para sustentar o ciclo operacional.</td>
+              <td>NCG = (CR + Estoques) − CP</td>
+              <td>Dimensionar o capital de giro necessário.</td>
+              <td>Quanto menor, melhor (menor dependência de capital de giro)</td>
+            </tr>
+            <tr>
+              <td><strong>LC</strong><br>Liquidez Corrente</td>
+              <td>Capacidade de pagar obrigações de curto prazo.</td>
+              <td>LC = Ativo Circulante ÷ Passivo Circulante</td>
+              <td>Avaliar a saúde financeira de curto prazo.</td>
+              <td>Acima de 1,0 é saudável; abaixo de 1,0 indica risco</td>
+            </tr>
+            <tr>
+              <td><strong>Payback</strong><br>Prazo de Retorno</td>
+              <td>Tempo necessário para recuperar o investimento inicial.</td>
+              <td>Payback = I0 ÷ FC Anual</td>
+              <td>Medir a velocidade de recuperação do capital investido.</td>
+              <td>Quanto menor, melhor (menor exposição ao risco)</td>
+            </tr>
+            <tr>
+              <td><strong>VPL</strong><br>Valor Presente Líquido</td>
+              <td>Soma dos fluxos futuros trazidos a valor presente, menos o investimento.</td>
+              <td>VPL = Σ [FCt ÷ (1+i)ᵗ] − I0</td>
+              <td>Medir a geração de valor do projeto acima da TMA.</td>
+              <td>VPL &gt; 0 → viável; VPL &lt; 0 → inviável</td>
+            </tr>
+            <tr>
+              <td><strong>TIR</strong><br>Taxa Interna de Retorno</td>
+              <td>Taxa de desconto que zera o VPL.</td>
+              <td>VPL(TIR) = 0</td>
+              <td>Medir a rentabilidade efetiva do projeto.</td>
+              <td>TIR &gt; TMA → viável; TIR &lt; TMA → inviável</td>
+            </tr>
+            <tr>
+              <td><strong>IL</strong><br>Índice de Lucratividade</td>
+              <td>Retorno em valor presente para cada unidade investida.</td>
+              <td>IL = VP dos Fluxos ÷ I0</td>
+              <td>Medir a eficiência do capital investido.</td>
+              <td>IL &gt; 1 → viável; quanto maior, mais eficiente</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>`
+      }
+    ], exercicios:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Aurora Móveis Planejados",
+        contexto:"A Aurora Móveis Planejados está elaborando seu planejamento financeiro para o próximo período e avalia, ao mesmo tempo, um projeto de investimento em nova maquinária.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 420.000,00","Saídas Previstas: R$ 350.000,00","Contas a Receber: R$ 60.000,00","Estoques: R$ 90.000,00","Contas a Pagar: R$ 70.000,00","Ativo Circulante: R$ 180.000,00","Passivo Circulante: R$ 120.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 60.000,00","Fluxo de Caixa Anual: R$ 18.000,00","Duração do projeto: 5 anos","Taxa Mínima de Atratividade (TMA): 10% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Calcule o Índice de Lucratividade (IL). Fórmula: IL = Valor Presente dos Fluxos de Caixa ÷ I0.",
+          "Interpretação: com base no LC e no VPL calculados, avalie se a Aurora Móveis Planejados está em condições financeiras de realizar esse investimento.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Bosque Verde Agroindústria",
+        contexto:"A Bosque Verde Agroindústria projeta seu fluxo de caixa para o próximo exercício e avalia um investimento em expansão da capacidade produtiva.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 680.000,00","Saídas Previstas: R$ 610.000,00","Contas a Receber: R$ 95.000,00","Estoques: R$ 140.000,00","Contas a Pagar: R$ 110.000,00","Ativo Circulante: R$ 300.000,00","Passivo Circulante: R$ 250.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 120.000,00","Fluxo de Caixa Anual: R$ 34.000,00","Duração do projeto: 6 anos","Taxa Mínima de Atratividade (TMA): 12% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Calcule o Índice de Lucratividade (IL). Fórmula: IL = Valor Presente dos Fluxos de Caixa ÷ I0.",
+          "Interpretação: compare o resultado do VPL e do IL da Bosque Verde Agroindústria com os da Aurora Móveis Planejados e explique qual dos dois projetos é mais eficiente por real investido.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Cristal Embalagens Sustentáveis",
+        contexto:"A Cristal Embalagens Sustentáveis enfrenta um período de aperto no caixa e avalia se deve seguir adiante com um projeto de investimento já orçado.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 350.000,00","Saídas Previstas: R$ 365.000,00","Contas a Receber: R$ 50.000,00","Estoques: R$ 70.000,00","Contas a Pagar: R$ 95.000,00","Ativo Circulante: R$ 140.000,00","Passivo Circulante: R$ 160.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 45.000,00","Fluxo de Caixa Anual: R$ 11.000,00","Duração do projeto: 5 anos","Taxa Mínima de Atratividade (TMA): 11% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Interpretação: considerando o FC, o LC e o VPL calculados, explique por que a Cristal Embalagens Sustentáveis deveria repensar tanto seu planejamento de caixa quanto o investimento proposto.",
+        ]
+      },
+    ] },
     { code:"10.0", title:"Análise Horizontal e Vertical",                  ementa:"Técnicas de análise das demonstrações contábeis por evolução temporal e por composição.", subtopics:[], caseStudy:true },
     { code:"11.0", title:"Análise de Quocientes Financeiros",              ementa:"Indicadores de liquidez, endividamento, rentabilidade e atividade.", subtopics:[], caseStudy:true },
     { code:"12.0", title:"Estudos de Caso",                                ementa:"Estudo de caso final, com cálculos, integrando os conteúdos dos módulos 2 a 11: fluxo de caixa, mercado de capitais, crédito e cobrança, ciclo operacional, ponto de equilíbrio, ativos permanentes, estrutura e custo de capital, planejamento e análise de investimentos, análise horizontal/vertical e quocientes financeiros.", subtopics:[
