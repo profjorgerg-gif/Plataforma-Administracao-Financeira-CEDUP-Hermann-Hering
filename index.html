@@ -4082,7 +4082,9 @@
   function renderManual(tipo){
     const main = document.getElementById('main');
     const isAlunoManual = tipo === 'aluno';
-    const arquivo = isAlunoManual ? 'manual-do-aluno.pdf' : 'manual-do-professor.pdf';
+    const arquivo = isAlunoManual
+      ? 'Manual%20do%20Aluno%20Proj.%20ADMFCHH%20-%20Claude%20GitHub%20-%202026-08-05_10h06m11s.pdf'
+      : 'Manual%20do%20Professor%20Proj.%20ADMFCHH%20-%20Claude%20GitHub%20-%202026-08-05_10h06m11s.pdf';
     const titulo = isAlunoManual ? 'Manual do Aluno' : 'Manual do Professor';
     const desc = isAlunoManual
       ? 'Guia rápido de cadastro, navegação pelos módulos e uso do estudo de caso final — a mesma referência que você encontra dentro da plataforma.'
