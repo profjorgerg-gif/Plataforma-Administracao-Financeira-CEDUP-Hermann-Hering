@@ -1181,7 +1181,7 @@
     <div id="register-pending-box" style="display:none;">
       <div class="release-wait" style="text-align:left;">
         <p><strong>Cadastro enviado!</strong></p>
-        <p>Seu cadastro foi enviado para aprovação do professor. Assim que ele aprovar, você já poderá entrar com o e-mail e a senha que acabou de cadastrar.</p>
+        <p id="register-pending-text">Seu cadastro foi enviado para aprovação do professor. Assim que ele aprovar, você já poderá entrar com o e-mail e a senha que acabou de cadastrar.</p>
       </div>
       <button class="btn secondary login-submit" onclick="showLoginForm()">Voltar para o login</button>
     </div>
@@ -4630,6 +4630,8 @@
         logAudit('Cadastro', user.turma, `${user.nome} solicitou cadastro via Google (aguardando aprovação)`);
         document.getElementById('login-form-box').style.display = 'none';
         document.getElementById('login-footer-link').style.display = 'none';
+        const textoPendente = document.getElementById('register-pending-text');
+        if(textoPendente) textoPendente.textContent = 'Seu cadastro foi enviado para aprovação do professor. Assim que ele aprovar, é só clicar em "Entrar com o Google" novamente, usando esta mesma conta Google.';
         document.getElementById('register-pending-box').style.display = 'block';
         return;
       }
@@ -4744,6 +4746,8 @@
     logAudit('Cadastro', novoUsuario.turma, `${nome} solicitou cadastro como Aluno (aguardando aprovação)`);
     document.getElementById('register-form-box').style.display = 'none';
     document.getElementById('login-footer-link').style.display = 'none';
+    const textoPendente = document.getElementById('register-pending-text');
+    if(textoPendente) textoPendente.textContent = 'Seu cadastro foi enviado para aprovação do professor. Assim que ele aprovar, você já poderá entrar com o e-mail e a senha que acabou de cadastrar.';
     document.getElementById('register-pending-box').style.display = 'block';
   }
 
