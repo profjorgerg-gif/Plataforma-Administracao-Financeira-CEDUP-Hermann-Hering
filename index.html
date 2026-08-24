@@ -3747,18 +3747,19 @@
       toc.appendChild(divider2);
       toc.appendChild(mgmtLabel);
 
+      const isMestre = currentUser && currentUser.papelKey === 'mestre';
       const pendentesCount = usuarios.filter(u => u.status === 'pendente').length;
       const entregasPendentesCount = progressoModulos.filter(p => p.status === 'enviado').length;
 
       [
         { key:'turmas', label:'Turmas' },
-        { key:'usuarios', label:'Usuários' },
+        { key:'usuarios', label:'Usuários', mestreOnly:true },
         { key:'aprovacoes', label:'Aprovações', badge: pendentesCount },
         { key:'entregas', label:'Entregas de Módulos', badge: entregasPendentesCount },
         { key:'relatorios', label:'Relatórios' },
         { key:'backup', label:'Backup' },
         { key:'auditoria', label:'Auditoria' },
-      ].forEach(item => {
+      ].filter(item => !item.mestreOnly || isMestre).forEach(item => {
         const btn = document.createElement('button');
         btn.className = 'toc-item' + (activeIndex === item.key ? ' active' : '');
         const badgeHtml = item.badge ? `<span class="toc-badge">${item.badge}</span>` : '';
@@ -5072,6 +5073,9 @@ ${currentUser && currentUser.papelKey === 'mestre' ? `
   function render(){
     const mgmtKeys = ['turmas','usuarios','aprovacoes','entregas','relatorios','backup','auditoria','manual-professor'];
     if(currentUser && currentUser.papelKey === 'aluno' && mgmtKeys.includes(activeIndex)){
+      activeIndex = -1;
+    }
+    if(currentUser && currentUser.papelKey !== 'mestre' && activeIndex === 'usuarios'){
       activeIndex = -1;
     }
     renderToc();
