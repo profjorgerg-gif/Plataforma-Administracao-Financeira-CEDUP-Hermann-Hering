@@ -937,6 +937,15 @@
     color:var(--ink);
     font-size:12.5px;
   }
+  .nota-objetiva-info{
+    margin-top:10px;
+    padding:8px 12px;
+    background:rgba(90,180,120,0.1);
+    border:1px solid rgba(90,180,120,0.35);
+    border-radius:6px;
+    font-size:12.5px;
+    color:#7fd19f;
+  }
   .import-pdf-label{ cursor:pointer; display:inline-flex; align-items:center; }
   .import-preview-block{ border:1px solid var(--gold); border-radius:10px; padding:16px; background:rgba(201,154,62,0.05); }
   .import-preview-list{ display:flex; flex-direction:column; gap:6px; margin:12px 0; max-height:360px; overflow-y:auto; }
@@ -1475,21 +1484,21 @@
       "Relação entre Administração Financeira e Contabilidade",
       "As três decisões financeiras: investimento, financiamento e dividendos",
     ], caseStudy:false, teoriaDesc:"Slides do Prof. Jorge Cardoso incluídos", teoriaArquivo:"modulo1-teoria.pdf", exerciciosDesc:"10 questões incluídas", exerciciosArquivo:"modulo1-exercicios.docx", exercicios:[
-      { tipo:"Verdadeiro ou Falso", texto:"A administração financeira tem como único objetivo reduzir as despesas da empresa." },
-      { tipo:"Verdadeiro ou Falso", texto:"Diferente da Contabilidade, que registra fatos financeiros já ocorridos, a Administração Financeira volta-se para decisões sobre o futuro da empresa." },
-      { tipo:"Múltipla escolha", texto:"Assinale a alternativa que apresenta corretamente os três principais objetivos do administrador financeiro:", opcoes:[
+      { tipo:"Verdadeiro ou Falso", texto:"A administração financeira tem como único objetivo reduzir as despesas da empresa.", correta:"Falso" },
+      { tipo:"Verdadeiro ou Falso", texto:"Diferente da Contabilidade, que registra fatos financeiros já ocorridos, a Administração Financeira volta-se para decisões sobre o futuro da empresa.", correta:"Verdadeiro" },
+      { tipo:"Múltipla escolha", texto:"Assinale a alternativa que apresenta corretamente os três principais objetivos do administrador financeiro:", correta:"B", opcoes:[
         "Maximização do lucro, redução de impostos e aumento do quadro de funcionários.",
         "Maximização do lucro, geração de liquidez e minimização de riscos.",
         "Aumento de vendas, redução de estoque e controle de qualidade.",
         "Expansão geográfica, redução de custos fixos e aumento de dividendos.",
       ] },
-      { tipo:"Múltipla escolha", texto:"Qual das funções abaixo é responsável por desenvolver e acompanhar o orçamento anual da empresa, garantindo que os gastos fiquem dentro do previsto?", opcoes:[
+      { tipo:"Múltipla escolha", texto:"Qual das funções abaixo é responsável por desenvolver e acompanhar o orçamento anual da empresa, garantindo que os gastos fiquem dentro do previsto?", correta:"C", opcoes:[
         "Planejamento financeiro",
         "Controle financeiro",
         "Orçamento",
         "Gestão de recursos e investimentos",
       ] },
-      { tipo:"Múltipla escolha", texto:"As três decisões financeiras fundamentais, que orientam toda a administração financeira de uma empresa, são:", opcoes:[
+      { tipo:"Múltipla escolha", texto:"As três decisões financeiras fundamentais, que orientam toda a administração financeira de uma empresa, são:", correta:"A", opcoes:[
         "Investimento, financiamento e dividendos.",
         "Compra, venda e controle de estoque.",
         "Produção, marketing e vendas.",
@@ -1497,7 +1506,7 @@
       ] },
       { tipo:"Discursiva", texto:"Defina, com suas próprias palavras, o que é Administração Financeira." },
       { tipo:"Discursiva", texto:"Explique a diferença entre o papel da Contabilidade e o papel da Administração Financeira, e como uma serve de base para a outra." },
-      { tipo:"Verdadeiro ou Falso", texto:"O planejamento financeiro tem como função prever as necessidades de caixa e recursos para as atividades futuras da empresa." },
+      { tipo:"Verdadeiro ou Falso", texto:"O planejamento financeiro tem como função prever as necessidades de caixa e recursos para as atividades futuras da empresa.", correta:"Verdadeiro" },
       { tipo:"Discursiva", texto:"Descreva as três decisões financeiras (investimento, financiamento e dividendos) e dê um exemplo de cada uma no contexto de uma empresa fictícia." },
       { tipo:"Estudo de caso", texto:"Uma empresa quer abrir uma nova filial. Cite três informações financeiras que o administrador financeiro precisaria levantar antes de tomar essa decisão, e justifique por que cada uma delas é importante." },
     ], content:[
@@ -3727,8 +3736,12 @@
   // anexosPendentes: cache local (nesta sessão) dos arquivos já enviados ao Storage,
   // antes de o aluno clicar em "enviar para análise". Chave: `${moduloIndex}-${qIndex}`.
   let anexosPendentes = {};
+  // Controla uploads de foto ainda em andamento, para impedir o envio da
+  // atividade antes de o anexo terminar de subir (bug relatado: atividade
+  // chegava ao professor sem o arquivo quando o aluno enviava rápido demais).
+  let uploadsEmAndamento = new Set();
 
-  function coletarRespostasModulo(moduloIndex){
+  function coletarRespostasModulo(moduloIndex, registroExistente){
     const m = modules[moduloIndex];
     const respostasObjetivas = {};
     const respostasDiscursivas = {};
@@ -3737,7 +3750,12 @@
       m.exercicios.forEach((q, i) => {
         const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
         if(tipoCalculo){
-          const anexo = anexosPendentes[`${moduloIndex}-${i}`];
+          // Prioriza um anexo recém-enviado nesta sessão; se não houver nenhum
+          // novo, mantém o anexo que já estava salvo (evita apagar o arquivo
+          // do aluno quando ele reenvia sem trocar a foto).
+          const anexoNovo = anexosPendentes[`${moduloIndex}-${i}`];
+          const anexoAntigo = registroExistente && registroExistente.anexos ? registroExistente.anexos[i] : null;
+          const anexo = anexoNovo || anexoAntigo;
           if(anexo) anexos[i] = anexo;
         } else if(q.opcoes && q.opcoes.length){
           const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
@@ -3757,14 +3775,18 @@
   function anexarFoto(moduloIndex, qIndex, inputEl){
     const file = inputEl.files && inputEl.files[0];
     if(!file || !currentUser) return;
+    const chave = `${moduloIndex}-${qIndex}`;
     const statusEl = document.getElementById(`anexo-status-${moduloIndex}-${qIndex}`);
-    if(statusEl) statusEl.textContent = 'Enviando...';
+    uploadsEmAndamento.add(chave);
+    if(statusEl) statusEl.textContent = 'Enviando... aguarde antes de concluir o módulo.';
     const caminho = `respostas/${currentUser.id}/${moduloIndex}/${qIndex}_${Date.now()}_${file.name}`;
     const ref = fbStorage.ref().child(caminho);
     ref.put(file).then(snap => snap.ref.getDownloadURL()).then(url => {
-      anexosPendentes[`${moduloIndex}-${qIndex}`] = { url, nome: file.name };
+      anexosPendentes[chave] = { url, nome: file.name };
+      uploadsEmAndamento.delete(chave);
       if(statusEl) statusEl.innerHTML = `✓ Anexado: <a href="${url}" target="_blank" rel="noopener">${file.name}</a>`;
     }).catch(e => {
+      uploadsEmAndamento.delete(chave);
       console.error('Falha ao enviar anexo:', e);
       if(statusEl) statusEl.textContent = 'Falha ao enviar. Confirme sua internet e tente novamente.';
     });
@@ -3772,33 +3794,73 @@
 
   function enviarModuloParaAnalise(moduloIndex){
     if(!currentUser || currentUser.papelKey !== 'aluno') return;
+    const chavesEmAndamento = [...uploadsEmAndamento].filter(k => k.startsWith(`${moduloIndex}-`));
+    if(chavesEmAndamento.length){
+      alert('Ainda tem uma foto sendo enviada. Aguarde a mensagem "✓ Anexado" aparecer antes de concluir o módulo.');
+      return;
+    }
     const alunoId = currentUser.id;
-    const { respostasObjetivas, respostasDiscursivas, anexos } = coletarRespostasModulo(moduloIndex);
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
-    const registro = {
-      alunoId, moduloIndex, status:'enviado', comentarioProfessor:'', nota:null,
-      respostasObjetivas, respostasDiscursivas, anexos,
-      enviadoEm: nowFormatted(), avaliadoEm:'',
-    };
+    const registroExistente = idx > -1 ? progressoModulos[idx] : null;
+    const { respostasObjetivas, respostasDiscursivas, anexos } = coletarRespostasModulo(moduloIndex, registroExistente);
+    const composicao = composicaoModulo(moduloIndex);
+    const correcao = corrigirObjetivas(moduloIndex, respostasObjetivas);
+
+    let registro;
+    if(composicao.somenteObjetivas){
+      // Módulo só tem questões objetivas: corrige e libera na hora, sem
+      // passar pela fila do professor.
+      registro = {
+        alunoId, moduloIndex, status:'aprovado', comentarioProfessor:'',
+        nota: correcao.nota, notaObjetiva: correcao.nota, notaMaximaObjetiva: composicao.maxObjetiva,
+        acertosObjetivas: correcao.acertos, totalObjetivas: correcao.total,
+        respostasObjetivas, respostasDiscursivas, anexos,
+        enviadoEm: nowFormatted(), avaliadoEm: nowFormatted(),
+      };
+      logAudit('Correção automática', currentUser.turma, `${currentUser.nome} concluiu o módulo ${modules[moduloIndex].code} — ${correcao.acertos}/${correcao.total} corretas, nota ${correcao.nota.toFixed(1)} — próximo módulo liberado`);
+    } else {
+      // Módulo misto ou só com questões que dependem do professor: calcula a
+      // nota parcial das objetivas (se houver) e envia para análise.
+      registro = {
+        alunoId, moduloIndex, status:'enviado', comentarioProfessor:'', nota:null,
+        notaObjetiva: composicao.objetivas.length ? correcao.nota : null,
+        notaMaximaObjetiva: composicao.maxObjetiva, notaMaximaNaoObjetiva: composicao.maxNaoObjetiva,
+        acertosObjetivas: correcao.acertos, totalObjetivas: correcao.total,
+        respostasObjetivas, respostasDiscursivas, anexos,
+        enviadoEm: nowFormatted(), avaliadoEm:'',
+      };
+      logAudit('Entrega', currentUser.turma, `${currentUser.nome} enviou o módulo ${modules[moduloIndex].code} para análise`);
+    }
     if(idx > -1) progressoModulos[idx] = { ...progressoModulos[idx], ...registro };
     else progressoModulos.push(registro);
     Object.keys(anexosPendentes).forEach(k => { if(k.startsWith(`${moduloIndex}-`)) delete anexosPendentes[k]; });
-    logAudit('Entrega', currentUser.turma, `${currentUser.nome} enviou o módulo ${modules[moduloIndex].code} para análise`);
     renderModule();
   }
 
   function aprovarModuloAluno(alunoId, moduloIndex){
-    const notaInput = document.getElementById(`nota-${alunoId}-${moduloIndex}`);
-    const nota = notaInput ? parseFloat(notaInput.value.replace(',', '.')) : NaN;
-    if(isNaN(nota) || nota < 0 || nota > 10){ alert('Informe uma nota válida de 0,0 a 10,0 antes de aprovar.'); return; }
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
     if(idx === -1) return;
-    progressoModulos[idx].status = 'aprovado';
-    progressoModulos[idx].avaliadoEm = nowFormatted();
-    progressoModulos[idx].comentarioProfessor = (document.getElementById(`devolver-comentario-${alunoId}-${moduloIndex}`) || {}).value || '';
-    progressoModulos[idx].nota = nota;
+    const registro = progressoModulos[idx];
+    const composicao = composicaoModulo(moduloIndex);
+    const notaObjetiva = registro.notaObjetiva || 0;
+    const notaInput = document.getElementById(`nota-${alunoId}-${moduloIndex}`);
+    const maxNaoObjetiva = composicao.maxNaoObjetiva;
+    let notaNaoObjetiva = 0;
+    if(composicao.naoObjetivas.length){
+      notaNaoObjetiva = notaInput ? parseFloat(notaInput.value.replace(',', '.')) : NaN;
+      if(isNaN(notaNaoObjetiva) || notaNaoObjetiva < 0 || notaNaoObjetiva > maxNaoObjetiva){
+        alert(`Informe uma nota válida de 0,0 a ${maxNaoObjetiva.toFixed(1)} para as questões dissertativas/de cálculo antes de aprovar.`);
+        return;
+      }
+    }
+    const notaFinal = Math.round((notaObjetiva + notaNaoObjetiva) * 10) / 10;
+    registro.status = 'aprovado';
+    registro.avaliadoEm = nowFormatted();
+    registro.comentarioProfessor = (document.getElementById(`devolver-comentario-${alunoId}-${moduloIndex}`) || {}).value || '';
+    registro.notaNaoObjetiva = composicao.naoObjetivas.length ? notaNaoObjetiva : null;
+    registro.nota = notaFinal;
     const aluno = usuarios.find(u => u.id === alunoId);
-    logAudit('Aprovação', aluno ? aluno.turma : '—', `Aprovou o módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} com nota ${nota.toFixed(1)} — próximo módulo liberado`);
+    logAudit('Aprovação', aluno ? aluno.turma : '—', `Aprovou o módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} com nota ${notaFinal.toFixed(1)} — próximo módulo liberado`);
     renderEntregas();
   }
 
@@ -3806,13 +3868,10 @@
     const textarea = document.getElementById(`devolver-comentario-${alunoId}-${moduloIndex}`);
     const comentario = textarea ? textarea.value.trim() : '';
     if(!comentario){ alert('Escreva uma orientação para o aluno antes de devolver o módulo.'); return; }
-    const notaInput = document.getElementById(`nota-${alunoId}-${moduloIndex}`);
-    const notaVal = notaInput && notaInput.value.trim() ? parseFloat(notaInput.value.replace(',', '.')) : null;
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
     if(idx === -1) return;
     progressoModulos[idx].status = 'devolvido';
     progressoModulos[idx].comentarioProfessor = comentario;
-    progressoModulos[idx].nota = (notaVal !== null && !isNaN(notaVal)) ? notaVal : progressoModulos[idx].nota;
     progressoModulos[idx].avaliadoEm = nowFormatted();
     const aluno = usuarios.find(u => u.id === alunoId);
     logAudit('Devolução', aluno ? aluno.turma : '—', `Devolveu o módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} com orientações`);
@@ -4411,11 +4470,15 @@
           </div>
         </section>`;
       } else if(statusAtual === 'enviado'){
+        const notaParcialHtml = (registro && registro.notaObjetiva != null)
+          ? `<p><strong>Nota parcial (questões objetivas): ${registro.notaObjetiva.toFixed(1)} / ${(registro.notaMaximaObjetiva || 0).toFixed(1)}</strong> — corrigida automaticamente (${registro.acertosObjetivas}/${registro.totalObjetivas} corretas).</p><p>As questões dissertativas/de cálculo ainda serão corrigidas pelo professor.</p>`
+          : '';
         progressoPanelHtml = `<section class="block">
           <h3>Conclusão do módulo</h3>
           <div class="release-wait">
             <p><strong>⏳ Aguardando análise do professor.</strong></p>
             <p>Você enviou este módulo em ${registro ? registro.enviadoEm : ''}. Assim que o professor avaliar, você será avisado aqui mesmo.</p>
+            ${notaParcialHtml}
           </div>
         </section>`;
       } else if(statusAtual === 'devolvido'){
@@ -4429,11 +4492,16 @@
           </div>
         </section>`;
       } else if(statusAtual === 'aprovado'){
+        const composicao = composicaoModulo(activeIndex);
+        const detalheNotaHtml = (registro && composicao.objetivas.length && composicao.naoObjetivas.length)
+          ? `<p>Objetivas (automático): ${registro.notaObjetiva != null ? registro.notaObjetiva.toFixed(1) : '—'} / ${composicao.maxObjetiva.toFixed(1)} · Dissertativas/cálculo (professor): ${registro.notaNaoObjetiva != null ? registro.notaNaoObjetiva.toFixed(1) : '—'} / ${composicao.maxNaoObjetiva.toFixed(1)}</p>`
+          : (registro && composicao.somenteObjetivas ? `<p>Corrigido automaticamente: ${registro.acertosObjetivas}/${registro.totalObjetivas} questões corretas.</p>` : '');
         progressoPanelHtml = `<section class="block">
           <h3>Conclusão do módulo</h3>
           <div class="release-wait aprovado">
-            <p><strong>✓ Módulo aprovado pelo professor</strong>${registro && registro.avaliadoEm ? ' em ' + registro.avaliadoEm : ''}.</p>
+            <p><strong>✓ Módulo aprovado</strong>${registro && registro.avaliadoEm ? ' em ' + registro.avaliadoEm : ''}${composicao.somenteObjetivas ? ' (correção automática)' : ' pelo professor'}.</p>
             ${registro && registro.nota != null ? `<p><strong>Nota: ${registro.nota.toFixed(1)} / 10</strong></p>` : ''}
+            ${detalheNotaHtml}
             ${registro && registro.comentarioProfessor ? `<p class="feedback-text">"${registro.comentarioProfessor}"</p>` : ''}
             ${activeIndex < modules.length - 1 ? '<p>O próximo módulo já está liberado para você.</p>' : '<p>Você concluiu todos os módulos da plataforma. Parabéns!</p>'}
           </div>
@@ -4478,6 +4546,46 @@
     if(m.integrador && m.exercicios && !isAlunoAtual){
       m.exercicios.forEach((q, i) => atualizarAlunoChecklist(i));
     }
+  }
+
+  // ---------- Correção automática das questões objetivas ----------
+  // Analisa a composição de um módulo: quantas questões são objetivas
+  // (corrigidas automaticamente) e quantas dependem do professor (discursivas,
+  // estudo de caso, cálculo com anexo). Os 10 pontos do módulo são divididos
+  // proporcionalmente entre as duas partes.
+  function composicaoModulo(moduloIndex){
+    const m = modules[moduloIndex];
+    const objetivas = [];
+    const naoObjetivas = [];
+    (m.exercicios || []).forEach((q, i) => {
+      const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
+      if(tipoCalculo) naoObjetivas.push(i);
+      else if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso') objetivas.push(i);
+      else naoObjetivas.push(i); // Discursiva
+    });
+    const total = objetivas.length + naoObjetivas.length;
+    const maxObjetiva = total ? Math.round((10 * objetivas.length / total) * 10) / 10 : 0;
+    const maxNaoObjetiva = Math.round((10 - maxObjetiva) * 10) / 10;
+    return { objetivas, naoObjetivas, maxObjetiva, maxNaoObjetiva, somenteObjetivas: objetivas.length > 0 && naoObjetivas.length === 0 };
+  }
+
+  // Corrige as questões objetivas comparando com o gabarito (campo `correta`
+  // de cada questão) e devolve a pontuação proporcional (0 a maxObjetiva).
+  function corrigirObjetivas(moduloIndex, respostasObjetivas){
+    const m = modules[moduloIndex];
+    const { objetivas, maxObjetiva } = composicaoModulo(moduloIndex);
+    if(!objetivas.length) return { acertos:0, total:0, nota:0, detalhe:{} };
+    let acertos = 0;
+    const detalhe = {};
+    objetivas.forEach(i => {
+      const q = m.exercicios[i];
+      const respostaAluno = respostasObjetivas ? respostasObjetivas[i] : undefined;
+      const correta = q.correta !== undefined && respostaAluno !== undefined && respostaAluno === q.correta;
+      detalhe[i] = correta;
+      if(correta) acertos++;
+    });
+    const nota = Math.round((maxObjetiva * acertos / objetivas.length) * 10) / 10;
+    return { acertos, total: objetivas.length, nota, detalhe };
   }
 
   function renderRespostaWidget(q, moduloIndex, qIndex, readOnly, registro){
@@ -5134,17 +5242,25 @@ ${isMestre ? `
           const m = modules[p.moduloIndex];
           if(!aluno || !m) return '';
           const respostasHtml = renderRespostasResumoProfessor(p, m);
+          const composicao = composicaoModulo(p.moduloIndex);
+          const notaObjetivaHtml = composicao.objetivas.length
+            ? `<div class="nota-objetiva-info">✓ Questões objetivas corrigidas automaticamente: <strong>${p.acertosObjetivas}/${p.totalObjetivas} corretas</strong> — ${p.notaObjetiva.toFixed(1)} de ${composicao.maxObjetiva.toFixed(1)} pts</div>`
+            : '';
+          const notaRowHtml = composicao.naoObjetivas.length
+            ? `<div class="nota-row">
+                <label>Nota das questões dissertativas/cálculo (0,0 a ${composicao.maxNaoObjetiva.toFixed(1)})</label>
+                <input type="number" min="0" max="${composicao.maxNaoObjetiva}" step="0.1" id="nota-${aluno.id}-${p.moduloIndex}" class="nota-input" placeholder="0.0">
+              </div>`
+            : '';
           return `
           <div class="approval-row">
             <div class="approval-info">
               <div class="approval-name">${aluno.nome} <span class="role-badge role-aluno">${m.code}</span></div>
               <div class="approval-detail">${m.title} · Turma ${aluno.turma}</div>
               <div class="approval-detail">Enviado em ${p.enviadoEm}</div>
+              ${notaObjetivaHtml}
               ${respostasHtml}
-              <div class="nota-row">
-                <label>Nota (0,0 a 10,0)</label>
-                <input type="number" min="0" max="10" step="0.1" id="nota-${aluno.id}-${p.moduloIndex}" class="nota-input" placeholder="0.0" value="${p.nota != null ? p.nota : ''}">
-              </div>
+              ${notaRowHtml}
               <textarea id="devolver-comentario-${aluno.id}-${p.moduloIndex}" class="feedback-input" placeholder="Se for devolver, escreva aqui as orientações para o aluno...">${p.comentarioProfessor || ''}</textarea>
             </div>
             <div class="approval-actions">
