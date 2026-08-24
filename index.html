@@ -3733,34 +3733,13 @@
     return p ? p.status : 'liberado';
   }
 
-  // anexosPendentes: cache local (nesta sessão) dos arquivos já enviados ao Storage,
-  // antes de o aluno clicar em "enviar para análise". Chave: `${moduloIndex}-${qIndex}`.
-  let anexosPendentes = {};
-  // Controla uploads de foto ainda em andamento, para impedir o envio da
-  // atividade antes de o anexo terminar de subir (bug relatado: atividade
-  // chegava ao professor sem o arquivo quando o aluno enviava rápido demais).
-  let uploadsEmAndamento = new Set();
-
   function coletarRespostasModulo(moduloIndex, registroExistente){
     const m = modules[moduloIndex];
     const respostasObjetivas = {};
     const respostasDiscursivas = {};
-    const anexos = {};
     if(m.exercicios){
       m.exercicios.forEach((q, i) => {
-        const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
-        if(tipoCalculo){
-          // Prioriza um anexo recém-enviado nesta sessão; se não houver nenhum
-          // novo, mantém o anexo que já estava salvo (evita apagar o arquivo
-          // do aluno quando ele reenvia sem trocar a foto).
-          const anexoNovo = anexosPendentes[`${moduloIndex}-${i}`];
-          const anexoAntigo = registroExistente && registroExistente.anexos ? registroExistente.anexos[i] : null;
-          const anexo = anexoNovo || anexoAntigo;
-          if(anexo) anexos[i] = anexo;
-        } else if(q.opcoes && q.opcoes.length){
-          const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
-          if(sel) respostasObjetivas[i] = sel.value;
-        } else if(q.tipo === 'Verdadeiro ou Falso'){
+        if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso'){
           const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
           if(sel) respostasObjetivas[i] = sel.value;
         } else {
@@ -3769,44 +3748,19 @@
         }
       });
     }
-    return { respostasObjetivas, respostasDiscursivas, anexos };
+    return { respostasObjetivas, respostasDiscursivas };
   }
 
-  function anexarFoto(moduloIndex, qIndex, inputEl){
-    const file = inputEl.files && inputEl.files[0];
-    if(!file || !currentUser) return;
-    const chave = `${moduloIndex}-${qIndex}`;
-    const statusEl = document.getElementById(`anexo-status-${moduloIndex}-${qIndex}`);
-    uploadsEmAndamento.add(chave);
-    if(statusEl) statusEl.textContent = 'Enviando... aguarde antes de concluir o módulo.';
-    const caminho = `respostas/${currentUser.id}/${moduloIndex}/${qIndex}_${Date.now()}_${file.name}`;
-    const ref = fbStorage.ref().child(caminho);
-    ref.put(file).then(snap => snap.ref.getDownloadURL()).then(url => {
-      anexosPendentes[chave] = { url, nome: file.name };
-      uploadsEmAndamento.delete(chave);
-      if(statusEl) statusEl.innerHTML = `✓ Anexado: <a href="${url}" target="_blank" rel="noopener">${file.name}</a>`;
-    }).catch(e => {
-      uploadsEmAndamento.delete(chave);
-      console.error('Falha ao enviar anexo:', e);
-      if(statusEl) statusEl.textContent = 'Falha ao enviar. Confirme sua internet e tente novamente.';
-    });
-  }
-
-  // Confere se todas as questões obrigatórias foram respondidas/anexadas antes
-  // de permitir o envio. Questões objetivas já travadas (enviadas antes) não
+  // Confere se todas as questões obrigatórias foram respondidas antes de
+  // permitir o envio. Questões objetivas já travadas (enviadas antes) não
   // precisam ser checadas de novo — já têm resposta salva.
   function validarPendenciasModulo(moduloIndex, registroExistente){
     const m = modules[moduloIndex];
     const pendencias = [];
     if(!m.exercicios) return pendencias;
     m.exercicios.forEach((q, i) => {
-      const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
       const numero = i + 1;
-      if(tipoCalculo){
-        const anexoNovo = anexosPendentes[`${moduloIndex}-${i}`];
-        const anexoAntigo = registroExistente && registroExistente.anexos ? registroExistente.anexos[i] : null;
-        if(!anexoNovo && !anexoAntigo) pendencias.push(`Questão ${numero}: anexe uma foto da resolução`);
-      } else if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso'){
+      if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso'){
         const jaTravada = registroExistente && registroExistente.respostasObjetivas && registroExistente.respostasObjetivas[i] !== undefined;
         if(!jaTravada){
           const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
@@ -3824,11 +3778,6 @@
 
   function enviarModuloParaAnalise(moduloIndex){
     if(!currentUser || currentUser.papelKey !== 'aluno') return;
-    const chavesEmAndamento = [...uploadsEmAndamento].filter(k => k.startsWith(`${moduloIndex}-`));
-    if(chavesEmAndamento.length){
-      alert('Ainda tem uma foto sendo enviada. Aguarde a mensagem "✓ Anexado" aparecer antes de concluir o módulo.');
-      return;
-    }
     const alunoId = currentUser.id;
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
     const registroExistente = idx > -1 ? progressoModulos[idx] : null;
@@ -3837,7 +3786,7 @@
       alert(`Antes de enviar, complete:\n\n${pendencias.map(p => '• ' + p).join('\n')}`);
       return;
     }
-    const { respostasObjetivas, respostasDiscursivas, anexos } = coletarRespostasModulo(moduloIndex, registroExistente);
+    const { respostasObjetivas, respostasDiscursivas } = coletarRespostasModulo(moduloIndex, registroExistente);
     const composicao = composicaoModulo(moduloIndex);
     const correcao = corrigirObjetivas(moduloIndex, respostasObjetivas);
 
@@ -3849,7 +3798,7 @@
         alunoId, moduloIndex, status:'aprovado', comentarioProfessor:'',
         nota: correcao.nota, notaObjetiva: correcao.nota, notaMaximaObjetiva: composicao.maxObjetiva,
         acertosObjetivas: correcao.acertos, totalObjetivas: correcao.total,
-        respostasObjetivas, respostasDiscursivas, anexos,
+        respostasObjetivas, respostasDiscursivas,
         enviadoEm: nowFormatted(), avaliadoEm: nowFormatted(),
       };
       logAudit('Correção automática', currentUser.turma, `${currentUser.nome} concluiu o módulo ${modules[moduloIndex].code} — ${correcao.acertos}/${correcao.total} corretas, nota ${correcao.nota.toFixed(1)} — próximo módulo liberado`);
@@ -3861,14 +3810,13 @@
         notaObjetiva: composicao.objetivas.length ? correcao.nota : null,
         notaMaximaObjetiva: composicao.maxObjetiva, notaMaximaNaoObjetiva: composicao.maxNaoObjetiva,
         acertosObjetivas: correcao.acertos, totalObjetivas: correcao.total,
-        respostasObjetivas, respostasDiscursivas, anexos,
+        respostasObjetivas, respostasDiscursivas,
         enviadoEm: nowFormatted(), avaliadoEm:'',
       };
       logAudit('Entrega', currentUser.turma, `${currentUser.nome} enviou o módulo ${modules[moduloIndex].code} para análise`);
     }
     if(idx > -1) progressoModulos[idx] = { ...progressoModulos[idx], ...registro };
     else progressoModulos.push(registro);
-    Object.keys(anexosPendentes).forEach(k => { if(k.startsWith(`${moduloIndex}-`)) delete anexosPendentes[k]; });
     renderModule();
   }
 
@@ -4627,23 +4575,22 @@
     const isObjetiva = !tipoCalculo && ((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso');
     // Objetivas: uma vez enviadas e corrigidas automaticamente, ficam travadas
     // para sempre (mesmo em reenvio após devolução) — não faz sentido o aluno
-    // alterar uma resposta que o sistema já corrigiu. Dissertativas e anexos
-    // continuam editáveis enquanto o módulo estiver liberado ou devolvido.
+    // alterar uma resposta que o sistema já corrigiu. Dissertativas e estudos
+    // de caso (respondidos por escrito, sem foto) continuam editáveis enquanto
+    // o módulo estiver liberado ou devolvido.
     const readOnly = isObjetiva
       ? statusAtual !== 'liberado'
       : !(statusAtual === 'liberado' || statusAtual === 'devolvido');
     if(tipoCalculo){
-      const anexoSalvo = registro && registro.anexos ? registro.anexos[qIndex] : null;
+      // Estudo de caso / cálculo: o aluno faz a conta no caderno e digita aqui
+      // o raciocínio e o resultado — sem precisar anexar foto.
+      const respostaSalva = registro && registro.respostasDiscursivas ? registro.respostasDiscursivas[qIndex] : '';
       if(readOnly){
-        return anexoSalvo
-          ? `<div class="resposta-widget">📎 <a href="${anexoSalvo.url}" target="_blank" rel="noopener">${anexoSalvo.nome}</a></div>`
-          : `<div class="resposta-widget resposta-vazia">Nenhum anexo enviado.</div>`;
+        return `<div class="resposta-widget resposta-texto-salva">${respostaSalva || '<em>Sem resposta.</em>'}</div>`;
       }
-      const statusTexto = anexoSalvo ? `✓ Anexado: <a href="${anexoSalvo.url}" target="_blank" rel="noopener">${anexoSalvo.nome}</a>` : 'Tire uma foto da resolução no caderno e anexe aqui.';
       return `<div class="resposta-widget">
-        <label class="resposta-label">Sua resolução (foto do caderno)</label>
-        <input type="file" accept="image/*" capture="environment" onchange="anexarFoto(${moduloIndex}, ${qIndex}, this)">
-        <p class="anexo-status" id="anexo-status-${moduloIndex}-${qIndex}">${statusTexto}</p>
+        <label class="resposta-label">Sua resolução (cálculos e resultado)</label>
+        <textarea id="resp-${moduloIndex}-${qIndex}" class="resposta-textarea" placeholder="Descreva os cálculos feitos no caderno e o resultado final de cada tarefa...">${respostaSalva || ''}</textarea>
       </div>`;
     }
     if(q.opcoes && q.opcoes.length){
@@ -5252,12 +5199,6 @@ ${isMestre ? `
   function renderRespostasResumoProfessor(p, m){
     if(!m.exercicios || !m.exercicios.length) return '';
     const linhas = m.exercicios.map((q, i) => {
-      const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
-      if(tipoCalculo){
-        const anexo = p.anexos ? p.anexos[i] : null;
-        if(!anexo) return '';
-        return `<div class="resposta-resumo-item">📎 ${q.empresa || ('Questão ' + (i+1))}: <a href="${anexo.url}" target="_blank" rel="noopener">${anexo.nome}</a></div>`;
-      }
       if(q.opcoes || q.tipo === 'Verdadeiro ou Falso'){
         const resp = p.respostasObjetivas ? p.respostasObjetivas[i] : null;
         if(!resp) return '';
@@ -5265,7 +5206,8 @@ ${isMestre ? `
       }
       const resp = p.respostasDiscursivas ? p.respostasDiscursivas[i] : null;
       if(!resp) return '';
-      return `<div class="resposta-resumo-item"><strong>Q${i+1}:</strong> ${resp}</div>`;
+      const rotulo = q.dados ? `Q${i+1} (${q.empresa || 'estudo de caso'})` : `Q${i+1}`;
+      return `<div class="resposta-resumo-item"><strong>${rotulo}:</strong> ${resp}</div>`;
     }).filter(Boolean).join('');
     return linhas ? `<div class="resposta-resumo">${linhas}</div>` : `<div class="resposta-resumo resposta-resumo-vazio">O aluno não enviou respostas detalhadas para este módulo (verifique o arquivo Word baixado, se aplicável).</div>`;
   }
