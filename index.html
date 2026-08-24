@@ -1256,73 +1256,29 @@
     <div id="login-form-box">
       <div id="login-error" class="login-error" style="display:none;"></div>
       <div class="form-field">
-        <label>E-mail</label>
-        <input type="email" id="login-email" placeholder="seuemail@exemplo.com" autocomplete="username">
-      </div>
-      <div class="form-field">
-        <label>Senha</label>
+        <label>Senha mestre (só para Administrador — deixe em branco se for aluno ou professor)</label>
         <div class="password-wrap">
-          <input type="password" id="login-senha" placeholder="Sua senha" autocomplete="current-password" onkeydown="if(event.key==='Enter'){attemptLogin();}">
-          <button type="button" class="password-toggle" onclick="toggleLoginPassword()" aria-label="Mostrar senha">👁</button>
+          <input type="password" id="login-senha-mestre" placeholder="Deixe em branco se não for Admin" onkeydown="if(event.key==='Enter'){loginComGoogle();}">
+          <button type="button" class="password-toggle" onclick="toggleLoginSenhaMestre()" aria-label="Mostrar senha">👁</button>
         </div>
       </div>
-      <button class="btn primary login-submit" id="login-submit-btn" onclick="attemptLogin()">Entrar</button>
-      <div class="login-divider"><span>ou</span></div>
-      <button class="btn secondary login-submit" id="login-google-btn" onclick="loginComGoogle()">
+      <button class="btn primary login-submit" id="login-google-btn" onclick="loginComGoogle()">
         <svg width="18" height="18" viewBox="0 0 18 18" style="vertical-align:-3px;margin-right:8px;" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.9v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.9A9 9 0 0 0 0 9c0 1.45.35 2.82.9 4.03l3.05-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .9 4.97l3.05 2.33C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
         Entrar com o Google
       </button>
-      <div class="login-links"><a onclick="forgotPassword()">Esqueci minha senha</a></div>
+      <p class="login-hint">Alunos e professores: sua conta já deve ter sido cadastrada pelo Administrador com sua matrícula. Ao entrar com o Google pela primeira vez, será pedida a matrícula para confirmar seu vínculo.</p>
       <p id="login-loading-msg" class="login-hint" style="display:none;">Carregando dados da plataforma...</p>
     </div>
 
-    <div id="register-form-box" style="display:none;">
-      <div id="register-error" class="login-error" style="display:none;"></div>
-      <div class="form-field">
-        <label>Nome completo</label>
-        <input type="text" id="register-nome" placeholder="Ex.: Maria Silva">
-      </div>
+    <div id="vincular-matricula-box" style="display:none;">
+      <div id="vincular-matricula-error" class="login-error" style="display:none;"></div>
+      <p class="login-hint" style="margin-top:0;">Primeiro acesso com esta conta Google. Digite sua matrícula (a mesma que o Administrador cadastrou na sua turma) para confirmar seu acesso.</p>
       <div class="form-field">
         <label>Matrícula</label>
-        <input type="text" id="register-matricula" placeholder="Ex.: Matrícula 2026032">
+        <input type="text" id="vincular-matricula" placeholder="Ex.: 2026032" onkeydown="if(event.key==='Enter'){submitVincularMatricula();}">
       </div>
-      <div class="form-field">
-        <label>Turma</label>
-        <select id="register-turma">
-          <option value="">Selecione a turma...</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label>E-mail</label>
-        <input type="email" id="register-email" placeholder="seuemail@exemplo.com" autocomplete="username">
-      </div>
-      <div class="form-field">
-        <label>Senha</label>
-        <div class="password-wrap">
-          <input type="password" id="register-senha" placeholder="Crie uma senha" autocomplete="new-password">
-          <button type="button" class="password-toggle" onclick="toggleRegisterPassword()" aria-label="Mostrar senha">👁</button>
-        </div>
-      </div>
-      <button class="btn primary login-submit" onclick="submitRegister()">Cadastrar</button>
-      <div class="login-links"><a onclick="showLoginForm()">Já tenho conta — entrar</a></div>
-    </div>
-
-    <div id="register-pending-box" style="display:none;">
-      <div class="release-wait" style="text-align:left;">
-        <p><strong>Cadastro enviado!</strong></p>
-        <p id="register-pending-text">Seu cadastro foi enviado para aprovação do professor. Assim que ele aprovar, você já poderá entrar com o e-mail e a senha que acabou de cadastrar.</p>
-      </div>
-      <button class="btn secondary login-submit" onclick="showLoginForm()">Voltar para o login</button>
-    </div>
-
-    <div class="login-links" id="login-footer-link">
-      <a onclick="showRegisterForm()">Ainda não tenho conta — cadastrar</a>
-    </div>
-
-    <div class="login-hint">
-      <strong>Acesso de demonstração desta plataforma:</strong><br>
-      Professor — 623251@profe.sed.sc.gov.br / senha: professor123<br>
-      Aluno — aluno@exemplo.com / senha: aluno123
+      <button class="btn primary login-submit" onclick="submitVincularMatricula()">Confirmar matrícula</button>
+      <div class="login-links"><a onclick="cancelarVincularMatricula()">Cancelar</a></div>
     </div>
   </div>
   </div>
@@ -3384,6 +3340,10 @@
   // sozinho na próxima vez que a pessoa tentasse entrar com aquela conta.
   let emailsBloqueados = [];
 
+  // Senha mestre: segunda camada de segurança exigida apenas para o papel Administrador,
+  // além do login com a conta Google. Pode ser alterada em Gestão → Usuários (só o Admin vê).
+  let senhaMestre = '623251@_@prof';
+
   function bloquearEmail(email){
     if(!email) return;
     const e = email.toLowerCase().trim();
@@ -3397,6 +3357,18 @@
       logAudit('Edição', '—', `Desbloqueou o e-mail ${email} — pode se cadastrar novamente`);
       renderUsuarios();
     }
+  }
+
+  function alterarSenhaMestre(){
+    const input = document.getElementById('nova-senha-mestre');
+    const nova = input.value.trim();
+    if(!nova){ input.focus(); return; }
+    if(!confirm('Alterar a senha mestre? Todos os administradores precisarão usar a nova senha a partir de agora.')) return;
+    senhaMestre = nova;
+    input.value = '';
+    logAudit('Edição', '—', 'Alterou a senha mestre do Administrador');
+    salvarEstado();
+    alert('Senha mestre alterada com sucesso.');
   }
 
   function progressoDoAluno(alunoId, moduloIndex){
@@ -3526,9 +3498,9 @@
   };
 
   const usuarios = [
-    { id:1, nome:"Aluno Exemplo", papel:"Aluno", papelKey:"aluno", matricula:"Matrícula 2026001", turma:"ADM 2026/1", email:"aluno@exemplo.com", senha:"aluno123", status:"aprovado" },
-    { id:2, nome:"Prof. Esp. Jorge Lima Cardoso", papel:"Professor", papelKey:"professor", matricula:"Registro (exemplo)", turma:"— (todas as turmas)", email:"623251@profe.sed.sc.gov.br", senha:"professor123", status:"aprovado" },
-    { id:3, nome:"Admin Sistema", papel:"Usuário Mestre", papelKey:"mestre", matricula:"—", turma:"—", email:"admin@administracaofinanceira.local", senha:"mestre123", status:"aprovado" },
+    { id:1, nome:"Aluno Exemplo", papel:"Aluno", papelKey:"aluno", matricula:"2026001", turma:"ADM 2026/1", email:"aluno@exemplo.com", status:"aprovado" },
+    { id:2, nome:"Prof. Esp. Jorge Lima Cardoso", papel:"Professor", papelKey:"professor", matricula:"Registro (exemplo)", turma:"— (todas as turmas)", email:"623251@profe.sed.sc.gov.br", status:"aprovado" },
+    { id:3, nome:"Administrador", papel:"Usuário Mestre", papelKey:"mestre", matricula:"—", turma:"—", email:"", status:"aprovado" },
   ];
   let nextUserId = 4;
   let activeUserId = null;
@@ -3589,7 +3561,7 @@
   let salvamentoPendente = false;
 
   function payloadAtual(){
-    return { usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, emailsBloqueados, nextUserId, nextTurmaId };
+    return { usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, emailsBloqueados, senhaMestre, nextUserId, nextTurmaId };
   }
 
   function aplicarEstadoRecebido(data){
@@ -3599,6 +3571,7 @@
     if(Array.isArray(data.atribuicoesEstudoCaso)){ atribuicoesEstudoCaso.length = 0; atribuicoesEstudoCaso.push(...data.atribuicoesEstudoCaso); }
     if(Array.isArray(data.progressoModulos)){ progressoModulos.length = 0; progressoModulos.push(...data.progressoModulos); }
     if(Array.isArray(data.emailsBloqueados)){ emailsBloqueados.length = 0; emailsBloqueados.push(...data.emailsBloqueados); }
+    if(typeof data.senhaMestre === 'string' && data.senhaMestre) senhaMestre = data.senhaMestre;
     if(typeof data.nextUserId === 'number') nextUserId = data.nextUserId;
     if(typeof data.nextTurmaId === 'number') nextTurmaId = data.nextTurmaId;
   }
@@ -3658,7 +3631,7 @@
     estadoDocRef.onSnapshot(snap => {
       if(!snap.exists) return;
       const data = snap.data();
-      const dataStr = JSON.stringify({ usuarios:data.usuarios, turmas:data.turmas, auditoria:data.auditoria, atribuicoesEstudoCaso:data.atribuicoesEstudoCaso, progressoModulos:data.progressoModulos, emailsBloqueados:data.emailsBloqueados, nextUserId:data.nextUserId, nextTurmaId:data.nextTurmaId });
+      const dataStr = JSON.stringify({ usuarios:data.usuarios, turmas:data.turmas, auditoria:data.auditoria, atribuicoesEstudoCaso:data.atribuicoesEstudoCaso, progressoModulos:data.progressoModulos, emailsBloqueados:data.emailsBloqueados, senhaMestre:data.senhaMestre, nextUserId:data.nextUserId, nextTurmaId:data.nextTurmaId });
       if(dataStr === ultimoPayloadEnviado) return; // é o eco da própria gravação; ignora
       ultimoPayloadEnviado = dataStr;
       aplicarEstadoRecebido(data);
@@ -4370,12 +4343,13 @@
         </div>
         <p class="user-detail">${u.matricula}</p>
         <p class="user-detail">${u.turma}</p>
-        <p class="user-detail">${u.email || '—'}${isLoggedIn ? ' · logado agora' : ''}</p>
+        <p class="user-detail">${u.email ? u.email : 'Aguardando primeiro acesso com o Google'}${isLoggedIn ? ' · logado agora' : ''}</p>
         <div class="user-actions">
           ${isActive
             ? `<button class="btn secondary" disabled>Visualização ativa</button>`
             : `<button class="btn secondary" onclick="setActiveUser(${u.id})">Visualizar como este usuário</button>`}
           <button class="btn secondary" onclick="showPermissions()">Permissões</button>
+          ${u.email ? `<button class="btn secondary" onclick="desvincularEmailUsuario(${u.id})">Desvincular e-mail</button>` : ''}
           <button class="btn danger" onclick="removeUsuario(${u.id})">Excluir</button>
         </div>
       </div>`;
@@ -4394,14 +4368,14 @@
       <div class="page-head">
         <p class="code">Gestão</p>
         <h2>Usuários</h2>
-        <p class="ementa">Cadastro de alunos, professores e usuário mestre. O acesso real à plataforma é feito pela tela de login (e-mail e senha) — aqui você também pode "visualizar como" outro usuário cadastrado, para conferir o que cada perfil enxerga.</p>
+        <p class="ementa">Cadastro de alunos, professores e administradores. O acesso é feito exclusivamente pela conta Google — o vínculo com a matrícula acontece automaticamente no primeiro login de cada pessoa. Aqui você também pode "visualizar como" outro usuário cadastrado, para conferir o que cada perfil enxerga.</p>
         <div class="status-row"><span class="pill">${usuarios.length} usuários cadastrados</span></div>
       </div>
 
       <section class="block">
         <h3>Novo usuário</h3>
         <div class="panel-card">
-          <p class="panel-note">Cadastre um aluno, professor ou usuário mestre. Como Usuário Mestre, também é possível cadastrar outro Usuário Mestre.</p>
+          <p class="panel-note">Cadastre um aluno, professor ou administrador com a matrícula dele. O acesso é vinculado automaticamente na primeira vez que a pessoa entrar com a conta Google e confirmar essa matrícula — não é preciso definir e-mail nem senha aqui.</p>
           <div class="form-grid">
             <div class="form-field">
               <label>Nome completo</label>
@@ -4412,12 +4386,12 @@
               <select id="new-user-perfil">
                 <option value="aluno">Aluno</option>
                 <option value="professor">Professor</option>
-                <option value="mestre">Usuário Mestre</option>
+                <option value="mestre">Administrador</option>
               </select>
             </div>
             <div class="form-field">
               <label>Matrícula / Registro</label>
-              <input type="text" id="new-user-matricula" placeholder="Ex.: Matrícula 2026032">
+              <input type="text" id="new-user-matricula" placeholder="Ex.: 2026032">
             </div>
             <div class="form-field">
               <label>Turma</label>
@@ -4425,14 +4399,6 @@
                 <option value="">Selecione a turma...</option>
                 ${turmaOptions}
               </select>
-            </div>
-            <div class="form-field">
-              <label>E-mail (login)</label>
-              <input type="email" id="new-user-email" placeholder="Ex.: nome@exemplo.com">
-            </div>
-            <div class="form-field">
-              <label>Senha (login)</label>
-              <input type="text" id="new-user-senha" placeholder="Defina uma senha">
             </div>
           </div>
           <button class="btn primary" onclick="addUsuario()">Adicionar usuário</button>
@@ -4453,6 +4419,18 @@
             : `<span class="release-badge none">Nenhum e-mail bloqueado no momento.</span>`
         }</div>
       </section>
+${currentUser && currentUser.papelKey === 'mestre' ? `
+      <section class="block">
+        <h3>Segurança do Administrador</h3>
+        <p class="panel-note">A senha mestre é exigida, além da conta Google, sempre que alguém tentar entrar como Administrador. Só quem já é Administrador vê e pode alterar este campo.</p>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Nova senha mestre</label>
+            <input type="text" id="nova-senha-mestre" placeholder="Deixe em branco para manter a atual">
+          </div>
+        </div>
+        <button class="btn primary" onclick="alterarSenhaMestre()">Salvar nova senha mestre</button>
+      </section>` : ''}
 
       <section class="block" id="permissions-section">
         <h3>Limitações por perfil</h3>
@@ -4469,20 +4447,20 @@
     const perfilEl = document.getElementById('new-user-perfil');
     const matriculaEl = document.getElementById('new-user-matricula');
     const turmaEl = document.getElementById('new-user-turma');
-    const emailEl = document.getElementById('new-user-email');
-    const senhaEl = document.getElementById('new-user-senha');
     const nome = nomeEl.value.trim();
     if(!nome){ nomeEl.focus(); return; }
-    const email = emailEl.value.trim().toLowerCase();
-    if(!email){ emailEl.focus(); return; }
-    if(usuarios.some(u => u.email && u.email.toLowerCase() === email)){
-      alert('Já existe um usuário cadastrado com este e-mail.');
-      emailEl.focus();
+    const perfilKey = perfilEl.value;
+    const matricula = matriculaEl.value.trim();
+    if(perfilKey !== 'mestre' && !matricula){
+      alert('Informe a matrícula. É por ela que a pessoa vai confirmar seu acesso na primeira vez que entrar com o Google.');
+      matriculaEl.focus();
       return;
     }
-    const senha = senhaEl.value.trim();
-    if(!senha){ senhaEl.focus(); return; }
-    const perfilKey = perfilEl.value;
+    if(matricula && usuarios.some(u => u.papelKey !== 'mestre' && (u.matricula || '').trim().toLowerCase() === matricula.toLowerCase())){
+      alert('Já existe um usuário cadastrado com esta matrícula.');
+      matriculaEl.focus();
+      return;
+    }
     const papelLabel = perfilKey === 'aluno' ? 'Aluno' : perfilKey === 'professor' ? 'Professor' : 'Usuário Mestre';
     const turmaEscolhida = turmaEl.value || '—';
     usuarios.push({
@@ -4490,14 +4468,13 @@
       nome,
       papel: papelLabel,
       papelKey: perfilKey,
-      matricula: matriculaEl.value.trim() || '—',
+      matricula: matricula || '—',
       turma: turmaEscolhida,
-      email,
-      senha,
+      email: '',
       status: 'aprovado',
       criadoEm: nowFormatted(),
     });
-    logAudit('Criação', turmaEscolhida, `Cadastrou o usuário ${nome} (${papelLabel})`);
+    logAudit('Criação', turmaEscolhida, `Cadastrou o usuário ${nome} (${papelLabel}) — vínculo pendente até o primeiro acesso com o Google`);
     renderUsuarios();
   }
 
@@ -4505,6 +4482,20 @@
     activeUserId = id;
     const u = usuarios.find(x => x.id === id);
     logAudit('Edição', u ? u.turma : '—', `Trocou o usuário ativo para: ${u ? u.nome : id}`);
+    renderUsuarios();
+  }
+
+  function desvincularEmailUsuario(id){
+    const u = usuarios.find(x => x.id === id);
+    if(!u) return;
+    if(currentUser && u.id === currentUser.id){
+      alert('Não é possível desvincular o e-mail da conta com a qual você está logado agora.');
+      return;
+    }
+    if(!confirm(`Desvincular o e-mail ${u.email} de ${u.nome}? Na próxima vez, a pessoa vai precisar confirmar a matrícula (ou a senha mestre, se for Administrador) de novo com uma conta Google, podendo inclusive ser outra conta.`)) return;
+    const emailAntigo = u.email;
+    u.email = '';
+    logAudit('Edição', u.turma, `Desvinculou o e-mail ${emailAntigo} de ${u.nome} (${u.papel})`);
     renderUsuarios();
   }
 
@@ -5118,13 +5109,8 @@
     return usuarios.find(u => (u.email || '').toLowerCase() === e);
   }
 
-  function toggleLoginPassword(){
-    const input = document.getElementById('login-senha');
-    input.type = input.type === 'password' ? 'text' : 'password';
-  }
-
-  function toggleRegisterPassword(){
-    const input = document.getElementById('register-senha');
+  function toggleLoginSenhaMestre(){
+    const input = document.getElementById('login-senha-mestre');
     input.type = input.type === 'password' ? 'text' : 'password';
   }
 
@@ -5134,80 +5120,82 @@
     el.style.display = 'block';
   }
 
-  function attemptLogin(){
-    const emailEl = document.getElementById('login-email');
-    const senhaEl = document.getElementById('login-senha');
-    const errorEl = document.getElementById('login-error');
-    errorEl.style.display = 'none';
-    const email = emailEl.value.trim();
-    const senha = senhaEl.value;
-    if(!email || !senha){
-      showLoginErrorMsg('login-error', 'Informe e-mail e senha para entrar.');
-      return;
-    }
-    const user = findUserByEmail(email);
-    if(!user || user.senha !== senha){
-      showLoginErrorMsg('login-error', 'E-mail ou senha incorretos. Verifique e tente novamente.');
-      return;
-    }
-    if(user.status === 'pendente'){
-      showLoginErrorMsg('login-error', 'Seu cadastro ainda está aguardando aprovação do professor. Você será avisado quando puder entrar.');
-      return;
-    }
-    if(user.status === 'recusado'){
-      showLoginErrorMsg('login-error', 'Seu cadastro não foi aprovado. Entre em contato com o professor.');
-      return;
-    }
-    doLogin(user);
-  }
+  // Guarda temporariamente os dados da conta Google enquanto se aguarda a matrícula
+  // (primeiro acesso de aluno/professor, entre o popup do Google e a confirmação).
+  let googleEmailPendente = null;
 
   async function loginComGoogle(){
     const errorEl = document.getElementById('login-error');
     errorEl.style.display = 'none';
     const btn = document.getElementById('login-google-btn');
     if(btn) btn.disabled = true;
+    const senhaMestreDigitada = (document.getElementById('login-senha-mestre').value || '').trim();
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
       const result = await fbAuth.signInWithPopup(provider);
       const googleUser = result.user;
       const email = (googleUser.email || '').toLowerCase();
+      const nome = googleUser.displayName || email;
       let user = findUserByEmail(email);
-      if(!user){
-        if(emailsBloqueados.includes(email)){
-          showLoginErrorMsg('login-error', 'Este e-mail foi bloqueado pelo professor e não pode se cadastrar. Se isso for um engano, peça ao professor para desbloquear em Gestão → Usuários.');
+
+      // Conta já vinculada ao papel de Administrador: exige a senha mestre sempre.
+      if(user && user.papelKey === 'mestre'){
+        if(senhaMestreDigitada && senhaMestreDigitada === senhaMestre){
+          doLogin(user);
+        } else {
+          showLoginErrorMsg('login-error', 'Senha mestre incorreta ou não informada. Digite a senha mestre no campo acima antes de clicar em "Entrar com o Google".');
+        }
+        return;
+      }
+
+      // Aluno ou professor já vinculados: entra direto (a menos que seja um cadastro
+      // antigo do sistema anterior que ainda esteja pendente/recusado).
+      if(user){
+        if(user.status === 'pendente'){
+          showLoginErrorMsg('login-error', 'Seu cadastro ainda está aguardando aprovação do administrador.');
           return;
         }
-        user = {
-          id: nextUserId++,
-          nome: googleUser.displayName || email,
-          papel: 'Aluno',
-          papelKey: 'aluno',
-          matricula: '—',
-          turma: '—',
-          email,
-          senha: '',
-          authProvider: 'google',
-          status: 'pendente',
-          criadoEm: nowFormatted(),
-        };
-        usuarios.push(user);
-        logAudit('Cadastro', user.turma, `${user.nome} solicitou cadastro via Google (aguardando aprovação)`);
-        document.getElementById('login-form-box').style.display = 'none';
-        document.getElementById('login-footer-link').style.display = 'none';
-        const textoPendente = document.getElementById('register-pending-text');
-        if(textoPendente) textoPendente.textContent = 'Seu cadastro foi enviado para aprovação do professor. Assim que ele aprovar, é só clicar em "Entrar com o Google" novamente, usando esta mesma conta Google.';
-        document.getElementById('register-pending-box').style.display = 'block';
+        if(user.status === 'recusado'){
+          showLoginErrorMsg('login-error', 'Seu acesso não foi aprovado. Entre em contato com o administrador.');
+          return;
+        }
+        doLogin(user);
         return;
       }
-      if(user.status === 'pendente'){
-        showLoginErrorMsg('login-error', 'Seu cadastro ainda está aguardando aprovação do professor. Você será avisado quando puder entrar.');
+
+      // E-mail ainda não vinculado a ninguém, mas a senha mestre foi informada:
+      // se estiver correta, vincula esta conta Google ao acesso de Administrador disponível.
+      // Se foi digitada mas estiver errada, avisa claramente (em vez de cair silenciosamente
+      // no fluxo de matrícula, o que seria confuso para quem está tentando entrar como Admin).
+      if(senhaMestreDigitada){
+        if(senhaMestreDigitada !== senhaMestre){
+          showLoginErrorMsg('login-error', 'Senha mestre incorreta. Se você não é Administrador, apague o campo de senha mestre e clique em "Entrar com o Google" de novo.');
+          return;
+        }
+        const vago = usuarios.find(u => u.papelKey === 'mestre' && !u.email);
+        if(vago){
+          vago.email = email;
+          if(!vago.nome || vago.nome === 'Administrador') vago.nome = nome;
+          logAudit('Edição', '—', `Vinculou a conta Google ${email} ao acesso de Administrador`);
+          doLogin(vago);
+        } else {
+          showLoginErrorMsg('login-error', 'Não há nenhum acesso de Administrador disponível para vincular. Peça para um Administrador já ativo te cadastrar.');
+        }
         return;
       }
-      if(user.status === 'recusado'){
-        showLoginErrorMsg('login-error', 'Seu cadastro não foi aprovado. Entre em contato com o professor.');
+
+      if(emailsBloqueados.includes(email)){
+        showLoginErrorMsg('login-error', 'Este e-mail foi bloqueado pelo Administrador e não pode acessar. Se isso for um engano, peça para desbloquear em Gestão → Usuários.');
         return;
       }
-      doLogin(user);
+
+      // Primeiro acesso de aluno/professor: pede a matrícula para vincular ao cadastro
+      // que o Administrador já criou na turma.
+      googleEmailPendente = email;
+      document.getElementById('login-form-box').style.display = 'none';
+      document.getElementById('vincular-matricula-box').style.display = 'block';
+      document.getElementById('vincular-matricula-error').style.display = 'none';
+      document.getElementById('vincular-matricula').value = '';
     } catch(e) {
       if(e && e.code !== 'auth/popup-closed-by-user'){
         showLoginErrorMsg('login-error', 'Não foi possível entrar com o Google. Tente novamente.');
@@ -5218,6 +5206,38 @@
     }
   }
 
+  function submitVincularMatricula(){
+    const matEl = document.getElementById('vincular-matricula');
+    const matricula = matEl.value.trim();
+    if(!matricula){
+      showLoginErrorMsg('vincular-matricula-error', 'Digite sua matrícula.');
+      return;
+    }
+    if(!googleEmailPendente){
+      showLoginErrorMsg('vincular-matricula-error', 'Sessão do Google expirou. Volte e clique em "Entrar com o Google" novamente.');
+      return;
+    }
+    const match = usuarios.find(u => u.papelKey !== 'mestre' && (u.matricula || '').trim().toLowerCase() === matricula.toLowerCase());
+    if(!match){
+      showLoginErrorMsg('vincular-matricula-error', 'Matrícula não encontrada. Procure o professor/administrador para cadastrar sua matrícula na turma antes de tentar entrar novamente.');
+      return;
+    }
+    if(match.email && match.email.toLowerCase() !== googleEmailPendente){
+      showLoginErrorMsg('vincular-matricula-error', 'Esta matrícula já está vinculada a outra conta Google. Procure o professor/administrador.');
+      return;
+    }
+    match.email = googleEmailPendente;
+    logAudit('Edição', match.turma, `Vinculou a conta Google ${googleEmailPendente} à matrícula ${matricula} (${match.nome})`);
+    googleEmailPendente = null;
+    doLogin(match);
+  }
+
+  function cancelarVincularMatricula(){
+    googleEmailPendente = null;
+    document.getElementById('vincular-matricula-box').style.display = 'none';
+    document.getElementById('login-form-box').style.display = 'block';
+  }
+
   function doLogin(user){
     currentUser = user;
     activeUserId = user.id;
@@ -5225,9 +5245,10 @@
     salvarSessao();
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'grid';
-    showLoginForm();
-    document.getElementById('login-email').value = '';
-    document.getElementById('login-senha').value = '';
+    const senhaMestreEl = document.getElementById('login-senha-mestre');
+    if(senhaMestreEl) senhaMestreEl.value = '';
+    document.getElementById('login-form-box').style.display = 'block';
+    document.getElementById('vincular-matricula-box').style.display = 'none';
     render();
   }
 
@@ -5242,95 +5263,22 @@
     document.getElementById('app').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('login-error').style.display = 'none';
-    // Restabelece uma sessão anônima no Firebase, para que o login por e-mail/senha
-    // do próximo usuário (ex.: computador compartilhado da turma) continue funcionando.
-    fbAuth.signOut().then(() => fbAuth.signInAnonymously()).catch(e => console.error('Falha ao restabelecer sessão anônima:', e));
-  }
-
-  function forgotPassword(){
-    alert(`Para recuperar sua senha, entre em contato com o professor pelo e-mail:\n${PROFESSOR_EMAIL}`);
-  }
-
-  function showRegisterForm(){
-    document.getElementById('login-form-box').style.display = 'none';
-    document.getElementById('register-form-box').style.display = 'block';
-    document.getElementById('register-pending-box').style.display = 'none';
-    document.getElementById('login-footer-link').style.display = 'none';
-    const turmaSel = document.getElementById('register-turma');
-    turmaSel.innerHTML = '<option value="">Selecione a turma...</option>' +
-      turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
-  }
-
-  function showLoginForm(){
     document.getElementById('login-form-box').style.display = 'block';
-    document.getElementById('register-form-box').style.display = 'none';
-    document.getElementById('register-pending-box').style.display = 'none';
-    document.getElementById('login-footer-link').style.display = 'block';
-    document.getElementById('register-error').style.display = 'none';
-    const nomeEl = document.getElementById('register-nome');
-    const matEl = document.getElementById('register-matricula');
-    const emailEl = document.getElementById('register-email');
-    const senhaEl = document.getElementById('register-senha');
-    if(nomeEl) nomeEl.value = '';
-    if(matEl) matEl.value = '';
-    if(emailEl) emailEl.value = '';
-    if(senhaEl) senhaEl.value = '';
-  }
-
-  function submitRegister(){
-    const nomeEl = document.getElementById('register-nome');
-    const matriculaEl = document.getElementById('register-matricula');
-    const turmaEl = document.getElementById('register-turma');
-    const emailEl = document.getElementById('register-email');
-    const senhaEl = document.getElementById('register-senha');
-    const nome = nomeEl.value.trim();
-    const email = emailEl.value.trim();
-    const senha = senhaEl.value;
-    if(!nome || !email || !senha){
-      showLoginErrorMsg('register-error', 'Preencha nome, e-mail e senha para se cadastrar.');
-      return;
-    }
-    if(findUserByEmail(email)){
-      showLoginErrorMsg('register-error', 'Já existe uma conta cadastrada com este e-mail. Tente entrar, ou use "Esqueci minha senha".');
-      return;
-    }
-    if(emailsBloqueados.includes(email.toLowerCase().trim())){
-      showLoginErrorMsg('register-error', 'Este e-mail foi bloqueado pelo professor e não pode se cadastrar. Se isso for um engano, peça ao professor para desbloquear em Gestão → Usuários.');
-      return;
-    }
-    const novoUsuario = {
-      id: nextUserId++,
-      nome,
-      papel: 'Aluno',
-      papelKey: 'aluno',
-      matricula: matriculaEl.value.trim() || '—',
-      turma: turmaEl.value || '—',
-      email: email.toLowerCase(),
-      senha,
-      status: 'pendente',
-      criadoEm: nowFormatted(),
-    };
-    usuarios.push(novoUsuario);
-    logAudit('Cadastro', novoUsuario.turma, `${nome} solicitou cadastro como Aluno (aguardando aprovação)`);
-    document.getElementById('register-form-box').style.display = 'none';
-    document.getElementById('login-footer-link').style.display = 'none';
-    const textoPendente = document.getElementById('register-pending-text');
-    if(textoPendente) textoPendente.textContent = 'Seu cadastro foi enviado para aprovação do professor. Assim que ele aprovar, você já poderá entrar com o e-mail e a senha que acabou de cadastrar.';
-    document.getElementById('register-pending-box').style.display = 'block';
+    document.getElementById('vincular-matricula-box').style.display = 'none';
+    // Restabelece uma sessão anônima no Firebase, para que a próxima pessoa
+    // (ex.: computador compartilhado da turma) consiga continuar usando a plataforma.
+    fbAuth.signOut().then(() => fbAuth.signInAnonymously()).catch(e => console.error('Falha ao restabelecer sessão anônima:', e));
   }
 
   // ---------- Inicialização da plataforma (Firebase) ----------
   async function iniciarPlataforma(){
     const loadingMsg = document.getElementById('login-loading-msg');
-    const submitBtn = document.getElementById('login-submit-btn');
     const googleBtn = document.getElementById('login-google-btn');
     if(loadingMsg) loadingMsg.style.display = 'block';
-    if(submitBtn) submitBtn.disabled = true;
     if(googleBtn) googleBtn.disabled = true;
 
     try {
-      // Sessão anônima: garante acesso ao Firestore mesmo para quem ainda vai
-      // entrar por e-mail/senha (o login com Google substitui essa sessão pela do Google).
+      // Sessão anônima: garante acesso ao Firestore mesmo antes do Google login.
       if(!fbAuth.currentUser){
         await fbAuth.signInAnonymously();
       }
@@ -5342,7 +5290,6 @@
     escutarMudancasEmTempoReal();
 
     if(loadingMsg) loadingMsg.style.display = 'none';
-    if(submitBtn) submitBtn.disabled = false;
     if(googleBtn) googleBtn.disabled = false;
 
     // Restaura a sessão salva neste navegador (se houver), sem exigir login de novo a cada F5.
