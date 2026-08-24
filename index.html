@@ -3792,6 +3792,36 @@
     });
   }
 
+  // Confere se todas as questões obrigatórias foram respondidas/anexadas antes
+  // de permitir o envio. Questões objetivas já travadas (enviadas antes) não
+  // precisam ser checadas de novo — já têm resposta salva.
+  function validarPendenciasModulo(moduloIndex, registroExistente){
+    const m = modules[moduloIndex];
+    const pendencias = [];
+    if(!m.exercicios) return pendencias;
+    m.exercicios.forEach((q, i) => {
+      const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
+      const numero = i + 1;
+      if(tipoCalculo){
+        const anexoNovo = anexosPendentes[`${moduloIndex}-${i}`];
+        const anexoAntigo = registroExistente && registroExistente.anexos ? registroExistente.anexos[i] : null;
+        if(!anexoNovo && !anexoAntigo) pendencias.push(`Questão ${numero}: anexe uma foto da resolução`);
+      } else if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso'){
+        const jaTravada = registroExistente && registroExistente.respostasObjetivas && registroExistente.respostasObjetivas[i] !== undefined;
+        if(!jaTravada){
+          const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
+          if(!sel) pendencias.push(`Questão ${numero}: selecione uma resposta`);
+        }
+      } else {
+        const el = document.getElementById(`resp-${moduloIndex}-${i}`);
+        const valorDigitado = el ? el.value.trim() : '';
+        const valorSalvo = registroExistente && registroExistente.respostasDiscursivas ? (registroExistente.respostasDiscursivas[i] || '').trim() : '';
+        if(!valorDigitado && !valorSalvo) pendencias.push(`Questão ${numero}: escreva sua resposta`);
+      }
+    });
+    return pendencias;
+  }
+
   function enviarModuloParaAnalise(moduloIndex){
     if(!currentUser || currentUser.papelKey !== 'aluno') return;
     const chavesEmAndamento = [...uploadsEmAndamento].filter(k => k.startsWith(`${moduloIndex}-`));
@@ -3802,6 +3832,11 @@
     const alunoId = currentUser.id;
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
     const registroExistente = idx > -1 ? progressoModulos[idx] : null;
+    const pendencias = validarPendenciasModulo(moduloIndex, registroExistente);
+    if(pendencias.length){
+      alert(`Antes de enviar, complete:\n\n${pendencias.map(p => '• ' + p).join('\n')}`);
+      return;
+    }
     const { respostasObjetivas, respostasDiscursivas, anexos } = coletarRespostasModulo(moduloIndex, registroExistente);
     const composicao = composicaoModulo(moduloIndex);
     const correcao = corrigirObjetivas(moduloIndex, respostasObjetivas);
@@ -4318,14 +4353,13 @@
           const q = m.exercicios[filialIndex];
           const statusAtualCS = statusEfetivoModulo(currentUser.id, activeIndex);
           const registroCS = progressoDoAluno(currentUser.id, activeIndex);
-          const editavelCS = statusAtualCS === 'liberado' || statusAtualCS === 'devolvido';
           const downloadBtn = m.exerciciosArquivo
             ? `<a class="btn primary exercise-download" href="${m.exerciciosArquivo}" download>⭳ Baixar exercícios (Word) — preencha seu nome e envie ao professor</a>`
             : '';
           exerciciosHtml = `<section class="block">
             <h3>Seu estudo de caso</h3>
             ${downloadBtn}
-            <ol class="exercise-list">${renderCaseStudyItem(q, activeIndex, filialIndex, !editavelCS, registroCS)}</ol>
+            <ol class="exercise-list">${renderCaseStudyItem(q, activeIndex, filialIndex, statusAtualCS, registroCS)}</ol>
           </section>`;
         }
       } else {
@@ -4394,10 +4428,9 @@
     } else if(m.exercicios && m.exercicios.length){
       const statusAtualEx = isAlunoAtual ? statusEfetivoModulo(currentUser.id, activeIndex) : null;
       const registroEx = isAlunoAtual ? progressoDoAluno(currentUser.id, activeIndex) : null;
-      const editavelEx = statusAtualEx === 'liberado' || statusAtualEx === 'devolvido';
       const perguntasHtml = m.exercicios.map((q, i) => {
         const tipoClass = 'tipo-' + q.tipo.toLowerCase().replace(/[^a-zà-ú]+/g, '-').replace(/^-+|-+$/g, '');
-        const respostaHtml = isAlunoAtual ? renderRespostaWidget(q, activeIndex, i, !editavelEx, registroEx) : '';
+        const respostaHtml = isAlunoAtual ? renderRespostaWidget(q, activeIndex, i, statusAtualEx, registroEx) : '';
 
         if(q.dados){
           // formato "estudo de caso": empresa, contexto, dados financeiros e tarefas
@@ -4419,7 +4452,8 @@
         }
 
         let opcoesHtml = '';
-        if(q.opcoes && q.opcoes.length && !(isAlunoAtual && editavelEx)){
+        const objetivaEditavel = isAlunoAtual && statusAtualEx === 'liberado';
+        if(q.opcoes && q.opcoes.length && !objetivaEditavel){
           const letras = ['A','B','C','D','E'];
           opcoesHtml = `<ul class="exercise-options">` +
             q.opcoes.map((op, j) => `<li><span class="opt-letter">${letras[j]}</span>${op}</li>`).join('') +
@@ -4588,8 +4622,16 @@
     return { acertos, total: objetivas.length, nota, detalhe };
   }
 
-  function renderRespostaWidget(q, moduloIndex, qIndex, readOnly, registro){
+  function renderRespostaWidget(q, moduloIndex, qIndex, statusAtual, registro){
     const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
+    const isObjetiva = !tipoCalculo && ((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso');
+    // Objetivas: uma vez enviadas e corrigidas automaticamente, ficam travadas
+    // para sempre (mesmo em reenvio após devolução) — não faz sentido o aluno
+    // alterar uma resposta que o sistema já corrigiu. Dissertativas e anexos
+    // continuam editáveis enquanto o módulo estiver liberado ou devolvido.
+    const readOnly = isObjetiva
+      ? statusAtual !== 'liberado'
+      : !(statusAtual === 'liberado' || statusAtual === 'devolvido');
     if(tipoCalculo){
       const anexoSalvo = registro && registro.anexos ? registro.anexos[qIndex] : null;
       if(readOnly){
@@ -4630,7 +4672,7 @@
     return `<div class="resposta-widget"><textarea id="resp-${moduloIndex}-${qIndex}" class="resposta-textarea" placeholder="Digite sua resposta...">${respostaSalva || ''}</textarea></div>`;
   }
 
-  function renderCaseStudyItem(q, moduloIndex, qIndex, readOnly, registro){
+  function renderCaseStudyItem(q, moduloIndex, qIndex, statusAtual, registro){
     const tipoClass = 'tipo-' + q.tipo.toLowerCase().replace(/[^a-zà-ú]+/g, '-').replace(/^-+|-+$/g, '');
     const dadosHtml = q.dados.map(grupo => `
       <div class="case-data-group">
@@ -4639,7 +4681,7 @@
       </div>`).join('');
     const tarefasHtml = q.tarefas.map((t, j) => `<li><span class="opt-letter">${j+1}</span>${t}</li>`).join('');
     const respostaHtml = (moduloIndex !== undefined && moduloIndex !== null)
-      ? renderRespostaWidget(q, moduloIndex, qIndex, readOnly, registro)
+      ? renderRespostaWidget(q, moduloIndex, qIndex, statusAtual, registro)
       : '';
     return `<li>
       <span class="exercise-tipo ${tipoClass}">${q.tipo}</span>
