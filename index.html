@@ -681,6 +681,18 @@
     grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
     gap:12px;
   }
+  .turma-group{ margin-bottom:22px; }
+  .turma-group:last-child{ margin-bottom:0; }
+  .turma-group-title{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--gold-text);
+    margin:0 0 10px 0;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--border);
+  }
   .user-card{
     background:var(--bg-panel);
     border:1px solid var(--border);
@@ -3747,19 +3759,18 @@
       toc.appendChild(divider2);
       toc.appendChild(mgmtLabel);
 
-      const isMestre = currentUser && currentUser.papelKey === 'mestre';
       const pendentesCount = usuarios.filter(u => u.status === 'pendente').length;
       const entregasPendentesCount = progressoModulos.filter(p => p.status === 'enviado').length;
 
       [
         { key:'turmas', label:'Turmas' },
-        { key:'usuarios', label:'Usuários', mestreOnly:true },
+        { key:'usuarios', label:'Usuários' },
         { key:'aprovacoes', label:'Aprovações', badge: pendentesCount },
         { key:'entregas', label:'Entregas de Módulos', badge: entregasPendentesCount },
         { key:'relatorios', label:'Relatórios' },
         { key:'backup', label:'Backup' },
         { key:'auditoria', label:'Auditoria' },
-      ].filter(item => !item.mestreOnly || isMestre).forEach(item => {
+      ].forEach(item => {
         const btn = document.createElement('button');
         btn.className = 'toc-item' + (activeIndex === item.key ? ' active' : '');
         const badgeHtml = item.badge ? `<span class="toc-badge">${item.badge}</span>` : '';
@@ -4330,10 +4341,11 @@
 
   function renderUsuarios(){
     const main = document.getElementById('main');
+    const isMestre = currentUser && currentUser.papelKey === 'mestre';
 
     const turmaOptions = turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
 
-    const userCards = usuarios.map(u => {
+    function userCardHtml(u){
       const isActive = u.id === activeUserId;
       const isLoggedIn = currentUser && u.id === currentUser.id;
       return `
@@ -4354,7 +4366,27 @@
           <button class="btn danger" onclick="removeUsuario(${u.id})">Excluir</button>
         </div>
       </div>`;
-    }).join('');
+    }
+
+    // Professor: só enxerga os alunos, organizados por turma (sem ver outros
+    // professores/administradores, nem e-mails bloqueados ou a senha mestre).
+    // Administrador: enxerga a lista completa, com todos os perfis.
+    let listaHtml;
+    if(isMestre){
+      listaHtml = `<div class="user-cards">${usuarios.map(userCardHtml).join('')}</div>`;
+    } else {
+      const alunos = usuarios.filter(u => u.papelKey === 'aluno');
+      const turmasComAlunos = [...new Set(alunos.map(u => u.turma || '—'))].sort();
+      listaHtml = turmasComAlunos.length
+        ? turmasComAlunos.map(t => `
+          <div class="turma-group">
+            <h4 class="turma-group-title">${t}</h4>
+            <div class="user-cards">${alunos.filter(u => (u.turma || '—') === t).map(userCardHtml).join('')}</div>
+          </div>`).join('')
+        : `<p class="ementa">Nenhum aluno cadastrado ainda.</p>`;
+    }
+
+    const totalContagem = isMestre ? usuarios.length : usuarios.filter(u => u.papelKey === 'aluno').length;
 
     const matrixRows = capabilities.map((cap, i) => `
       <tr>
@@ -4364,19 +4396,25 @@
         <td class="center">${rolePermissions.mestre.includes(i) ? '✓' : '—'}</td>
       </tr>`).join('');
 
+    const perfilOptionsHtml = isMestre
+      ? `<option value="aluno">Aluno</option><option value="professor">Professor</option><option value="mestre">Administrador</option>`
+      : `<option value="aluno">Aluno</option>`;
+
     main.innerHTML = `
       <button class="back-btn" onclick="goToModule(-1)">← Voltar ao início</button>
       <div class="page-head">
         <p class="code">Gestão</p>
         <h2>Usuários</h2>
-        <p class="ementa">Cadastro de alunos, professores e administradores. O acesso é feito exclusivamente pela conta Google — o vínculo com a matrícula acontece automaticamente no primeiro login de cada pessoa. Aqui você também pode "visualizar como" outro usuário cadastrado, para conferir o que cada perfil enxerga.</p>
-        <div class="status-row"><span class="pill">${usuarios.length} usuários cadastrados</span></div>
+        <p class="ementa">${isMestre
+          ? 'Cadastro de alunos, professores e administradores. O acesso é feito exclusivamente pela conta Google — o vínculo com a matrícula acontece automaticamente no primeiro login de cada pessoa. Aqui você também pode "visualizar como" outro usuário cadastrado, para conferir o que cada perfil enxerga.'
+          : 'Cadastro dos seus alunos, organizados por turma. O acesso é feito pela conta Google — o vínculo com a matrícula acontece automaticamente no primeiro login de cada aluno.'}</p>
+        <div class="status-row"><span class="pill">${totalContagem} ${isMestre ? 'usuários cadastrados' : 'alunos cadastrados'}</span></div>
       </div>
 
       <section class="block">
-        <h3>Novo usuário</h3>
+        <h3>Novo ${isMestre ? 'usuário' : 'aluno'}</h3>
         <div class="panel-card">
-          <p class="panel-note">Cadastre um aluno, professor ou administrador com a matrícula dele. O acesso é vinculado automaticamente na primeira vez que a pessoa entrar com a conta Google e confirmar essa matrícula — não é preciso definir e-mail nem senha aqui.</p>
+          <p class="panel-note">Cadastre ${isMestre ? 'um aluno, professor ou administrador' : 'um aluno'} com a matrícula dele. O acesso é vinculado automaticamente na primeira vez que a pessoa entrar com a conta Google e confirmar essa matrícula — não é preciso definir e-mail nem senha aqui.</p>
           <div class="form-grid">
             <div class="form-field">
               <label>Nome completo</label>
@@ -4385,9 +4423,7 @@
             <div class="form-field">
               <label>Perfil</label>
               <select id="new-user-perfil">
-                <option value="aluno">Aluno</option>
-                <option value="professor">Professor</option>
-                <option value="mestre">Administrador</option>
+                ${perfilOptionsHtml}
               </select>
             </div>
             <div class="form-field">
@@ -4402,15 +4438,15 @@
               </select>
             </div>
           </div>
-          <button class="btn primary" onclick="addUsuario()">Adicionar usuário</button>
+          <button class="btn primary" onclick="addUsuario()">Adicionar ${isMestre ? 'usuário' : 'aluno'}</button>
         </div>
       </section>
 
       <section class="block">
-        <h3>Usuários cadastrados <span class="count-badge">${usuarios.length}</span></h3>
-        <div class="user-cards">${userCards}</div>
+        <h3>${isMestre ? 'Usuários cadastrados' : 'Alunos cadastrados'} <span class="count-badge">${totalContagem}</span></h3>
+        ${listaHtml}
       </section>
-
+${isMestre ? `
       <section class="block">
         <h3>E-mails bloqueados <span class="count-badge">${emailsBloqueados.length}</span></h3>
         <p class="panel-note">Quando você recusa ou exclui um cadastro e escolhe bloquear o e-mail, ele aparece aqui. Enquanto estiver na lista, a pessoa não consegue se cadastrar de novo (nem por e-mail/senha, nem por "Entrar com o Google").</p>
@@ -4420,7 +4456,7 @@
             : `<span class="release-badge none">Nenhum e-mail bloqueado no momento.</span>`
         }</div>
       </section>
-${currentUser && currentUser.papelKey === 'mestre' ? `
+
       <section class="block">
         <h3>Segurança do Administrador</h3>
         <p class="panel-note">A senha mestre é exigida, além da conta Google, sempre que alguém tentar entrar como Administrador. Só quem já é Administrador vê e pode alterar este campo.</p>
@@ -4450,7 +4486,7 @@ ${currentUser && currentUser.papelKey === 'mestre' ? `
     const turmaEl = document.getElementById('new-user-turma');
     const nome = nomeEl.value.trim();
     if(!nome){ nomeEl.focus(); return; }
-    const perfilKey = perfilEl.value;
+    const perfilKey = (currentUser && currentUser.papelKey === 'mestre') ? perfilEl.value : 'aluno';
     const matricula = matriculaEl.value.trim();
     if(perfilKey !== 'mestre' && !matricula){
       alert('Informe a matrícula. É por ela que a pessoa vai confirmar seu acesso na primeira vez que entrar com o Google.');
@@ -5073,9 +5109,6 @@ ${currentUser && currentUser.papelKey === 'mestre' ? `
   function render(){
     const mgmtKeys = ['turmas','usuarios','aprovacoes','entregas','relatorios','backup','auditoria','manual-professor'];
     if(currentUser && currentUser.papelKey === 'aluno' && mgmtKeys.includes(activeIndex)){
-      activeIndex = -1;
-    }
-    if(currentUser && currentUser.papelKey !== 'mestre' && activeIndex === 'usuarios'){
       activeIndex = -1;
     }
     renderToc();
