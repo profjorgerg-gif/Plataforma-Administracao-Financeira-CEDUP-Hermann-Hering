@@ -895,6 +895,76 @@
   }
   .filial-summary-badges{ display:flex; flex-wrap:wrap; gap:6px; }
   .blocked-email-list{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .tab-row{ display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 20px; }
+  .tab-btn{
+    padding:8px 14px;
+    border:1px solid var(--border-strong);
+    border-radius:20px;
+    background:var(--bg-panel);
+    color:var(--ink-soft);
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:'IBM Plex Sans', sans-serif;
+    transition:background 0.15s, color 0.15s;
+  }
+  .tab-btn.active{ background:var(--gold); color:#1a1508; border-color:var(--gold); }
+  .tab-btn:not(.active):hover{ background:var(--bg-panel-strong); }
+  .tab-badge{ background:rgba(0,0,0,0.25); border-radius:10px; padding:1px 6px; font-size:10.5px; margin-left:2px; }
+  .chamado-card{
+    background:var(--bg-deep);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    margin-bottom:10px;
+  }
+  .chamado-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .chamado-assunto{ font-weight:600; font-size:14px; color:var(--ink); }
+  .chamado-meta{ font-size:11.5px; color:var(--ink-faint); margin:0 0 8px 0; }
+  .chamado-desc{ font-size:13px; color:var(--ink-soft); line-height:1.5; margin:0; }
+  .status-badge{ font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; padding:3px 9px; border-radius:12px; }
+  .status-aberto{ background:rgba(201,154,62,0.18); color:var(--gold-text); }
+  .status-em-analise{ background:rgba(90,140,210,0.18); color:#7fa8e0; }
+  .status-encaminhado{ background:rgba(160,110,220,0.18); color:#b494e8; }
+  .status-encerrado{ background:rgba(90,180,120,0.18); color:#7fd19f; }
+  .chamado-controle{ margin-top:10px; padding-top:10px; border-top:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+  .chamado-controle label{ font-size:11.5px; color:var(--ink-faint); }
+  .chamado-controle select{
+    padding:6px 8px;
+    border:1px solid var(--border-strong);
+    border-radius:6px;
+    background:var(--bg-panel);
+    color:var(--ink);
+    font-size:12.5px;
+  }
+  .import-pdf-label{ cursor:pointer; display:inline-flex; align-items:center; }
+  .import-preview-block{ border:1px solid var(--gold); border-radius:10px; padding:16px; background:rgba(201,154,62,0.05); }
+  .import-preview-list{ display:flex; flex-direction:column; gap:6px; margin:12px 0; max-height:360px; overflow-y:auto; }
+  .import-row{ display:grid; grid-template-columns:2fr 1fr auto auto; gap:8px; align-items:center; }
+  .import-row input{
+    padding:7px 9px;
+    border:1px solid var(--border-strong);
+    border-radius:6px;
+    background:var(--bg-panel);
+    color:var(--ink);
+    font-size:12.5px;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .import-row-duplicado input{ opacity:0.55; }
+  .import-row-tag{ font-size:10px; color:var(--ink-faint); white-space:nowrap; }
+  .import-row-remove{
+    background:none;
+    border:1px solid var(--border-strong);
+    color:var(--ink-faint);
+    border-radius:6px;
+    width:26px;
+    height:26px;
+    cursor:pointer;
+    font-size:14px;
+    line-height:1;
+  }
+  .import-row-remove:hover{ color:#c0392b; border-color:#c0392b; }
+  .import-preview-actions{ display:flex; gap:10px; }
   .filial-card-body{
     padding:0 16px 16px 16px;
     border-top:1px solid var(--border);
@@ -1254,6 +1324,38 @@
     font-family:'IBM Plex Sans', sans-serif;
     flex-shrink:0;
   }
+  .logout-modal{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    background:rgba(10,14,20,0.72);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .logout-modal-card{
+    width:100%;
+    max-width:360px;
+    background:var(--bg-panel-strong);
+    border:1px solid var(--border-strong);
+    border-radius:14px;
+    padding:28px 26px;
+    text-align:center;
+  }
+  .logout-modal-icon{ font-size:28px; margin-bottom:10px; }
+  .logout-modal-card h3{ font-size:16px; color:var(--ink); margin:0 0 8px 0; }
+  .logout-modal-card p{ font-size:12.5px; color:var(--ink-faint); line-height:1.6; margin:0 0 20px 0; }
+  .logout-modal-btn{ width:100%; justify-content:center; margin-bottom:8px; }
+  .logout-modal-cancel{
+    background:none;
+    border:none;
+    color:var(--ink-faint);
+    font-size:12px;
+    cursor:pointer;
+    margin-top:4px;
+    text-decoration:underline;
+  }
   .logout-btn:hover{ border-color:var(--gold); color:var(--gold-text); }
 </style>
 </head>
@@ -1262,6 +1364,12 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  if(window['pdfjsLib']){
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage-compat.js"></script>
 
 <div class="login-screen" id="login-screen">
@@ -1322,6 +1430,17 @@
 </div>
 
 <div class="app" id="app" style="display:none;">
+
+<div class="logout-modal" id="logout-modal" style="display:none;">
+  <div class="logout-modal-card">
+    <div class="logout-modal-icon">💾</div>
+    <h3>Baixar um backup antes de sair?</h3>
+    <p>Baixa um arquivo com os dados e o histórico da plataforma no seu computador. Recomendado, mas opcional.</p>
+    <button class="btn primary logout-modal-btn" onclick="confirmarLogout(true)">Sim, baixar backup e sair</button>
+    <button class="btn secondary logout-modal-btn" onclick="confirmarLogout(false)">Sair sem backup</button>
+    <button class="logout-modal-cancel" onclick="fecharLogoutModal()">Cancelar</button>
+  </div>
+</div>
 
   <button class="mobile-menu-btn" id="mobile-menu-btn">☰ Menu</button>
   <div class="sidebar-scrim" id="sidebar-scrim"></div>
@@ -3334,6 +3453,7 @@
     { id:2, nome:"CONT 2026/1", curso:"Técnico em Contabilidade", periodo:"1º semestre 2026", professor:"Prof. Esp. Jorge Lima Cardoso" },
   ];
   let nextTurmaId = 3;
+  let nextChamadoId = 1;
 
   // Atribuição do estudo de caso final (módulo 12): o professor escolhe, para
   // cada aluno, qual das 10 empresas/filiais ele vai resolver. Um estudo por aluno.
@@ -3380,6 +3500,188 @@
   // Senha mestre: segunda camada de segurança exigida apenas para o papel Administrador,
   // além do login com a conta Google. Pode ser alterada em Gestão → Usuários (só o Admin vê).
   let senhaMestre = '623251@_@prof';
+
+  // ---------- Central de Suporte ----------
+  // tipo: 'sistema' (aluno/professor → Administrador) | 'pedagogico' (aluno → professor)
+  // status: 'aberto' | 'em-analise' | 'encaminhado' | 'encerrado'
+  let chamados = [];
+
+  function abrirChamado(tipo){
+    const prefixo = tipo === 'sistema' ? 'chamado-sistema' : 'chamado-pedagogico';
+    const assuntoEl = document.getElementById(`${prefixo}-assunto`);
+    const descricaoEl = document.getElementById(`${prefixo}-descricao`);
+    const assunto = assuntoEl.value.trim();
+    const descricao = descricaoEl.value.trim();
+    if(!assunto || !descricao){
+      alert('Preencha o assunto e a descrição do chamado.');
+      return;
+    }
+    chamados.unshift({
+      id: nextChamadoId++,
+      tipo,
+      assunto,
+      descricao,
+      autorId: currentUser.id,
+      autorNome: currentUser.nome,
+      autorPapel: currentUser.papel,
+      turma: currentUser.turma,
+      status: 'aberto',
+      criadoEm: nowFormatted(),
+    });
+    logAudit('Criação', currentUser.turma, `Abriu um chamado de ${tipo === 'sistema' ? 'Sistema' : 'Suporte Pedagógico'}: "${assunto}"`);
+    assuntoEl.value = '';
+    descricaoEl.value = '';
+    renderSuporte();
+  }
+
+  function mudarStatusChamado(id, novoStatus){
+    const c = chamados.find(x => x.id === id);
+    if(!c) return;
+    c.status = novoStatus;
+    logAudit('Edição', c.turma, `Alterou o status do chamado "${c.assunto}" para ${novoStatus}`);
+    renderSuporte();
+  }
+
+  function statusChamadoLabel(status){
+    return { 'aberto':'Aberto', 'em-analise':'Em análise', 'encaminhado':'Encaminhado', 'encerrado':'Encerrado' }[status] || status;
+  }
+
+  function chamadoRowHtml(c, comControle){
+    const controleHtml = comControle ? `
+      <div class="chamado-controle">
+        <label>Status:</label>
+        <select onchange="mudarStatusChamado(${c.id}, this.value)">
+          <option value="aberto" ${c.status === 'aberto' ? 'selected' : ''}>Aberto</option>
+          <option value="em-analise" ${c.status === 'em-analise' ? 'selected' : ''}>Em análise</option>
+          <option value="encaminhado" ${c.status === 'encaminhado' ? 'selected' : ''}>Encaminhado</option>
+          <option value="encerrado" ${c.status === 'encerrado' ? 'selected' : ''}>Encerrado</option>
+        </select>
+      </div>` : '';
+    return `
+      <div class="chamado-card">
+        <div class="chamado-head">
+          <span class="chamado-assunto">${c.assunto}</span>
+          <span class="status-badge status-${c.status}">${statusChamadoLabel(c.status)}</span>
+        </div>
+        <p class="chamado-meta">${c.autorNome} (${c.autorPapel}) · ${c.turma} · ${c.criadoEm}</p>
+        <p class="chamado-desc">${c.descricao}</p>
+        ${controleHtml}
+      </div>`;
+  }
+
+  let suporteTabAtiva = 'sistema';
+  function mudarAbaSuporte(tab){ suporteTabAtiva = tab; renderSuporte(); }
+
+  let suporteFiltroStatus = 'todos';
+  function mudarFiltroSuporte(status){ suporteFiltroStatus = status; renderSuporte(); }
+
+  function renderSuporte(){
+    if(!currentUser) return;
+    if(currentUser.papelKey === 'mestre'){ renderSuporteMestre(); return; }
+    if(currentUser.papelKey === 'professor'){ renderSuporteProfessor(); return; }
+    renderSuporteAluno();
+  }
+
+  function renderSuporteAluno(){
+    const main = document.getElementById('main');
+    const meus = chamados.filter(c => c.autorId === currentUser.id).sort((a, b) => b.id - a.id);
+    const destino = suporteTabAtiva === 'sistema' ? 'um Administrador' : 'o professor da sua turma';
+    main.innerHTML = `
+      <div class="page-head">
+        <p class="code">Ajuda</p>
+        <h2>Suporte</h2>
+        <p class="ementa">Fale com o Administrador sobre problemas ou dúvidas do sistema, ou com o professor sobre dúvidas do conteúdo.</p>
+      </div>
+      <div class="tab-row">
+        <button class="tab-btn ${suporteTabAtiva === 'sistema' ? 'active' : ''}" onclick="mudarAbaSuporte('sistema')">Dúvida sobre o Sistema</button>
+        <button class="tab-btn ${suporteTabAtiva === 'pedagogico' ? 'active' : ''}" onclick="mudarAbaSuporte('pedagogico')">Dúvida Pedagógica</button>
+      </div>
+      <section class="block">
+        <h3>Novo chamado</h3>
+        <div class="panel-card">
+          <p class="panel-note">Sua mensagem vai para ${destino}.</p>
+          <div class="form-field"><label>Assunto</label><input type="text" id="chamado-${suporteTabAtiva}-assunto" placeholder="Resuma em poucas palavras"></div>
+          <div class="form-field"><label>Descrição</label><textarea id="chamado-${suporteTabAtiva}-descricao" class="resposta-textarea" placeholder="Descreva com o máximo de detalhes possível..."></textarea></div>
+          <button class="btn primary" onclick="abrirChamado('${suporteTabAtiva}')">Abrir chamado</button>
+        </div>
+      </section>
+      <section class="block">
+        <h3>Meus chamados <span class="count-badge">${meus.length}</span></h3>
+        ${meus.length ? meus.map(c => chamadoRowHtml(c, false)).join('') : '<p class="ementa">Você ainda não abriu nenhum chamado.</p>'}
+      </section>
+    `;
+  }
+
+  function renderSuporteProfessor(){
+    const main = document.getElementById('main');
+    const meusSistema = chamados.filter(c => c.tipo === 'sistema' && c.autorId === currentUser.id).sort((a, b) => b.id - a.id);
+    const pedagogicos = chamados.filter(c => c.tipo === 'pedagogico' && (currentUser.turma === '— (todas as turmas)' || c.turma === currentUser.turma)).sort((a, b) => b.id - a.id);
+    const pendentesPed = pedagogicos.filter(c => c.status !== 'encerrado').length;
+
+    let conteudoHtml;
+    if(suporteTabAtiva === 'alunos'){
+      conteudoHtml = `
+        <section class="block">
+          <h3>Chamados dos seus alunos <span class="count-badge">${pedagogicos.length}</span></h3>
+          ${pedagogicos.length ? pedagogicos.map(c => chamadoRowHtml(c, true)).join('') : '<p class="ementa">Nenhum chamado pedagógico no momento.</p>'}
+        </section>`;
+    } else {
+      conteudoHtml = `
+        <section class="block">
+          <h3>Novo chamado</h3>
+          <div class="panel-card">
+            <p class="panel-note">Sua mensagem vai para um Administrador.</p>
+            <div class="form-field"><label>Assunto</label><input type="text" id="chamado-sistema-assunto" placeholder="Resuma em poucas palavras"></div>
+            <div class="form-field"><label>Descrição</label><textarea id="chamado-sistema-descricao" class="resposta-textarea" placeholder="Descreva com o máximo de detalhes possível..."></textarea></div>
+            <button class="btn primary" onclick="abrirChamado('sistema')">Abrir chamado</button>
+          </div>
+        </section>
+        <section class="block">
+          <h3>Meus chamados <span class="count-badge">${meusSistema.length}</span></h3>
+          ${meusSistema.length ? meusSistema.map(c => chamadoRowHtml(c, false)).join('') : '<p class="ementa">Você ainda não abriu nenhum chamado.</p>'}
+        </section>`;
+    }
+
+    main.innerHTML = `
+      <div class="page-head">
+        <p class="code">Ajuda</p>
+        <h2>Suporte</h2>
+        <p class="ementa">Fale com o Administrador sobre problemas do sistema, ou acompanhe os chamados pedagógicos abertos pelos seus alunos.</p>
+      </div>
+      <div class="tab-row">
+        <button class="tab-btn ${suporteTabAtiva !== 'alunos' ? 'active' : ''}" onclick="mudarAbaSuporte('sistema')">Sistema</button>
+        <button class="tab-btn ${suporteTabAtiva === 'alunos' ? 'active' : ''}" onclick="mudarAbaSuporte('alunos')">Chamados dos Alunos${pendentesPed ? ` <span class="tab-badge">${pendentesPed}</span>` : ''}</button>
+      </div>
+      ${conteudoHtml}
+    `;
+  }
+
+  function renderSuporteMestre(){
+    const main = document.getElementById('main');
+    const todos = chamados.filter(c => c.tipo === 'sistema').sort((a, b) => b.id - a.id);
+    const filtrados = suporteFiltroStatus === 'todos' ? todos : todos.filter(c => c.status === suporteFiltroStatus);
+    const filtros = [
+      { key:'todos', label:'Todos' },
+      { key:'aberto', label:'Abertos' },
+      { key:'em-analise', label:'Em análise' },
+      { key:'encaminhado', label:'Encaminhados' },
+      { key:'encerrado', label:'Encerrados' },
+    ];
+    const filtrosHtml = filtros.map(f => `<button class="tab-btn ${suporteFiltroStatus === f.key ? 'active' : ''}" onclick="mudarFiltroSuporte('${f.key}')">${f.label}</button>`).join('');
+
+    main.innerHTML = `
+      <div class="page-head">
+        <p class="code">Gestão</p>
+        <h2>Suporte</h2>
+        <p class="ementa">Chamados sobre o sistema, abertos por professores e alunos.</p>
+      </div>
+      <div class="tab-row">${filtrosHtml}</div>
+      <div class="status-row" style="margin:10px 0 18px;"><button class="btn secondary" onclick="window.print()">🖨 Imprimir / Salvar PDF</button></div>
+      <section class="block">
+        ${filtrados.length ? filtrados.map(c => chamadoRowHtml(c, true)).join('') : '<p class="ementa">Nenhum chamado neste filtro.</p>'}
+      </section>
+    `;
+  }
 
   function bloquearEmail(email){
     if(!email) return;
@@ -3598,7 +3900,7 @@
   let salvamentoPendente = false;
 
   function payloadAtual(){
-    return { usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, emailsBloqueados, senhaMestre, nextUserId, nextTurmaId };
+    return { usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, emailsBloqueados, senhaMestre, chamados, nextUserId, nextTurmaId, nextChamadoId };
   }
 
   function aplicarEstadoRecebido(data){
@@ -3608,9 +3910,11 @@
     if(Array.isArray(data.atribuicoesEstudoCaso)){ atribuicoesEstudoCaso.length = 0; atribuicoesEstudoCaso.push(...data.atribuicoesEstudoCaso); }
     if(Array.isArray(data.progressoModulos)){ progressoModulos.length = 0; progressoModulos.push(...data.progressoModulos); }
     if(Array.isArray(data.emailsBloqueados)){ emailsBloqueados.length = 0; emailsBloqueados.push(...data.emailsBloqueados); }
+    if(Array.isArray(data.chamados)){ chamados.length = 0; chamados.push(...data.chamados); }
     if(typeof data.senhaMestre === 'string' && data.senhaMestre) senhaMestre = data.senhaMestre;
     if(typeof data.nextUserId === 'number') nextUserId = data.nextUserId;
     if(typeof data.nextTurmaId === 'number') nextTurmaId = data.nextTurmaId;
+    if(typeof data.nextChamadoId === 'number') nextChamadoId = data.nextChamadoId;
   }
 
   // Cache local (fallback): mantém uma cópia no localStorage para o caso de a rede/Firestore falhar.
@@ -3668,7 +3972,7 @@
     estadoDocRef.onSnapshot(snap => {
       if(!snap.exists) return;
       const data = snap.data();
-      const dataStr = JSON.stringify({ usuarios:data.usuarios, turmas:data.turmas, auditoria:data.auditoria, atribuicoesEstudoCaso:data.atribuicoesEstudoCaso, progressoModulos:data.progressoModulos, emailsBloqueados:data.emailsBloqueados, senhaMestre:data.senhaMestre, nextUserId:data.nextUserId, nextTurmaId:data.nextTurmaId });
+      const dataStr = JSON.stringify({ usuarios:data.usuarios, turmas:data.turmas, auditoria:data.auditoria, atribuicoesEstudoCaso:data.atribuicoesEstudoCaso, progressoModulos:data.progressoModulos, emailsBloqueados:data.emailsBloqueados, senhaMestre:data.senhaMestre, chamados:data.chamados, nextUserId:data.nextUserId, nextTurmaId:data.nextTurmaId, nextChamadoId:data.nextChamadoId });
       if(dataStr === ultimoPayloadEnviado) return; // é o eco da própria gravação; ignora
       ultimoPayloadEnviado = dataStr;
       aplicarEstadoRecebido(data);
@@ -3758,6 +4062,18 @@
     tutoriaisBtn.innerHTML = `<span class="toc-title">Tutoriais</span>`;
     tutoriaisBtn.addEventListener('click', () => { activeIndex = 'tutoriais'; render(); closeMobileMenu(); });
     toc.appendChild(tutoriaisBtn);
+
+    const suporteBtn = document.createElement('button');
+    suporteBtn.className = 'toc-item' + (activeIndex === 'suporte' ? ' active' : '');
+    const meusChamadosAbertos = currentUser ? chamados.filter(c => {
+      if(currentUser.papelKey === 'mestre') return c.status !== 'encerrado';
+      if(currentUser.papelKey === 'professor') return c.status !== 'encerrado' && (c.tipo === 'pedagogico' ? c.turma === currentUser.turma || currentUser.turma === '— (todas as turmas)' : c.autorId === currentUser.id);
+      return c.autorId === currentUser.id && c.status !== 'encerrado';
+    }).length : 0;
+    const suporteBadgeHtml = meusChamadosAbertos ? `<span class="toc-badge">${meusChamadosAbertos}</span>` : '';
+    suporteBtn.innerHTML = `<span class="toc-title">Suporte</span>${suporteBadgeHtml}`;
+    suporteBtn.addEventListener('click', () => { activeIndex = 'suporte'; render(); closeMobileMenu(); });
+    toc.appendChild(suporteBtn);
 
     const manualAlunoBtn = document.createElement('button');
     manualAlunoBtn.className = 'toc-item' + (activeIndex === 'manual-aluno' ? ' active' : '');
@@ -4293,17 +4609,23 @@
         <p class="user-detail">${t.professor}</p>
         <div class="user-actions">
           <button class="btn secondary" onclick="editTurma(${t.id})">Editar</button>
+          <label class="btn secondary import-pdf-label">
+            📄 Importar lista (PDF)
+            <input type="file" accept="application/pdf" style="display:none;" onchange="handleImportarListaTurma(${t.id}, this)">
+          </label>
           <button class="btn danger" onclick="removeTurma(${t.id})">Excluir</button>
         </div>
       </div>`;
     }).join('');
+
+    const previewHtml = renderImportPreviewHtml();
 
     main.innerHTML = `
       <button class="back-btn" onclick="goToModule(-1)">← Voltar ao início</button>
       <div class="page-head">
         <p class="code">Gestão</p>
         <h2>Turmas</h2>
-        <p class="ementa">Cadastro das turmas — é preciso ter ao menos uma turma cadastrada antes de vincular usuários.</p>
+        <p class="ementa">Cadastro das turmas — é preciso ter ao menos uma turma cadastrada antes de vincular usuários. Em cada turma, você pode importar a lista de alunos (nome + matrícula) direto de um PDF, em vez de cadastrar um por um.</p>
       </div>
 
       <section class="block">
@@ -4320,11 +4642,140 @@
         </div>
       </section>
 
+      ${previewHtml}
+
       <section class="block">
         <h3>Turmas cadastradas <span class="count-badge">${turmas.length}</span></h3>
         <div class="user-cards">${cards}</div>
       </section>
     `;
+  }
+
+  // ---------- Importação da lista de alunos por PDF ----------
+  let importPreview = null; // { turmaId, turmaNome, linhas: [{nome, matricula}] }
+
+  async function handleImportarListaTurma(turmaId, inputEl){
+    const file = inputEl.files && inputEl.files[0];
+    if(!file) return;
+    const turma = turmas.find(t => t.id === turmaId);
+    if(!turma) return;
+    if(!window.pdfjsLib){
+      alert('Não foi possível carregar o leitor de PDF. Verifique sua internet e tente novamente.');
+      return;
+    }
+    try {
+      const buffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+      let textoCompleto = '';
+      for(let i = 1; i <= pdf.numPages; i++){
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        const linhaTexto = content.items.map(it => it.str).join(' ');
+        textoCompleto += linhaTexto + '\n';
+      }
+      const linhas = extrairNomesMatriculas(textoCompleto);
+      if(!linhas.length){
+        alert('Não consegui reconhecer nomes e matrículas neste PDF. Tente um arquivo com uma matrícula (número) por linha, ao lado do nome do aluno, ou cadastre manualmente.');
+        return;
+      }
+      importPreview = { turmaId, turmaNome: turma.nome, linhas };
+      renderTurmas();
+    } catch(e){
+      console.error('Falha ao ler o PDF:', e);
+      alert('Não foi possível ler este PDF. Confirme se o arquivo não está protegido/escaneado como imagem e tente novamente.');
+    } finally {
+      inputEl.value = '';
+    }
+  }
+
+  function extrairNomesMatriculas(texto){
+    // Heurística: cada aluno costuma aparecer como "Nome Completo <matrícula>"
+    // (a matrícula sendo um código que começa com dígito). Busca no texto inteiro,
+    // já que o pdf.js normalmente extrai cada página como um bloco só, sem preservar
+    // quebras de linha reais.
+    const ignorar = /\b(lista|turma|matr[ií]cula|nome|c[oó]digo|registro|oficial|escola|alunos?)\b/i;
+    const resultado = [];
+    const vistos = new Set();
+    const normalizado = texto.replace(/[ \t]+/g, ' ');
+    const regex = /([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'.]*(?:\s+[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'.]*){1,6})\s+(\d[\dA-Za-z./-]{2,})/g;
+    let match;
+    while((match = regex.exec(normalizado)) !== null){
+      const nome = match[1].replace(/\s+/g, ' ').trim();
+      const matricula = match[2].trim();
+      if(ignorar.test(nome)) continue;
+      if(nome.split(' ').length < 2) continue; // exige nome + sobrenome, reduz falsos positivos
+      const chave = matricula.toLowerCase();
+      if(vistos.has(chave)) continue;
+      vistos.add(chave);
+      resultado.push({ nome, matricula });
+    }
+    return resultado;
+  }
+
+  function renderImportPreviewHtml(){
+    if(!importPreview) return '';
+    const linhasHtml = importPreview.linhas.map((l, i) => {
+      const jaExiste = usuarios.some(u => u.papelKey !== 'mestre' && (u.matricula || '').trim().toLowerCase() === l.matricula.trim().toLowerCase());
+      return `
+      <div class="import-row${jaExiste ? ' import-row-duplicado' : ''}">
+        <input type="text" value="${l.nome}" oninput="importPreview.linhas[${i}].nome = this.value">
+        <input type="text" value="${l.matricula}" oninput="importPreview.linhas[${i}].matricula = this.value">
+        ${jaExiste ? '<span class="import-row-tag">já cadastrado</span>' : ''}
+        <button type="button" class="import-row-remove" onclick="removerLinhaImportPreview(${i})" aria-label="Remover">×</button>
+      </div>`;
+    }).join('');
+
+    return `
+      <section class="block import-preview-block">
+        <h3>Conferir lista importada — ${importPreview.turmaNome} <span class="count-badge">${importPreview.linhas.length}</span></h3>
+        <p class="panel-note">Confira se os nomes e matrículas ficaram corretos (o reconhecimento do PDF pode errar). Ajuste o que precisar, remova linhas que não sejam alunos, e confirme. Matrículas já cadastradas na plataforma são puladas automaticamente.</p>
+        <div class="import-preview-list">${linhasHtml}</div>
+        <div class="import-preview-actions">
+          <button class="btn primary" onclick="confirmarImportacaoTurma()">Confirmar e cadastrar alunos</button>
+          <button class="btn secondary" onclick="cancelarImportacaoTurma()">Cancelar</button>
+        </div>
+      </section>`;
+  }
+
+  function removerLinhaImportPreview(i){
+    if(!importPreview) return;
+    importPreview.linhas.splice(i, 1);
+    renderTurmas();
+  }
+
+  function cancelarImportacaoTurma(){
+    importPreview = null;
+    renderTurmas();
+  }
+
+  function confirmarImportacaoTurma(){
+    if(!importPreview) return;
+    const turma = turmas.find(t => t.id === importPreview.turmaId);
+    if(!turma){ importPreview = null; renderTurmas(); return; }
+    let criados = 0, pulados = 0;
+    importPreview.linhas.forEach(l => {
+      const nome = (l.nome || '').trim();
+      const matricula = (l.matricula || '').trim();
+      if(!nome || !matricula) return;
+      const jaExiste = usuarios.some(u => u.papelKey !== 'mestre' && (u.matricula || '').trim().toLowerCase() === matricula.toLowerCase());
+      if(jaExiste){ pulados++; return; }
+      usuarios.push({
+        id: nextUserId++,
+        nome,
+        papel: 'Aluno',
+        papelKey: 'aluno',
+        matricula,
+        turma: turma.nome,
+        email: '',
+        status: 'aprovado',
+        criadoEm: nowFormatted(),
+      });
+      criados++;
+    });
+    logAudit('Criação', turma.nome, `Importou lista de alunos por PDF: ${criados} cadastrado(s), ${pulados} já existente(s) pulado(s)`);
+    importPreview = null;
+    renderTurmas();
+    alert(`Importação concluída: ${criados} aluno(s) cadastrado(s)${pulados ? `, ${pulados} já existiam e foram ignorados` : ''}.`);
   }
 
   function addTurma(){
@@ -4849,13 +5300,19 @@ ${isMestre ? `
     salvarEstado();
   }
 
+  function timestampParaArquivo(){
+    const d = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}h${pad(d.getMinutes())}m${pad(d.getSeconds())}s`;
+  }
+
   function downloadBackup(){
-    const payload = { geradoEm: new Date().toISOString(), usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, emailsBloqueados };
+    const payload = { geradoEm: new Date().toISOString(), usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, emailsBloqueados, chamados };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `backup_administracao_financeira_${dateForFilename()}.json`;
+    a.download = `Administracao-Financeira_${timestampParaArquivo()}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -5149,6 +5606,7 @@ ${isMestre ? `
     else if(activeIndex === 'manual-aluno'){ renderManual('aluno'); }
     else if(activeIndex === 'manual-professor'){ renderManual('professor'); }
     else if(activeIndex === 'tutoriais'){ renderTutoriais(); }
+    else if(activeIndex === 'suporte'){ renderSuporte(); }
     else { renderModule(); }
   }
 
@@ -5330,6 +5788,16 @@ ${isMestre ? `
   }
 
   function logout(){
+    document.getElementById('logout-modal').style.display = 'flex';
+  }
+
+  function fecharLogoutModal(){
+    document.getElementById('logout-modal').style.display = 'none';
+  }
+
+  function confirmarLogout(comBackup){
+    fecharLogoutModal();
+    if(comBackup) downloadBackup();
     if(currentUser){
       logAudit('Logout', currentUser.turma, `${currentUser.nome} saiu da plataforma`);
     }
