@@ -804,6 +804,50 @@
     min-height:52px;
     resize:vertical;
   }
+  .resposta-widget{
+    margin-top:10px;
+    padding:10px 12px;
+    background:var(--bg-deep);
+    border:1px solid var(--border);
+    border-radius:6px;
+    font-size:13px;
+  }
+  .resposta-widget.resposta-vazia{ color:var(--ink-faint); font-style:italic; }
+  .resposta-opcao{ display:block; margin-bottom:6px; cursor:pointer; }
+  .resposta-opcao input{ margin-right:6px; }
+  .resposta-textarea{
+    width:100%;
+    min-height:70px;
+    padding:8px 10px;
+    border:1px solid var(--border-strong);
+    border-radius:6px;
+    background:var(--bg-panel);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    resize:vertical;
+  }
+  .resposta-label{ display:block; font-size:11px; color:var(--ink-faint); margin-bottom:6px; text-transform:uppercase; letter-spacing:.04em; }
+  .anexo-status{ margin:8px 0 0 0; font-size:12px; color:var(--ink-soft); }
+  .anexo-status a{ color:var(--gold-text); }
+  .resposta-texto-salva{ white-space:pre-wrap; }
+  .nota-row{ display:flex; align-items:center; gap:10px; margin-top:10px; }
+  .nota-row label{ font-size:11.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em; }
+  .nota-input{
+    width:80px;
+    padding:7px 9px;
+    border:1px solid var(--border-strong);
+    border-radius:6px;
+    background:var(--bg-panel);
+    color:var(--ink);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13.5px;
+  }
+  .resposta-resumo{ margin-top:8px; padding:10px 12px; background:var(--bg-deep); border:1px solid var(--border); border-radius:6px; }
+  .resposta-resumo-item{ font-size:12.5px; margin-bottom:5px; line-height:1.5; }
+  .resposta-resumo-item:last-child{ margin-bottom:0; }
+  .resposta-resumo-item a{ color:var(--gold-text); }
+  .resposta-resumo-vazio{ color:var(--ink-faint); font-style:italic; font-size:12.5px; }
   .filial-release-list{ display:flex; flex-direction:column; gap:10px; }
   .filial-card{
     background:var(--bg-panel);
@@ -838,6 +882,7 @@
     white-space:nowrap;
   }
   .filial-summary-badges{ display:flex; flex-wrap:wrap; gap:6px; }
+  .blocked-email-list{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
   .filial-card-body{
     padding:0 16px 16px 16px;
     border-top:1px solid var(--border);
@@ -1189,6 +1234,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage-compat.js"></script>
 
 <div class="login-screen" id="login-screen">
   <div class="login-side">
@@ -3331,6 +3377,28 @@
   // status: 'enviado' | 'aprovado' | 'devolvido'
   let progressoModulos = [];
 
+  // ---------- Bloqueio de e-mails ----------
+  // Quando o professor recusa ou exclui um cadastro, o e-mail entra nesta lista
+  // para impedir que a pessoa se cadastre de novo automaticamente (por e-mail/senha
+  // ou por "Entrar com o Google"). Sem isso, um cadastro recusado por Google "voltava"
+  // sozinho na próxima vez que a pessoa tentasse entrar com aquela conta.
+  let emailsBloqueados = [];
+
+  function bloquearEmail(email){
+    if(!email) return;
+    const e = email.toLowerCase().trim();
+    if(e && !emailsBloqueados.includes(e)) emailsBloqueados.push(e);
+  }
+
+  function desbloquearEmail(email){
+    const idx = emailsBloqueados.indexOf(email.toLowerCase().trim());
+    if(idx > -1){
+      emailsBloqueados.splice(idx, 1);
+      logAudit('Edição', '—', `Desbloqueou o e-mail ${email} — pode se cadastrar novamente`);
+      renderUsuarios();
+    }
+  }
+
   function progressoDoAluno(alunoId, moduloIndex){
     return progressoModulos.find(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex) || null;
   }
@@ -3345,25 +3413,81 @@
     return p ? p.status : 'liberado';
   }
 
+  // anexosPendentes: cache local (nesta sessão) dos arquivos já enviados ao Storage,
+  // antes de o aluno clicar em "enviar para análise". Chave: `${moduloIndex}-${qIndex}`.
+  let anexosPendentes = {};
+
+  function coletarRespostasModulo(moduloIndex){
+    const m = modules[moduloIndex];
+    const respostasObjetivas = {};
+    const respostasDiscursivas = {};
+    const anexos = {};
+    if(m.exercicios){
+      m.exercicios.forEach((q, i) => {
+        const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
+        if(tipoCalculo){
+          const anexo = anexosPendentes[`${moduloIndex}-${i}`];
+          if(anexo) anexos[i] = anexo;
+        } else if(q.opcoes && q.opcoes.length){
+          const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
+          if(sel) respostasObjetivas[i] = sel.value;
+        } else if(q.tipo === 'Verdadeiro ou Falso'){
+          const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
+          if(sel) respostasObjetivas[i] = sel.value;
+        } else {
+          const el = document.getElementById(`resp-${moduloIndex}-${i}`);
+          if(el) respostasDiscursivas[i] = el.value.trim();
+        }
+      });
+    }
+    return { respostasObjetivas, respostasDiscursivas, anexos };
+  }
+
+  function anexarFoto(moduloIndex, qIndex, inputEl){
+    const file = inputEl.files && inputEl.files[0];
+    if(!file || !currentUser) return;
+    const statusEl = document.getElementById(`anexo-status-${moduloIndex}-${qIndex}`);
+    if(statusEl) statusEl.textContent = 'Enviando...';
+    const caminho = `respostas/${currentUser.id}/${moduloIndex}/${qIndex}_${Date.now()}_${file.name}`;
+    const ref = fbStorage.ref().child(caminho);
+    ref.put(file).then(snap => snap.ref.getDownloadURL()).then(url => {
+      anexosPendentes[`${moduloIndex}-${qIndex}`] = { url, nome: file.name };
+      if(statusEl) statusEl.innerHTML = `✓ Anexado: <a href="${url}" target="_blank" rel="noopener">${file.name}</a>`;
+    }).catch(e => {
+      console.error('Falha ao enviar anexo:', e);
+      if(statusEl) statusEl.textContent = 'Falha ao enviar. Confirme sua internet e tente novamente.';
+    });
+  }
+
   function enviarModuloParaAnalise(moduloIndex){
     if(!currentUser || currentUser.papelKey !== 'aluno') return;
     const alunoId = currentUser.id;
+    const { respostasObjetivas, respostasDiscursivas, anexos } = coletarRespostasModulo(moduloIndex);
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
-    const registro = { alunoId, moduloIndex, status:'enviado', comentarioProfessor:'', enviadoEm: nowFormatted(), avaliadoEm:'' };
+    const registro = {
+      alunoId, moduloIndex, status:'enviado', comentarioProfessor:'', nota:null,
+      respostasObjetivas, respostasDiscursivas, anexos,
+      enviadoEm: nowFormatted(), avaliadoEm:'',
+    };
     if(idx > -1) progressoModulos[idx] = { ...progressoModulos[idx], ...registro };
     else progressoModulos.push(registro);
+    Object.keys(anexosPendentes).forEach(k => { if(k.startsWith(`${moduloIndex}-`)) delete anexosPendentes[k]; });
     logAudit('Entrega', currentUser.turma, `${currentUser.nome} enviou o módulo ${modules[moduloIndex].code} para análise`);
     renderModule();
   }
 
   function aprovarModuloAluno(alunoId, moduloIndex){
+    const notaInput = document.getElementById(`nota-${alunoId}-${moduloIndex}`);
+    const nota = notaInput ? parseFloat(notaInput.value.replace(',', '.')) : NaN;
+    if(isNaN(nota) || nota < 0 || nota > 10){ alert('Informe uma nota válida de 0,0 a 10,0 antes de aprovar.'); return; }
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
     if(idx === -1) return;
     progressoModulos[idx].status = 'aprovado';
     progressoModulos[idx].avaliadoEm = nowFormatted();
-    progressoModulos[idx].comentarioProfessor = '';
+    progressoModulos[idx].comentarioProfessor = (document.getElementById(`devolver-comentario-${alunoId}-${moduloIndex}`) || {}).value || '';
+    progressoModulos[idx].nota = nota;
     const aluno = usuarios.find(u => u.id === alunoId);
-    logAudit('Aprovação', aluno ? aluno.turma : '—', `Aprovou o módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} — próximo módulo liberado`);
+    logAudit('Aprovação', aluno ? aluno.turma : '—', `Aprovou o módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} com nota ${nota.toFixed(1)} — próximo módulo liberado`);
     renderEntregas();
   }
 
@@ -3371,10 +3495,13 @@
     const textarea = document.getElementById(`devolver-comentario-${alunoId}-${moduloIndex}`);
     const comentario = textarea ? textarea.value.trim() : '';
     if(!comentario){ alert('Escreva uma orientação para o aluno antes de devolver o módulo.'); return; }
+    const notaInput = document.getElementById(`nota-${alunoId}-${moduloIndex}`);
+    const notaVal = notaInput && notaInput.value.trim() ? parseFloat(notaInput.value.replace(',', '.')) : null;
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
     if(idx === -1) return;
     progressoModulos[idx].status = 'devolvido';
     progressoModulos[idx].comentarioProfessor = comentario;
+    progressoModulos[idx].nota = (notaVal !== null && !isNaN(notaVal)) ? notaVal : progressoModulos[idx].nota;
     progressoModulos[idx].avaliadoEm = nowFormatted();
     const aluno = usuarios.find(u => u.id === alunoId);
     logAudit('Devolução', aluno ? aluno.turma : '—', `Devolveu o módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} com orientações`);
@@ -3453,6 +3580,7 @@
   firebase.initializeApp(firebaseConfig);
   const fbAuth = firebase.auth();
   const fbDb = firebase.firestore();
+  const fbStorage = firebase.storage();
   const estadoDocRef = fbDb.collection('estado').doc('plataforma');
 
   let estadoCarregado = false;
@@ -3461,7 +3589,7 @@
   let salvamentoPendente = false;
 
   function payloadAtual(){
-    return { usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, nextUserId, nextTurmaId };
+    return { usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, emailsBloqueados, nextUserId, nextTurmaId };
   }
 
   function aplicarEstadoRecebido(data){
@@ -3470,6 +3598,7 @@
     if(Array.isArray(data.auditoria)){ auditoria.length = 0; auditoria.push(...data.auditoria); }
     if(Array.isArray(data.atribuicoesEstudoCaso)){ atribuicoesEstudoCaso.length = 0; atribuicoesEstudoCaso.push(...data.atribuicoesEstudoCaso); }
     if(Array.isArray(data.progressoModulos)){ progressoModulos.length = 0; progressoModulos.push(...data.progressoModulos); }
+    if(Array.isArray(data.emailsBloqueados)){ emailsBloqueados.length = 0; emailsBloqueados.push(...data.emailsBloqueados); }
     if(typeof data.nextUserId === 'number') nextUserId = data.nextUserId;
     if(typeof data.nextTurmaId === 'number') nextTurmaId = data.nextTurmaId;
   }
@@ -3529,7 +3658,7 @@
     estadoDocRef.onSnapshot(snap => {
       if(!snap.exists) return;
       const data = snap.data();
-      const dataStr = JSON.stringify({ usuarios:data.usuarios, turmas:data.turmas, auditoria:data.auditoria, atribuicoesEstudoCaso:data.atribuicoesEstudoCaso, progressoModulos:data.progressoModulos, nextUserId:data.nextUserId, nextTurmaId:data.nextTurmaId });
+      const dataStr = JSON.stringify({ usuarios:data.usuarios, turmas:data.turmas, auditoria:data.auditoria, atribuicoesEstudoCaso:data.atribuicoesEstudoCaso, progressoModulos:data.progressoModulos, emailsBloqueados:data.emailsBloqueados, nextUserId:data.nextUserId, nextTurmaId:data.nextTurmaId });
       if(dataStr === ultimoPayloadEnviado) return; // é o eco da própria gravação; ignora
       ultimoPayloadEnviado = dataStr;
       aplicarEstadoRecebido(data);
@@ -3802,13 +3931,16 @@
           </section>`;
         } else {
           const q = m.exercicios[filialIndex];
+          const statusAtualCS = statusEfetivoModulo(currentUser.id, activeIndex);
+          const registroCS = progressoDoAluno(currentUser.id, activeIndex);
+          const editavelCS = statusAtualCS === 'liberado' || statusAtualCS === 'devolvido';
           const downloadBtn = m.exerciciosArquivo
             ? `<a class="btn primary exercise-download" href="${m.exerciciosArquivo}" download>⭳ Baixar exercícios (Word) — preencha seu nome e envie ao professor</a>`
             : '';
           exerciciosHtml = `<section class="block">
             <h3>Seu estudo de caso</h3>
             ${downloadBtn}
-            <ol class="exercise-list">${renderCaseStudyItem(q)}</ol>
+            <ol class="exercise-list">${renderCaseStudyItem(q, activeIndex, filialIndex, !editavelCS, registroCS)}</ol>
           </section>`;
         }
       } else {
@@ -3875,8 +4007,12 @@
         }
       }
     } else if(m.exercicios && m.exercicios.length){
+      const statusAtualEx = isAlunoAtual ? statusEfetivoModulo(currentUser.id, activeIndex) : null;
+      const registroEx = isAlunoAtual ? progressoDoAluno(currentUser.id, activeIndex) : null;
+      const editavelEx = statusAtualEx === 'liberado' || statusAtualEx === 'devolvido';
       const perguntasHtml = m.exercicios.map((q, i) => {
         const tipoClass = 'tipo-' + q.tipo.toLowerCase().replace(/[^a-zà-ú]+/g, '-').replace(/^-+|-+$/g, '');
+        const respostaHtml = isAlunoAtual ? renderRespostaWidget(q, activeIndex, i, !editavelEx, registroEx) : '';
 
         if(q.dados){
           // formato "estudo de caso": empresa, contexto, dados financeiros e tarefas
@@ -3893,11 +4029,12 @@
             <div class="case-data-grid">${dadosHtml}</div>
             <p class="case-tarefas-label">Tarefas</p>
             <ul class="exercise-options case-tarefas">${tarefasHtml}</ul>
+            ${respostaHtml}
           </li>`;
         }
 
         let opcoesHtml = '';
-        if(q.opcoes && q.opcoes.length){
+        if(q.opcoes && q.opcoes.length && !(isAlunoAtual && editavelEx)){
           const letras = ['A','B','C','D','E'];
           opcoesHtml = `<ul class="exercise-options">` +
             q.opcoes.map((op, j) => `<li><span class="opt-letter">${letras[j]}</span>${op}</li>`).join('') +
@@ -3907,6 +4044,7 @@
           <span class="exercise-tipo ${tipoClass}">${q.tipo}</span>
           <p class="exercise-text">${q.texto}</p>
           ${opcoesHtml}
+          ${respostaHtml}
         </li>`;
       }).join('');
 
@@ -3969,6 +4107,8 @@
           <h3>Conclusão do módulo</h3>
           <div class="release-wait aprovado">
             <p><strong>✓ Módulo aprovado pelo professor</strong>${registro && registro.avaliadoEm ? ' em ' + registro.avaliadoEm : ''}.</p>
+            ${registro && registro.nota != null ? `<p><strong>Nota: ${registro.nota.toFixed(1)} / 10</strong></p>` : ''}
+            ${registro && registro.comentarioProfessor ? `<p class="feedback-text">"${registro.comentarioProfessor}"</p>` : ''}
             ${activeIndex < modules.length - 1 ? '<p>O próximo módulo já está liberado para você.</p>' : '<p>Você concluiu todos os módulos da plataforma. Parabéns!</p>'}
           </div>
         </section>`;
@@ -4014,7 +4154,49 @@
     }
   }
 
-  function renderCaseStudyItem(q){
+  function renderRespostaWidget(q, moduloIndex, qIndex, readOnly, registro){
+    const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
+    if(tipoCalculo){
+      const anexoSalvo = registro && registro.anexos ? registro.anexos[qIndex] : null;
+      if(readOnly){
+        return anexoSalvo
+          ? `<div class="resposta-widget">📎 <a href="${anexoSalvo.url}" target="_blank" rel="noopener">${anexoSalvo.nome}</a></div>`
+          : `<div class="resposta-widget resposta-vazia">Nenhum anexo enviado.</div>`;
+      }
+      const statusTexto = anexoSalvo ? `✓ Anexado: <a href="${anexoSalvo.url}" target="_blank" rel="noopener">${anexoSalvo.nome}</a>` : 'Tire uma foto da resolução no caderno e anexe aqui.';
+      return `<div class="resposta-widget">
+        <label class="resposta-label">Sua resolução (foto do caderno)</label>
+        <input type="file" accept="image/*" capture="environment" onchange="anexarFoto(${moduloIndex}, ${qIndex}, this)">
+        <p class="anexo-status" id="anexo-status-${moduloIndex}-${qIndex}">${statusTexto}</p>
+      </div>`;
+    }
+    if(q.opcoes && q.opcoes.length){
+      const letras = ['A','B','C','D','E'];
+      const respostaSalva = registro && registro.respostasObjetivas ? registro.respostasObjetivas[qIndex] : null;
+      if(readOnly){
+        return `<div class="resposta-widget">Sua resposta: <strong>${respostaSalva || '—'}</strong></div>`;
+      }
+      const optsHtml = q.opcoes.map((op, j) => `<label class="resposta-opcao"><input type="radio" name="resp-${moduloIndex}-${qIndex}" value="${letras[j]}" ${respostaSalva === letras[j] ? 'checked' : ''}> ${letras[j]}) ${op}</label>`).join('');
+      return `<div class="resposta-widget">${optsHtml}</div>`;
+    }
+    if(q.tipo === 'Verdadeiro ou Falso'){
+      const respostaSalva = registro && registro.respostasObjetivas ? registro.respostasObjetivas[qIndex] : null;
+      if(readOnly){
+        return `<div class="resposta-widget">Sua resposta: <strong>${respostaSalva || '—'}</strong></div>`;
+      }
+      return `<div class="resposta-widget">
+        <label class="resposta-opcao"><input type="radio" name="resp-${moduloIndex}-${qIndex}" value="Verdadeiro" ${respostaSalva === 'Verdadeiro' ? 'checked' : ''}> Verdadeiro</label>
+        <label class="resposta-opcao"><input type="radio" name="resp-${moduloIndex}-${qIndex}" value="Falso" ${respostaSalva === 'Falso' ? 'checked' : ''}> Falso</label>
+      </div>`;
+    }
+    const respostaSalva = registro && registro.respostasDiscursivas ? registro.respostasDiscursivas[qIndex] : '';
+    if(readOnly){
+      return `<div class="resposta-widget resposta-texto-salva">${respostaSalva || '<em>Sem resposta.</em>'}</div>`;
+    }
+    return `<div class="resposta-widget"><textarea id="resp-${moduloIndex}-${qIndex}" class="resposta-textarea" placeholder="Digite sua resposta...">${respostaSalva || ''}</textarea></div>`;
+  }
+
+  function renderCaseStudyItem(q, moduloIndex, qIndex, readOnly, registro){
     const tipoClass = 'tipo-' + q.tipo.toLowerCase().replace(/[^a-zà-ú]+/g, '-').replace(/^-+|-+$/g, '');
     const dadosHtml = q.dados.map(grupo => `
       <div class="case-data-group">
@@ -4022,6 +4204,9 @@
         <ul class="case-data-items">${grupo.itens.map(it => `<li>${it}</li>`).join('')}</ul>
       </div>`).join('');
     const tarefasHtml = q.tarefas.map((t, j) => `<li><span class="opt-letter">${j+1}</span>${t}</li>`).join('');
+    const respostaHtml = (moduloIndex !== undefined && moduloIndex !== null)
+      ? renderRespostaWidget(q, moduloIndex, qIndex, readOnly, registro)
+      : '';
     return `<li>
       <span class="exercise-tipo ${tipoClass}">${q.tipo}</span>
       <p class="exercise-text"><strong>Empresa: ${q.empresa}</strong></p>
@@ -4029,6 +4214,7 @@
       <div class="case-data-grid">${dadosHtml}</div>
       <p class="case-tarefas-label">Tarefas</p>
       <ul class="exercise-options case-tarefas">${tarefasHtml}</ul>
+      ${respostaHtml}
     </li>`;
   }
 
@@ -4258,6 +4444,16 @@
         <div class="user-cards">${userCards}</div>
       </section>
 
+      <section class="block">
+        <h3>E-mails bloqueados <span class="count-badge">${emailsBloqueados.length}</span></h3>
+        <p class="panel-note">Quando você recusa ou exclui um cadastro e escolhe bloquear o e-mail, ele aparece aqui. Enquanto estiver na lista, a pessoa não consegue se cadastrar de novo (nem por e-mail/senha, nem por "Entrar com o Google").</p>
+        <div class="blocked-email-list">${
+          emailsBloqueados.length
+            ? emailsBloqueados.map(e => `<span class="release-badge">${e} <button type="button" onclick="desbloquearEmail('${e}')" aria-label="Desbloquear">×</button></span>`).join('')
+            : `<span class="release-badge none">Nenhum e-mail bloqueado no momento.</span>`
+        }</div>
+      </section>
+
       <section class="block" id="permissions-section">
         <h3>Limitações por perfil</h3>
         <table class="data-table matrix">
@@ -4320,8 +4516,10 @@
     const idx = usuarios.findIndex(u => u.id === id);
     if(idx > -1){
       const removido = usuarios[idx];
+      const tambemBloquear = removido.email && confirm(`Excluir ${removido.nome}. Deseja também bloquear o e-mail ${removido.email}, para que essa pessoa não consiga se cadastrar de novo sozinha (por e-mail/senha ou Google)?`);
       usuarios.splice(idx, 1);
-      logAudit('Exclusão', removido.turma, `Excluiu o usuário ${removido.nome} (${removido.papel})`);
+      if(tambemBloquear) bloquearEmail(removido.email);
+      logAudit('Exclusão', removido.turma, `Excluiu o usuário ${removido.nome} (${removido.papel})${tambemBloquear ? ` — e-mail ${removido.email} bloqueado` : ''}`);
     }
     renderUsuarios();
   }
@@ -4385,15 +4583,37 @@
     const idx = usuarios.findIndex(x => x.id === id);
     if(idx === -1) return;
     const u = usuarios[idx];
-    if(!confirm(`Recusar e remover o cadastro de ${u.nome}? Essa ação não pode ser desfeita.`)) return;
+    if(!confirm(`Recusar e remover o cadastro de ${u.nome}? O e-mail ${u.email || ''} será bloqueado e não poderá se cadastrar novamente. Essa ação não pode ser desfeita.`)) return;
     usuarios.splice(idx, 1);
-    logAudit('Exclusão', u.turma, `Recusou o cadastro de ${u.nome} (${u.papel})`);
+    bloquearEmail(u.email);
+    logAudit('Exclusão', u.turma, `Recusou o cadastro de ${u.nome} (${u.papel}) — e-mail ${u.email || ''} bloqueado`);
     renderAprovacoes();
   }
 
   function showPermissions(){
     const section = document.getElementById('permissions-section');
     if(section) section.scrollIntoView({behavior:'smooth'});
+  }
+
+  function renderRespostasResumoProfessor(p, m){
+    if(!m.exercicios || !m.exercicios.length) return '';
+    const linhas = m.exercicios.map((q, i) => {
+      const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
+      if(tipoCalculo){
+        const anexo = p.anexos ? p.anexos[i] : null;
+        if(!anexo) return '';
+        return `<div class="resposta-resumo-item">📎 ${q.empresa || ('Questão ' + (i+1))}: <a href="${anexo.url}" target="_blank" rel="noopener">${anexo.nome}</a></div>`;
+      }
+      if(q.opcoes || q.tipo === 'Verdadeiro ou Falso'){
+        const resp = p.respostasObjetivas ? p.respostasObjetivas[i] : null;
+        if(!resp) return '';
+        return `<div class="resposta-resumo-item"><strong>Q${i+1}:</strong> ${resp}</div>`;
+      }
+      const resp = p.respostasDiscursivas ? p.respostasDiscursivas[i] : null;
+      if(!resp) return '';
+      return `<div class="resposta-resumo-item"><strong>Q${i+1}:</strong> ${resp}</div>`;
+    }).filter(Boolean).join('');
+    return linhas ? `<div class="resposta-resumo">${linhas}</div>` : `<div class="resposta-resumo resposta-resumo-vazio">O aluno não enviou respostas detalhadas para este módulo (verifique o arquivo Word baixado, se aplicável).</div>`;
   }
 
   function renderEntregas(){
@@ -4409,13 +4629,19 @@
           const aluno = usuarios.find(u => u.id === p.alunoId);
           const m = modules[p.moduloIndex];
           if(!aluno || !m) return '';
+          const respostasHtml = renderRespostasResumoProfessor(p, m);
           return `
           <div class="approval-row">
             <div class="approval-info">
               <div class="approval-name">${aluno.nome} <span class="role-badge role-aluno">${m.code}</span></div>
               <div class="approval-detail">${m.title} · Turma ${aluno.turma}</div>
               <div class="approval-detail">Enviado em ${p.enviadoEm}</div>
-              <textarea id="devolver-comentario-${aluno.id}-${p.moduloIndex}" class="feedback-input" placeholder="Se for devolver, escreva aqui as orientações para o aluno..."></textarea>
+              ${respostasHtml}
+              <div class="nota-row">
+                <label>Nota (0,0 a 10,0)</label>
+                <input type="number" min="0" max="10" step="0.1" id="nota-${aluno.id}-${p.moduloIndex}" class="nota-input" placeholder="0.0" value="${p.nota != null ? p.nota : ''}">
+              </div>
+              <textarea id="devolver-comentario-${aluno.id}-${p.moduloIndex}" class="feedback-input" placeholder="Se for devolver, escreva aqui as orientações para o aluno...">${p.comentarioProfessor || ''}</textarea>
             </div>
             <div class="approval-actions">
               <button class="btn primary" onclick="aprovarModuloAluno(${aluno.id}, ${p.moduloIndex})">✓ Aprovar e liberar próximo</button>
@@ -4439,7 +4665,7 @@
           const aluno = usuarios.find(u => u.id === p.alunoId);
           const m = modules[p.moduloIndex];
           if(!aluno || !m) return '';
-          return `<tr><td>${aluno.nome}</td><td>${m.code} ${m.title}</td><td>${p.avaliadoEm}</td></tr>`;
+          return `<tr><td>${aluno.nome}</td><td>${m.code} ${m.title}</td><td>${p.nota != null ? p.nota.toFixed(1) : '—'}</td><td>${p.avaliadoEm}</td></tr>`;
         }).join('')
       : `<tr><td colspan="3" style="color:var(--ink-faint);font-style:italic;">Nenhum módulo aprovado ainda.</td></tr>`;
 
@@ -4467,7 +4693,7 @@
       <section class="block">
         <h3>Aprovados (${aprovados.length})</h3>
         <table class="data-table">
-          <thead><tr><th>Aluno</th><th>Módulo</th><th>Data</th></tr></thead>
+          <thead><tr><th>Aluno</th><th>Módulo</th><th>Nota</th><th>Data</th></tr></thead>
           <tbody>${aprovadosRows}</tbody>
         </table>
       </section>
@@ -4571,7 +4797,7 @@
   }
 
   function downloadBackup(){
-    const payload = { geradoEm: new Date().toISOString(), usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos };
+    const payload = { geradoEm: new Date().toISOString(), usuarios, turmas, auditoria, atribuicoesEstudoCaso, progressoModulos, emailsBloqueados };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -4606,6 +4832,7 @@
         if(Array.isArray(data.auditoria)){ auditoria.length = 0; auditoria.push(...data.auditoria); }
         if(Array.isArray(data.atribuicoesEstudoCaso)){ atribuicoesEstudoCaso.length = 0; atribuicoesEstudoCaso.push(...data.atribuicoesEstudoCaso); }
         if(Array.isArray(data.progressoModulos)){ progressoModulos.length = 0; progressoModulos.push(...data.progressoModulos); }
+        if(Array.isArray(data.emailsBloqueados)){ emailsBloqueados.length = 0; emailsBloqueados.push(...data.emailsBloqueados); }
         nextUserId = usuarios.reduce((max,u) => Math.max(max, u.id||0), 0) + 1;
         if(!usuarios.find(u => u.id === activeUserId)){ activeUserId = usuarios.length ? usuarios[0].id : null; }
         auditoria.unshift({ data:nowFormatted(), usuario:currentActiveUserName(), turma:'—', tipo:'Backup', descricao:'Restaurou um backup na plataforma' });
@@ -4946,6 +5173,10 @@
       const email = (googleUser.email || '').toLowerCase();
       let user = findUserByEmail(email);
       if(!user){
+        if(emailsBloqueados.includes(email)){
+          showLoginErrorMsg('login-error', 'Este e-mail foi bloqueado pelo professor e não pode se cadastrar. Se isso for um engano, peça ao professor para desbloquear em Gestão → Usuários.');
+          return;
+        }
         user = {
           id: nextUserId++,
           nome: googleUser.displayName || email,
@@ -5061,6 +5292,10 @@
     }
     if(findUserByEmail(email)){
       showLoginErrorMsg('register-error', 'Já existe uma conta cadastrada com este e-mail. Tente entrar, ou use "Esqueci minha senha".');
+      return;
+    }
+    if(emailsBloqueados.includes(email.toLowerCase().trim())){
+      showLoginErrorMsg('register-error', 'Este e-mail foi bloqueado pelo professor e não pode se cadastrar. Se isso for um engano, peça ao professor para desbloquear em Gestão → Usuários.');
       return;
     }
     const novoUsuario = {
