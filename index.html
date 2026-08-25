@@ -607,6 +607,7 @@
   .role-aluno{ background:rgba(169,183,194,0.14); color:var(--ink-soft); border:1px solid var(--border-strong); }
   .role-professor{ background:var(--gold-soft); color:var(--gold-text); border:1px solid rgba(201,154,62,0.35); }
   .role-mestre{ background:rgba(143,203,168,0.14); color:#8FCBA8; border:1px solid rgba(143,203,168,0.35); }
+  .role-recuperacao{ background:rgba(180,148,232,0.16); color:#b494e8; border:1px solid rgba(180,148,232,0.4); }
 
   .count-badge{
     display:inline-block;
@@ -800,7 +801,44 @@
   .release-wait-partial{ border-left-color:var(--border-strong); font-size:13px; padding:12px 16px; }
   .release-wait.devolvido{ border-left-color:#c0392b; }
   .release-wait.aprovado{ border-left-color:#2f9e5c; }
+  .release-wait.recuperacao{ border-left-color:#b494e8; }
   .release-wait .feedback-text{ font-style:italic; color:var(--ink); }
+  .recuperacao-resumo{
+    background:rgba(180,148,232,0.06);
+    border:1px solid rgba(180,148,232,0.3);
+    border-radius:8px;
+    padding:14px 16px;
+    margin-top:12px;
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.6;
+  }
+  .recuperacao-resumo p{ margin:0 0 8px 0; }
+  .recuperacao-resumo p:last-child{ margin-bottom:0; }
+  .nota-final-card{
+    margin-top:22px;
+    background:var(--bg-panel-strong);
+    border:1px solid var(--border-strong);
+    border-radius:12px;
+    padding:20px 22px;
+  }
+  .nota-final-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:14px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--border);
+  }
+  .nota-final-head h3{ margin:0; font-size:15px; color:var(--ink); }
+  .nota-final-valor{ font-family:'IBM Plex Mono', monospace; font-size:26px; font-weight:600; color:var(--gold-text); }
+  .nota-final-valor small{ font-size:13px; color:var(--ink-faint); font-weight:400; }
+  .nota-final-detalhe{ display:flex; gap:32px; flex-wrap:wrap; }
+  .nota-final-label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); margin-bottom:4px; }
+  .nota-final-sub{ display:block; font-size:14px; color:var(--ink-soft); }
+  .nota-final-nota-rodape{ margin:14px 0 0 0; font-size:11.5px; color:var(--ink-faint); line-height:1.5; }
   .toc-status{ margin-left:auto; font-size:11px; flex-shrink:0; }
   .toc-item-locked{ opacity:0.55; }
   .feedback-input{
@@ -3723,11 +3761,43 @@
     return progressoModulos.find(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex) || null;
   }
 
+  // ---------- Nota Final do curso ----------
+  // Módulos 1 a 11: média das notas finais (após Recuperação Paralela, quando
+  // realizada — o campo `nota` do registro já guarda sempre a maior entre a
+  // avaliação regular e a recuperação) = 40% da Nota Final.
+  // Módulo 12: nota individual, sem recuperação paralela = 60% da Nota Final.
+  function calcularNotaFinalCurso(alunoId){
+    const notas1a11 = [];
+    for(let i = 0; i <= 10; i++){
+      const r = progressoDoAluno(alunoId, i);
+      if(r && r.status === 'aprovado' && r.nota != null) notas1a11.push(r.nota);
+    }
+    const media1a11 = notas1a11.length ? notas1a11.reduce((a, b) => a + b, 0) / notas1a11.length : null;
+    const r12 = progressoDoAluno(alunoId, 11);
+    const nota12 = (r12 && r12.status === 'aprovado' && r12.nota != null) ? r12.nota : null;
+    const notaFinal = (media1a11 != null || nota12 != null)
+      ? Math.round(((media1a11 || 0) * 0.4 + (nota12 || 0) * 0.6) * 10) / 10
+      : null;
+    return {
+      media1a11: media1a11 != null ? Math.round(media1a11 * 10) / 10 : null,
+      nota12,
+      notaFinal,
+      modulosConcluidos: notas1a11.length,
+      modulo12Concluido: nota12 != null,
+    };
+  }
+
+  // Retorna: 'liberado' | 'bloqueado' | 'enviado' | 'aprovado' | 'devolvido'
   // Retorna: 'liberado' | 'bloqueado' | 'enviado' | 'aprovado' | 'devolvido'
   function statusEfetivoModulo(alunoId, moduloIndex){
     if(moduloIndex > 0){
-      const anterior = statusEfetivoModulo(alunoId, moduloIndex - 1);
-      if(anterior !== 'aprovado') return 'bloqueado';
+      // Usa "já foi aprovado alguma vez" (não o status atual) para decidir se o
+      // próximo módulo está liberado — assim, iniciar uma Recuperação Paralela
+      // num módulo anterior (que volta o status dele para 'liberado' temporariamente)
+      // não trava de novo os módulos seguintes que o aluno já desbloqueou.
+      const anteriorRegistro = progressoDoAluno(alunoId, moduloIndex - 1);
+      const anteriorFoiAprovadoAlgumaVez = !!(anteriorRegistro && anteriorRegistro.notaRegular != null);
+      if(!anteriorFoiAprovadoAlgumaVez) return 'bloqueado';
     }
     const p = progressoDoAluno(alunoId, moduloIndex);
     return p ? p.status : 'liberado';
@@ -3781,6 +3851,7 @@
     const alunoId = currentUser.id;
     const idx = progressoModulos.findIndex(p => p.alunoId === alunoId && p.moduloIndex === moduloIndex);
     const registroExistente = idx > -1 ? progressoModulos[idx] : null;
+    const emRecuperacao = !!(registroExistente && registroExistente.emRecuperacao);
     const pendencias = validarPendenciasModulo(moduloIndex, registroExistente);
     if(pendencias.length){
       alert(`Antes de enviar, complete:\n\n${pendencias.map(p => '• ' + p).join('\n')}`);
@@ -3789,34 +3860,62 @@
     const { respostasObjetivas, respostasDiscursivas } = coletarRespostasModulo(moduloIndex, registroExistente);
     const composicao = composicaoModulo(moduloIndex);
     const correcao = corrigirObjetivas(moduloIndex, respostasObjetivas);
+    const notaRegularBase = registroExistente ? (registroExistente.notaRegular != null ? registroExistente.notaRegular : registroExistente.nota) : null;
 
     let registro;
     if(composicao.somenteObjetivas){
       // Módulo só tem questões objetivas: corrige e libera na hora, sem
-      // passar pela fila do professor.
+      // passar pela fila do professor. Se for recuperação, prevalece a maior nota.
+      const notaFinalModulo = (emRecuperacao && notaRegularBase != null) ? Math.max(notaRegularBase, correcao.nota) : correcao.nota;
       registro = {
         alunoId, moduloIndex, status:'aprovado', comentarioProfessor:'',
-        nota: correcao.nota, notaObjetiva: correcao.nota, notaMaximaObjetiva: composicao.maxObjetiva,
+        nota: notaFinalModulo,
+        notaRegular: notaRegularBase != null ? notaRegularBase : correcao.nota,
+        notaRecuperacao: emRecuperacao ? correcao.nota : (registroExistente ? registroExistente.notaRecuperacao : null),
+        emRecuperacao: false,
+        notaObjetiva: correcao.nota, notaMaximaObjetiva: composicao.maxObjetiva,
         acertosObjetivas: correcao.acertos, totalObjetivas: correcao.total,
         respostasObjetivas, respostasDiscursivas,
         enviadoEm: nowFormatted(), avaliadoEm: nowFormatted(),
       };
-      logAudit('Correção automática', currentUser.turma, `${currentUser.nome} concluiu o módulo ${modules[moduloIndex].code} — ${correcao.acertos}/${correcao.total} corretas, nota ${correcao.nota.toFixed(1)} — próximo módulo liberado`);
+      const rotuloAcao = emRecuperacao ? 'Recuperação paralela' : 'Correção automática';
+      logAudit(rotuloAcao, currentUser.turma, `${currentUser.nome} concluiu ${emRecuperacao ? 'a recuperação paralela do' : 'o'} módulo ${modules[moduloIndex].code} — ${correcao.acertos}/${correcao.total} corretas, nota final ${notaFinalModulo.toFixed(1)}`);
     } else {
       // Módulo misto ou só com questões que dependem do professor: calcula a
       // nota parcial das objetivas (se houver) e envia para análise.
       registro = {
         alunoId, moduloIndex, status:'enviado', comentarioProfessor:'', nota:null,
+        notaRegular: notaRegularBase,
+        notaRecuperacao: registroExistente ? registroExistente.notaRecuperacao : null,
+        emRecuperacao,
         notaObjetiva: composicao.objetivas.length ? correcao.nota : null,
         notaMaximaObjetiva: composicao.maxObjetiva, notaMaximaNaoObjetiva: composicao.maxNaoObjetiva,
         acertosObjetivas: correcao.acertos, totalObjetivas: correcao.total,
         respostasObjetivas, respostasDiscursivas,
         enviadoEm: nowFormatted(), avaliadoEm:'',
       };
-      logAudit('Entrega', currentUser.turma, `${currentUser.nome} enviou o módulo ${modules[moduloIndex].code} para análise`);
+      logAudit('Entrega', currentUser.turma, `${currentUser.nome} enviou ${emRecuperacao ? 'a recuperação paralela do' : 'o'} módulo ${modules[moduloIndex].code} para análise`);
     }
     if(idx > -1) progressoModulos[idx] = { ...progressoModulos[idx], ...registro };
     else progressoModulos.push(registro);
+    renderModule();
+  }
+
+  // Libera uma nova tentativa (Recuperação Paralela) para um módulo já aprovado.
+  // Não existe para o Módulo 12 (índice 11). A nota final do módulo passa a ser
+  // a maior entre a Avaliação Regular e a Recuperação Paralela.
+  function iniciarRecuperacaoParalela(moduloIndex){
+    if(!currentUser || currentUser.papelKey !== 'aluno') return;
+    if(moduloIndex === 11) return;
+    const idx = progressoModulos.findIndex(p => p.alunoId === currentUser.id && p.moduloIndex === moduloIndex);
+    if(idx === -1) return;
+    const registro = progressoModulos[idx];
+    if(registro.status !== 'aprovado') return;
+    if(!confirm('Iniciar a Recuperação Paralela deste módulo? Sua nota atual fica guardada, e a nota final será a maior entre as duas tentativas.')) return;
+    if(registro.notaRegular == null) registro.notaRegular = registro.nota;
+    registro.emRecuperacao = true;
+    registro.status = 'liberado';
+    logAudit('Recuperação', currentUser.turma, `${currentUser.nome} iniciou a recuperação paralela do módulo ${modules[moduloIndex].code} (nota regular: ${registro.notaRegular.toFixed(1)})`);
     renderModule();
   }
 
@@ -3836,14 +3935,30 @@
         return;
       }
     }
-    const notaFinal = Math.round((notaObjetiva + notaNaoObjetiva) * 10) / 10;
+    const notaTentativaAtual = Math.round((notaObjetiva + notaNaoObjetiva) * 10) / 10;
+    const emRecuperacao = !!registro.emRecuperacao;
+    let notaFinalModulo = notaTentativaAtual;
+    let notaRegularFinal = registro.notaRegular;
+    let notaRecuperacaoFinal = registro.notaRecuperacao;
+    if(emRecuperacao){
+      notaRecuperacaoFinal = notaTentativaAtual;
+      notaFinalModulo = Math.max(registro.notaRegular != null ? registro.notaRegular : 0, notaTentativaAtual);
+    } else if(notaRegularFinal == null){
+      notaRegularFinal = notaTentativaAtual;
+    }
     registro.status = 'aprovado';
     registro.avaliadoEm = nowFormatted();
     registro.comentarioProfessor = (document.getElementById(`devolver-comentario-${alunoId}-${moduloIndex}`) || {}).value || '';
     registro.notaNaoObjetiva = composicao.naoObjetivas.length ? notaNaoObjetiva : null;
-    registro.nota = notaFinal;
+    registro.nota = notaFinalModulo;
+    registro.notaRegular = notaRegularFinal;
+    registro.notaRecuperacao = notaRecuperacaoFinal;
+    registro.emRecuperacao = false;
     const aluno = usuarios.find(u => u.id === alunoId);
-    logAudit('Aprovação', aluno ? aluno.turma : '—', `Aprovou o módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} com nota ${notaFinal.toFixed(1)} — próximo módulo liberado`);
+    const mensagemAudit = emRecuperacao
+      ? `Corrigiu a recuperação paralela do módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} — nota da recuperação ${notaTentativaAtual.toFixed(1)}, nota final do módulo ${notaFinalModulo.toFixed(1)}`
+      : `Aprovou o módulo ${modules[moduloIndex].code} de ${aluno ? aluno.nome : alunoId} com nota ${notaFinalModulo.toFixed(1)} — próximo módulo liberado`;
+    logAudit('Aprovação', aluno ? aluno.turma : '—', mensagemAudit);
     renderEntregas();
   }
 
@@ -4176,6 +4291,31 @@
 
   function renderHome(){
     const main = document.getElementById('main');
+    const isAluno = currentUser && currentUser.papelKey === 'aluno';
+    let notaFinalHtml = '';
+    if(isAluno){
+      const nf = calcularNotaFinalCurso(currentUser.id);
+      if(nf.modulosConcluidos > 0 || nf.modulo12Concluido){
+        notaFinalHtml = `
+        <div class="nota-final-card">
+          <div class="nota-final-head">
+            <h3>Sua Nota Final do curso${nf.modulosConcluidos < 11 || !nf.modulo12Concluido ? ' (provisória)' : ''}</h3>
+            <span class="nota-final-valor">${nf.notaFinal != null ? nf.notaFinal.toFixed(1) : '—'} <small>/ 10</small></span>
+          </div>
+          <div class="nota-final-detalhe">
+            <div>
+              <span class="nota-final-label">Módulos 1–11 (40%)</span>
+              <span class="nota-final-sub">${nf.media1a11 != null ? nf.media1a11.toFixed(1) : '—'} · ${nf.modulosConcluidos}/11 concluídos</span>
+            </div>
+            <div>
+              <span class="nota-final-label">Módulo 12 (60%)</span>
+              <span class="nota-final-sub">${nf.nota12 != null ? nf.nota12.toFixed(1) : 'ainda não concluído'}</span>
+            </div>
+          </div>
+          ${nf.modulosConcluidos < 11 || !nf.modulo12Concluido ? '<p class="nota-final-nota-rodape">A nota final é recalculada automaticamente conforme você conclui os módulos. Nos módulos 1 a 11, vale sempre a maior nota entre a avaliação regular e a Recuperação Paralela.</p>' : ''}
+        </div>`;
+      }
+    }
     main.innerHTML = `
       <p class="eyebrow">Curso técnico em administração e contabilidade</p>
       <h2 class="home-title">Administração Financeira</h2>
@@ -4186,6 +4326,7 @@
         <button class="btn primary" id="btn-start">Ir para o módulo 1</button>
         <button class="btn secondary" id="btn-index">Ver índice de módulos</button>
       </div>
+      ${notaFinalHtml}
       <div class="stats-grid">
         <div class="stat-card">
           <p class="stat-label">Módulos cadastrados</p>
@@ -4443,7 +4584,17 @@
     if(isAlunoAtual){
       const statusAtual = statusEfetivoModulo(currentUser.id, activeIndex);
       const registro = progressoDoAluno(currentUser.id, activeIndex);
-      if(statusAtual === 'liberado'){
+      const emRecuperacao = !!(registro && registro.emRecuperacao);
+      if(statusAtual === 'liberado' && emRecuperacao){
+        progressoPanelHtml = `<section class="block">
+          <h3>Conclusão do módulo</h3>
+          <div class="release-wait recuperacao">
+            <p><strong>🔁 Recuperação Paralela em andamento.</strong></p>
+            <p>Sua nota da avaliação regular (${registro.notaRegular.toFixed(1)}) está guardada. Ao concluir, a nota final do módulo será a <strong>maior</strong> entre as duas tentativas.</p>
+            <button type="button" class="btn primary" onclick="enviarModuloParaAnalise(${activeIndex})">Concluir recuperação e enviar</button>
+          </div>
+        </section>`;
+      } else if(statusAtual === 'liberado'){
         progressoPanelHtml = `<section class="block">
           <h3>Conclusão do módulo</h3>
           <div class="release-wait">
@@ -4458,8 +4609,9 @@
         progressoPanelHtml = `<section class="block">
           <h3>Conclusão do módulo</h3>
           <div class="release-wait">
-            <p><strong>⏳ Aguardando análise do professor.</strong></p>
+            <p><strong>⏳ Aguardando análise do professor${emRecuperacao ? ' (Recuperação Paralela)' : ''}.</strong></p>
             <p>Você enviou este módulo em ${registro ? registro.enviadoEm : ''}. Assim que o professor avaliar, você será avisado aqui mesmo.</p>
+            ${emRecuperacao ? `<p>Sua nota da avaliação regular (${registro.notaRegular.toFixed(1)}) está guardada — a nota final será a maior entre as duas tentativas.</p>` : ''}
             ${notaParcialHtml}
           </div>
         </section>`;
@@ -4478,6 +4630,18 @@
         const detalheNotaHtml = (registro && composicao.objetivas.length && composicao.naoObjetivas.length)
           ? `<p>Objetivas (automático): ${registro.notaObjetiva != null ? registro.notaObjetiva.toFixed(1) : '—'} / ${composicao.maxObjetiva.toFixed(1)} · Dissertativas/cálculo (professor): ${registro.notaNaoObjetiva != null ? registro.notaNaoObjetiva.toFixed(1) : '—'} / ${composicao.maxNaoObjetiva.toFixed(1)}</p>`
           : (registro && composicao.somenteObjetivas ? `<p>Corrigido automaticamente: ${registro.acertosObjetivas}/${registro.totalObjetivas} questões corretas.</p>` : '');
+        const podeRecuperar = activeIndex !== 11 && registro;
+        const recuperacaoHtml = !podeRecuperar ? '' : (
+          registro.notaRecuperacao != null
+            ? `<div class="recuperacao-resumo">
+                <p><strong>Recuperação Paralela realizada.</strong></p>
+                <p>Nota regular: ${registro.notaRegular != null ? registro.notaRegular.toFixed(1) : '—'} · Nota da recuperação: ${registro.notaRecuperacao.toFixed(1)} · <strong>Vale a maior: ${registro.nota.toFixed(1)}</strong></p>
+              </div>`
+            : `<div class="recuperacao-resumo">
+                <p>Não ficou satisfeito com a nota? Você pode fazer a <strong>Recuperação Paralela</strong> deste módulo — vale a maior nota entre as duas tentativas.</p>
+                <button type="button" class="btn secondary" onclick="iniciarRecuperacaoParalela(${activeIndex})">🔁 Fazer Recuperação Paralela</button>
+              </div>`
+        );
         progressoPanelHtml = `<section class="block">
           <h3>Conclusão do módulo</h3>
           <div class="release-wait aprovado">
@@ -4487,6 +4651,7 @@
             ${registro && registro.comentarioProfessor ? `<p class="feedback-text">"${registro.comentarioProfessor}"</p>` : ''}
             ${activeIndex < modules.length - 1 ? '<p>O próximo módulo já está liberado para você.</p>' : '<p>Você concluiu todos os módulos da plataforma. Parabéns!</p>'}
           </div>
+          ${recuperacaoHtml}
         </section>`;
       }
     }
@@ -5239,16 +5404,17 @@ ${isMestre ? `
           return `
           <div class="approval-row">
             <div class="approval-info">
-              <div class="approval-name">${aluno.nome} <span class="role-badge role-aluno">${m.code}</span></div>
+              <div class="approval-name">${aluno.nome} <span class="role-badge role-aluno">${m.code}</span>${p.emRecuperacao ? ' <span class="role-badge role-recuperacao">🔁 Recuperação Paralela</span>' : ''}</div>
               <div class="approval-detail">${m.title} · Turma ${aluno.turma}</div>
               <div class="approval-detail">Enviado em ${p.enviadoEm}</div>
+              ${p.emRecuperacao && p.notaRegular != null ? `<div class="nota-objetiva-info">Nota da avaliação regular já registrada: <strong>${p.notaRegular.toFixed(1)}</strong> — a nota final do módulo será a maior entre as duas.</div>` : ''}
               ${notaObjetivaHtml}
               ${respostasHtml}
               ${notaRowHtml}
               <textarea id="devolver-comentario-${aluno.id}-${p.moduloIndex}" class="feedback-input" placeholder="Se for devolver, escreva aqui as orientações para o aluno...">${p.comentarioProfessor || ''}</textarea>
             </div>
             <div class="approval-actions">
-              <button class="btn primary" onclick="aprovarModuloAluno(${aluno.id}, ${p.moduloIndex})">✓ Aprovar e liberar próximo</button>
+              <button class="btn primary" onclick="aprovarModuloAluno(${aluno.id}, ${p.moduloIndex})">✓ ${p.emRecuperacao ? 'Aprovar recuperação' : 'Aprovar e liberar próximo'}</button>
               <button class="btn danger" onclick="devolverModuloAluno(${aluno.id}, ${p.moduloIndex})">↩ Devolver com orientações</button>
             </div>
           </div>`;
