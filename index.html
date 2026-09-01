@@ -1201,30 +1201,32 @@
     inset:0;
     z-index:1000;
     display:flex;
+    flex-direction:column;
     align-items:stretch;
     justify-content:stretch;
-    background:#0C1922;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(90,170,255,0.14), transparent 45%),
+      radial-gradient(circle at 80% 80%, rgba(228,186,107,0.07), transparent 40%),
+      linear-gradient(155deg,#211A4E 0%,#3B2E7A 45%,#221B52 100%);
     padding:0;
     overflow-y:auto;
   }
+  .login-main-row{ display:flex; align-items:stretch; flex:1; min-height:0; }
   .login-side{
     flex:1.1;
-    background:linear-gradient(160deg,#0C1922 0%,#132A3A 60%,#0C1922 100%);
     color:#F2F0E8;
-    padding:56px 48px;
+    padding:48px 48px 28px;
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
+    justify-content:center;
     position:relative;
     overflow:hidden;
   }
-  .login-side::after{
-    content:'';
-    position:absolute;
-    inset:0;
-    background-image:radial-gradient(circle at 85% 15%, rgba(201,154,62,0.10), transparent 40%);
-  }
-  .login-side-hero{ position:relative; z-index:1; max-width:420px; }
+  .brand-row{ position:relative; z-index:1; display:flex; align-items:center; gap:12px; margin-bottom:32px; }
+  .brand-badge{ width:44px; height:44px; border-radius:50%; border:2px solid #C99A3E; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .brand-text .brand-name{ font-size:12.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#E4BA6B; }
+  .brand-text .brand-sub{ font-size:11.5px; color:#A9B7C2; margin-top:2px; }
+  .login-side-hero{ position:relative; z-index:1; max-width:440px; }
   .login-side-hero h1{
     font-family:'Fraunces', serif;
     font-weight:600;
@@ -1232,13 +1234,20 @@
     line-height:1.2;
     margin:0 0 16px 0;
   }
-  .login-side-hero p{ color:#A9B7C2; font-size:14px; line-height:1.6; margin:0; }
-  .login-side-chart{ display:flex; align-items:flex-end; gap:8px; height:90px; margin-top:28px; position:relative; z-index:1; }
-  .login-side-chart div{ width:16px; background:linear-gradient(180deg,#E4BA6B,#C99A3E); border-radius:3px 3px 0 0; }
-  .login-side-foot{ position:relative; z-index:1; font-size:11px; color:#6E7C88; }
+  .login-side-hero p{ color:#A9B7C2; font-size:14px; line-height:1.6; margin:0 0 26px 0; }
+  .feature-list{ position:relative; z-index:1; display:flex; flex-direction:column; gap:13px; margin-bottom:26px; }
+  .feature-item{ display:flex; align-items:center; gap:12px; font-size:13.5px; color:#D7DEE4; }
+  .feature-icon{ width:30px; height:30px; border-radius:8px; background:rgba(201,154,62,0.16); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+  .login-side-chart-wrap{ position:relative; z-index:1; width:fit-content; }
+  .login-side-chart{ display:flex; align-items:flex-end; gap:8px; height:80px; }
+  .login-side-chart div{ width:15px; background:linear-gradient(180deg,#E4BA6B,#C99A3E); border-radius:3px 3px 0 0; }
+  .chart-badge{ position:absolute; right:-10px; bottom:-10px; width:24px; height:24px; border-radius:50%; background:#C99A3E; display:flex; align-items:center; justify-content:center; font-size:12px; color:#221B52; font-weight:700; border:3px solid #221B52; }
+  .login-side-bottom{ position:relative; z-index:1; margin-top:26px; }
+  .login-side-foot{ font-size:11px; color:#9AA6C4; margin-bottom:12px; }
+  .login-side-copyright{ font-size:10.5px; color:#6E76A0; line-height:1.6; border-top:1px solid rgba(255,255,255,0.1); padding-top:12px; }
+  .full-footer{ text-align:center; font-size:10.5px; color:#7d84a8; padding:16px 20px; border-top:1px solid rgba(255,255,255,0.1); line-height:1.6; position:relative; }
   .login-panel{
     flex:1;
-    background:#FBFAF7;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -1247,40 +1256,44 @@
   }
   @media (max-width: 860px){
     .login-side{ display:none; }
-    .login-screen{ background:#FBFAF7; }
   }
   .login-card{
     width:100%;
     max-width:400px;
-    background:transparent;
-    border:none;
-    padding:0;
+    background:rgba(255,255,255,0.045);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:16px;
+    padding:36px 32px;
     text-align:left;
     margin:24px 0;
+    position:relative;
+    overflow:hidden;
+    backdrop-filter:blur(6px);
   }
+  .login-card::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#C99A3E,#E4BA6B,#C99A3E); }
   .login-logo{ margin-bottom:14px; }
   .login-logo img{ width:68px; height:68px; object-fit:contain; }
   .login-title{
     font-family:'Fraunces', serif;
-    font-size:25px;
+    font-size:24px;
     font-weight:600;
-    color:#12213B;
+    color:#F2F0E8;
     margin:0 0 6px 0;
   }
   .login-subtitle{
     font-size:12.5px;
-    color:#6b6b63;
+    color:#A9B7C2;
     margin:0 0 26px 0;
     line-height:1.5;
   }
   .login-card .form-field{ text-align:left; margin-bottom:14px; }
-  .login-card .form-field label{ color:#8a897f; }
+  .login-card .form-field label{ color:#9AA6C4; }
   .login-card .form-field input, .login-card .form-field select{
-    background:#fff;
-    border:1px solid #DEDBCF;
-    color:#12213B;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.14);
+    color:#F2F0E8;
   }
-  .login-card .form-field input::placeholder{ color:#a9a89c; }
+  .login-card .form-field input::placeholder{ color:#7d84a8; }
   .login-card .form-field input:focus, .login-card .form-field select:focus{ border-color:#C99A3E; }
   .password-wrap{ position:relative; }
   .password-wrap input{ padding-right:40px !important; }
@@ -1291,41 +1304,41 @@
     transform:translateY(-50%);
     background:none;
     border:none;
-    color:#a9a89c;
+    color:#7d84a8;
     cursor:pointer;
     font-size:15px;
     padding:6px;
     line-height:1;
   }
-  .password-toggle:hover{ color:#8a5a1e; }
+  .password-toggle:hover{ color:#E4BA6B; }
   .login-submit{ width:100%; justify-content:center; margin-top:4px; }
   .login-submit:disabled{ opacity:0.5; cursor:not-allowed; }
-  .login-card .btn.primary{ background:#12213B; color:#fff; border-color:#12213B; }
-  .login-card .btn.primary:hover{ background:#1c3157; }
-  .login-card .btn.secondary{ background:#fff; color:#12213B; border:1px solid #DEDBCF; }
-  .login-card .btn.secondary:hover{ background:#F4F1E8; }
-  .login-divider{ display:flex; align-items:center; gap:10px; margin:14px 0; color:#a5a49a; font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em; }
+  .login-card .btn.primary{ background:#F2F0E8; color:#221B52; border-color:#F2F0E8; }
+  .login-card .btn.primary:hover{ background:#E4E0D4; }
+  .login-card .btn.secondary{ background:rgba(255,255,255,0.05); color:#F2F0E8; border:1px solid rgba(255,255,255,0.14); }
+  .login-card .btn.secondary:hover{ background:rgba(255,255,255,0.09); }
+  .login-divider{ display:flex; align-items:center; gap:10px; margin:14px 0; color:#7d84a8; font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em; }
   .perfil-toggle{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
   .perfil-toggle-btn{
     padding:10px 8px;
-    border:1px solid #DEDBCF;
+    border:1px solid rgba(255,255,255,0.14);
     border-radius:8px;
-    background:#fff;
-    color:#12213B;
+    background:rgba(255,255,255,0.04);
+    color:#F2F0E8;
     font-size:13px;
     font-weight:600;
     cursor:pointer;
     font-family:'Inter', sans-serif;
     transition:background 0.15s, border-color 0.15s;
   }
-  .perfil-toggle-btn.active{ background:#C99A3E; border-color:#C99A3E; color:#12213B; }
-  .perfil-toggle-btn:not(.active):hover{ background:#F4F1E8; }
-  .field-hint{ display:block; font-size:11px; color:#8a897f; margin-top:6px; line-height:1.5; }
-  .login-divider::before, .login-divider::after{ content:''; flex:1; height:1px; background:#e5e2d6; }
+  .perfil-toggle-btn.active{ background:#C99A3E; border-color:#C99A3E; color:#221B52; }
+  .perfil-toggle-btn:not(.active):hover{ background:rgba(255,255,255,0.09); }
+  .field-hint{ display:block; font-size:11px; color:#8b92b8; margin-top:6px; line-height:1.5; }
+  .login-divider::before, .login-divider::after{ content:''; flex:1; height:1px; background:rgba(255,255,255,0.12); }
   .login-error{
-    background:rgba(192,57,43,0.08);
-    border:1px solid rgba(192,57,43,0.3);
-    color:#a83a2c;
+    background:rgba(232,106,106,0.1);
+    border:1px solid rgba(232,106,106,0.35);
+    color:#F0A8A8;
     font-size:12px;
     padding:8px 10px;
     border-radius:6px;
@@ -1333,21 +1346,21 @@
     text-align:left;
   }
   .login-links{ margin-top:16px; font-size:12.5px; }
-  .login-links a{ color:#8a5a1e; text-decoration:none; cursor:pointer; }
+  .login-links a{ color:#E4BA6B; text-decoration:none; cursor:pointer; }
   .login-links a:hover{ text-decoration:underline; }
   .login-hint{
     font-size:11px;
-    color:#6b6b63;
+    color:#9AA6C4;
     line-height:1.7;
     text-align:left;
-    background:#F4F1E8;
-    border:1px solid #DEDBCF;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.1);
     border-radius:8px;
     padding:10px 12px;
     margin-top:20px;
   }
-  .login-card .release-wait{ background:#F4F1E8; border-color:#DEDBCF; color:#4b4a42; }
-  .login-hint strong{ color:var(--ink-soft); }
+  .login-card .release-wait{ background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); color:#D7DEE4; }
+  .login-hint strong{ color:#F2F0E8; }
   .sidebar-user{
     padding:14px 24px;
     border-top:1px solid var(--border);
@@ -1420,16 +1433,41 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage-compat.js"></script>
 
 <div class="login-screen" id="login-screen">
+  <div class="login-main-row">
   <div class="login-side">
+    <svg class="bg-chart-line" viewBox="0 0 500 400" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:60%;height:100%;opacity:0.35;pointer-events:none;">
+      <defs>
+        <linearGradient id="lineGrad1" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stop-color="#5AC8FA" stop-opacity="0"/>
+          <stop offset="60%" stop-color="#5AC8FA" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#5AC8FA" stop-opacity="0.3"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,400 C60,380 90,420 140,360 C190,300 210,340 260,260 C300,200 330,230 380,170 C420,130 440,150 500,80" fill="none" stroke="url(#lineGrad1)" stroke-width="2.5"/>
+    </svg>
+    <div class="brand-row">
+      <div class="brand-badge">🎓</div>
+      <div class="brand-text">
+        <div class="brand-name">CEDUP Hermann Hering</div>
+        <div class="brand-sub">Curso Técnico em Administração e Contabilidade</div>
+      </div>
+    </div>
     <div class="login-side-hero">
       <h1>Administração Financeira, do jeito que se aprende fazendo.</h1>
       <p>Módulos, estudos de caso e acompanhamento em tempo real para o Curso Técnico em Administração e Contabilidade.</p>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item"><span class="feature-icon">📋</span> 12 módulos guiados, da teoria à prática</div>
+      <div class="feature-item"><span class="feature-icon">💬</span> Feedback do professor em cada etapa</div>
+      <div class="feature-item"><span class="feature-icon">📈</span> Progresso e notas atualizados em tempo real</div>
+    </div>
+    <div class="login-side-chart-wrap">
       <div class="login-side-chart">
         <div style="height:35%"></div><div style="height:55%"></div><div style="height:40%"></div>
         <div style="height:75%"></div><div style="height:60%"></div><div style="height:95%"></div>
       </div>
+      <div class="chart-badge">✓</div>
     </div>
-    <div class="login-side-foot">12 módulos · Estudos de caso individualizados · CEDUP Hermann Hering</div>
   </div>
   <div class="login-panel">
   <div class="login-card">
@@ -1474,6 +1512,8 @@
     </div>
   </div>
   </div>
+  </div>
+  <div class="full-footer">12 módulos · Estudos de caso individualizados · CEDUP Hermann Hering<br>© 2026 Prof. Esp. Jorge Lima Cardoso. Todos os direitos reservados. Plataforma didática desenvolvida para o CEDUP Hermann Hering — Curso Técnico em Administração e Contabilidade.</div>
 </div>
 
 <div class="app" id="app" style="display:none;">
