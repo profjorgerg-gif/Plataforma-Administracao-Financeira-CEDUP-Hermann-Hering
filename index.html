@@ -965,6 +965,9 @@
   .status-em-analise{ background:rgba(90,140,210,0.18); color:#7fa8e0; }
   .status-encaminhado{ background:rgba(160,110,220,0.18); color:#b494e8; }
   .status-encerrado{ background:rgba(90,180,120,0.18); color:#7fd19f; }
+  .status-bloqueado{ background:rgba(140,140,140,0.18); color:var(--ink-faint); }
+  .status-em-andamento{ background:rgba(90,140,210,0.18); color:#7fa8e0; }
+  .status-devolvido{ background:rgba(192,57,43,0.18); color:#e8908a; }
   .chamado-controle{ margin-top:10px; padding-top:10px; border-top:1px solid var(--border); display:flex; align-items:center; gap:8px; }
   .chamado-controle label{ font-size:11.5px; color:var(--ink-faint); }
   .chamado-controle select{
@@ -1502,7 +1505,7 @@
 
     <div id="vincular-matricula-box" style="display:none;">
       <div id="vincular-matricula-error" class="login-error" style="display:none;"></div>
-      <p class="login-hint" style="margin-top:0;">Primeiro acesso com esta conta Google. Digite sua matrícula (a mesma que o Administrador cadastrou na sua turma) para confirmar seu acesso.</p>
+      <p class="login-hint" id="vincular-matricula-hint" style="margin-top:0;">Primeiro acesso com esta conta Google. Digite sua matrícula (a mesma que o Administrador cadastrou na sua turma) para confirmar seu acesso.</p>
       <div class="form-field">
         <label>Matrícula</label>
         <input type="text" id="vincular-matricula" placeholder="Ex.: 2026032" onkeydown="if(event.key==='Enter'){submitVincularMatricula();}">
@@ -4225,6 +4228,14 @@
     home.addEventListener('click', () => { activeIndex = -1; render(); closeMobileMenu(); });
     toc.appendChild(home);
 
+    if(isAluno){
+      const notasBtn = document.createElement('button');
+      notasBtn.className = 'toc-item' + (activeIndex === 'minhas-notas' ? ' active' : '');
+      notasBtn.innerHTML = `<span class="toc-title">Minhas Notas</span>`;
+      notasBtn.addEventListener('click', () => { activeIndex = 'minhas-notas'; render(); closeMobileMenu(); });
+      toc.appendChild(notasBtn);
+    }
+
     const divider = document.createElement('div');
     divider.className = 'toc-divider';
     toc.appendChild(divider);
@@ -4335,33 +4346,76 @@
     document.querySelectorAll('#main .content-card').forEach(d => { d.open = false; });
   }
 
+  function notaFinalCardHtml(alunoId){
+    const nf = calcularNotaFinalCurso(alunoId);
+    if(nf.modulosConcluidos === 0 && !nf.modulo12Concluido) return '';
+    return `
+    <div class="nota-final-card">
+      <div class="nota-final-head">
+        <h3>Sua Nota Final do curso${nf.modulosConcluidos < 11 || !nf.modulo12Concluido ? ' (provisória)' : ''}</h3>
+        <span class="nota-final-valor">${nf.notaFinal != null ? nf.notaFinal.toFixed(1) : '—'} <small>/ 10</small></span>
+      </div>
+      <div class="nota-final-detalhe">
+        <div>
+          <span class="nota-final-label">Módulos 1–11 (40%)</span>
+          <span class="nota-final-sub">${nf.media1a11 != null ? nf.media1a11.toFixed(1) : '—'} · ${nf.modulosConcluidos}/11 concluídos</span>
+        </div>
+        <div>
+          <span class="nota-final-label">Módulo 12 (60%)</span>
+          <span class="nota-final-sub">${nf.nota12 != null ? nf.nota12.toFixed(1) : 'ainda não concluído'}</span>
+        </div>
+      </div>
+      ${nf.modulosConcluidos < 11 || !nf.modulo12Concluido ? '<p class="nota-final-nota-rodape">A nota final é recalculada automaticamente conforme você conclui os módulos. Nos módulos 1 a 11, vale sempre a maior nota entre a avaliação regular e a Recuperação Paralela.</p>' : ''}
+    </div>`;
+  }
+
+  function renderMinhasNotas(){
+    const main = document.getElementById('main');
+    if(!currentUser || currentUser.papelKey !== 'aluno'){ activeIndex = -1; renderHome(); return; }
+    const statusLabel = { bloqueado:'Bloqueado', liberado:'Em andamento', enviado:'Aguardando correção', devolvido:'Devolvido p/ ajuste', aprovado:'Concluído' };
+    const statusClass = { bloqueado:'status-bloqueado', liberado:'status-em-andamento', enviado:'status-aberto', devolvido:'status-devolvido', aprovado:'status-encerrado' };
+
+    const linhas = modules.map((m, i) => {
+      const st = statusEfetivoModulo(currentUser.id, i);
+      const registro = progressoDoAluno(currentUser.id, i);
+      const notaRegular = registro && registro.notaRegular != null ? registro.notaRegular.toFixed(1) : '—';
+      const temRecuperacao = i < 11; // Recuperação Paralela não existe no Módulo 12
+      const notaRecuperacao = temRecuperacao
+        ? (registro && registro.notaRecuperacao != null ? registro.notaRecuperacao.toFixed(1) : '—')
+        : '<span style="color:var(--ink-faint);">não se aplica</span>';
+      const notaEfetiva = registro && registro.nota != null ? registro.nota.toFixed(1) : '—';
+      return `<tr>
+        <td>${m.code} ${m.title}</td>
+        <td><span class="status-badge ${statusClass[st] || ''}">${statusLabel[st] || st}</span></td>
+        <td>${notaRegular}</td>
+        <td>${notaRecuperacao}</td>
+        <td><strong>${notaEfetiva}</strong></td>
+      </tr>`;
+    }).join('');
+
+    main.innerHTML = `
+      <div class="page-head">
+        <p class="code">Meu progresso</p>
+        <h2>Minhas Notas</h2>
+        <p class="ementa">Acompanhe aqui a nota de cada módulo e a sua média geral no curso. Nos módulos 1 a 11, a "Nota do módulo" já é sempre a maior entre a avaliação regular e a Recuperação Paralela.</p>
+      </div>
+
+      ${notaFinalCardHtml(currentUser.id)}
+
+      <section class="block">
+        <h3>Notas por módulo</h3>
+        <table class="data-table">
+          <thead><tr><th>Módulo</th><th>Status</th><th>Regular</th><th>Recuperação</th><th>Nota do módulo</th></tr></thead>
+          <tbody>${linhas}</tbody>
+        </table>
+      </section>
+    `;
+  }
+
   function renderHome(){
     const main = document.getElementById('main');
     const isAluno = currentUser && currentUser.papelKey === 'aluno';
-    let notaFinalHtml = '';
-    if(isAluno){
-      const nf = calcularNotaFinalCurso(currentUser.id);
-      if(nf.modulosConcluidos > 0 || nf.modulo12Concluido){
-        notaFinalHtml = `
-        <div class="nota-final-card">
-          <div class="nota-final-head">
-            <h3>Sua Nota Final do curso${nf.modulosConcluidos < 11 || !nf.modulo12Concluido ? ' (provisória)' : ''}</h3>
-            <span class="nota-final-valor">${nf.notaFinal != null ? nf.notaFinal.toFixed(1) : '—'} <small>/ 10</small></span>
-          </div>
-          <div class="nota-final-detalhe">
-            <div>
-              <span class="nota-final-label">Módulos 1–11 (40%)</span>
-              <span class="nota-final-sub">${nf.media1a11 != null ? nf.media1a11.toFixed(1) : '—'} · ${nf.modulosConcluidos}/11 concluídos</span>
-            </div>
-            <div>
-              <span class="nota-final-label">Módulo 12 (60%)</span>
-              <span class="nota-final-sub">${nf.nota12 != null ? nf.nota12.toFixed(1) : 'ainda não concluído'}</span>
-            </div>
-          </div>
-          ${nf.modulosConcluidos < 11 || !nf.modulo12Concluido ? '<p class="nota-final-nota-rodape">A nota final é recalculada automaticamente conforme você conclui os módulos. Nos módulos 1 a 11, vale sempre a maior nota entre a avaliação regular e a Recuperação Paralela.</p>' : ''}
-        </div>`;
-      }
-    }
+    const notaFinalHtml = isAluno ? notaFinalCardHtml(currentUser.id) : '';
     main.innerHTML = `
       <p class="eyebrow">Curso técnico em administração e contabilidade</p>
       <h2 class="home-title">Administração Financeira</h2>
@@ -5967,6 +6021,7 @@ ${isMestre ? `
     else if(activeIndex === 'manual-professor'){ renderManual('professor'); }
     else if(activeIndex === 'guia-pedagogico'){ renderGuiaPedagogico(); }
     else if(activeIndex === 'tutoriais'){ renderTutoriais(); }
+    else if(activeIndex === 'minhas-notas'){ renderMinhasNotas(); }
     else if(activeIndex === 'suporte'){ renderSuporte(); }
     else { renderModule(); }
   }
@@ -6020,6 +6075,9 @@ ${isMestre ? `
   // Guarda temporariamente os dados da conta Google enquanto se aguarda a matrícula
   // (primeiro acesso de aluno/professor, entre o popup do Google e a confirmação).
   let googleEmailPendente = null;
+  // Guarda o usuário aluno já vinculado, enquanto se aguarda a confirmação da
+  // matrícula a cada novo login (exigida sempre, não só no primeiro acesso).
+  let usuarioAlunoConfirmando = null;
 
   async function loginComGoogle(){
     const errorEl = document.getElementById('login-error');
@@ -6045,7 +6103,28 @@ ${isMestre ? `
         return;
       }
 
-      // Aluno ou professor já vinculados: entra direto (a menos que seja um cadastro
+      // Aluno já vinculado: pede para confirmar a matrícula de novo a cada login
+      // (evita que outra pessoa entre só por ter acesso à conta Google de alguém).
+      if(user && user.papelKey === 'aluno'){
+        if(user.status === 'pendente'){
+          showLoginErrorMsg('login-error', 'Seu cadastro ainda está aguardando aprovação do administrador.');
+          return;
+        }
+        if(user.status === 'recusado'){
+          showLoginErrorMsg('login-error', 'Seu acesso não foi aprovado. Entre em contato com o administrador.');
+          return;
+        }
+        usuarioAlunoConfirmando = user;
+        document.getElementById('login-form-box').style.display = 'none';
+        document.getElementById('vincular-matricula-box').style.display = 'block';
+        document.getElementById('vincular-matricula-error').style.display = 'none';
+        document.getElementById('vincular-matricula').value = '';
+        const hintEl = document.getElementById('vincular-matricula-hint');
+        if(hintEl) hintEl.textContent = `Olá, ${user.nome}! Confirme sua matrícula para entrar.`;
+        return;
+      }
+
+      // Professor já vinculado: entra direto (a menos que seja um cadastro
       // antigo do sistema anterior que ainda esteja pendente/recusado).
       if(user){
         if(user.status === 'pendente'){
@@ -6110,6 +6189,21 @@ ${isMestre ? `
       showLoginErrorMsg('vincular-matricula-error', 'Digite sua matrícula.');
       return;
     }
+
+    // Caso 1: aluno já vinculado, só confirmando a matrícula de novo neste login.
+    if(usuarioAlunoConfirmando){
+      const esperado = (usuarioAlunoConfirmando.matricula || '').trim().toLowerCase();
+      if(matricula.toLowerCase() !== esperado){
+        showLoginErrorMsg('vincular-matricula-error', 'Matrícula incorreta. Confira o número e tente novamente, ou procure o professor/administrador.');
+        return;
+      }
+      const user = usuarioAlunoConfirmando;
+      usuarioAlunoConfirmando = null;
+      doLogin(user);
+      return;
+    }
+
+    // Caso 2: primeiro acesso — vincula esta conta Google a um cadastro existente.
     if(!googleEmailPendente){
       showLoginErrorMsg('vincular-matricula-error', 'Sessão do Google expirou. Volte e clique em "Entrar com o Google" novamente.');
       return;
@@ -6131,8 +6225,11 @@ ${isMestre ? `
 
   function cancelarVincularMatricula(){
     googleEmailPendente = null;
+    usuarioAlunoConfirmando = null;
     document.getElementById('vincular-matricula-box').style.display = 'none';
     document.getElementById('login-form-box').style.display = 'block';
+    const hintEl = document.getElementById('vincular-matricula-hint');
+    if(hintEl) hintEl.textContent = 'Primeiro acesso com esta conta Google. Digite sua matrícula (a mesma que o Administrador cadastrou na sua turma) para confirmar seu acesso.';
   }
 
   function doLogin(user){
@@ -6172,6 +6269,10 @@ ${isMestre ? `
     selecionarPerfilLogin('aluno');
     document.getElementById('login-form-box').style.display = 'block';
     document.getElementById('vincular-matricula-box').style.display = 'none';
+    usuarioAlunoConfirmando = null;
+    googleEmailPendente = null;
+    const hintElLogout = document.getElementById('vincular-matricula-hint');
+    if(hintElLogout) hintElLogout.textContent = 'Primeiro acesso com esta conta Google. Digite sua matrícula (a mesma que o Administrador cadastrou na sua turma) para confirmar seu acesso.';
     // Restabelece uma sessão anônima no Firebase, para que a próxima pessoa
     // (ex.: computador compartilhado da turma) consiga continuar usando a plataforma.
     fbAuth.signOut().then(() => fbAuth.signInAnonymously()).catch(e => console.error('Falha ao restabelecer sessão anônima:', e));
