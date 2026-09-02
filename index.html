@@ -4284,6 +4284,12 @@
       manualProfBtn.innerHTML = `<span class="toc-title">Manual do Professor</span>`;
       manualProfBtn.addEventListener('click', () => { activeIndex = 'manual-professor'; render(); closeMobileMenu(); });
       toc.appendChild(manualProfBtn);
+
+      const guiaPedagogicoBtn = document.createElement('button');
+      guiaPedagogicoBtn.className = 'toc-item' + (activeIndex === 'guia-pedagogico' ? ' active' : '');
+      guiaPedagogicoBtn.innerHTML = `<span class="toc-title">Guia Pedagógico</span>`;
+      guiaPedagogicoBtn.addEventListener('click', () => { activeIndex = 'guia-pedagogico'; render(); closeMobileMenu(); });
+      toc.appendChild(guiaPedagogicoBtn);
     }
 
     const divider2 = document.createElement('div');
@@ -5564,6 +5570,54 @@ ${isMestre ? `
     `;
   }
 
+  function renderGuiaPedagogico(){
+    const main = document.getElementById('main');
+    const sessoes = [
+      { arq: 'Sessao-1-Apresentacao-da-Plataforma.pdf', titulo: 'Sessão 1 — Apresentação da plataforma', desc: 'Primeiro acesso, liberação progressiva, correção automática e Nota Final.' },
+      { arq: 'Sessao-2-Bloco-1-Fundamentos-Modulos-1-3.pdf', titulo: 'Sessão 2 — Bloco 1: Fundamentos', desc: 'Módulos 1 a 3.' },
+      { arq: 'Sessao-3-Bloco-2-Credito-Ciclo-Ponto-Equilibrio-Modulos-4-6.pdf', titulo: 'Sessão 3 — Bloco 2: Crédito, Ciclo e Ponto de Equilíbrio', desc: 'Módulos 4 a 6.' },
+      { arq: 'Sessao-4-Bloco-3-Ativos-Capital-Investimentos-Modulos-7-9.pdf', titulo: 'Sessão 4 — Bloco 3: Ativos, Capital e Investimentos', desc: 'Módulos 7 a 9.' },
+      { arq: 'Sessao-5-Bloco-4-Horizontal-Vertical-Quocientes-Modulos-10-11.pdf', titulo: 'Sessão 5 — Bloco 4: Análise Horizontal/Vertical e Quocientes', desc: 'Módulos 10 e 11.' },
+      { arq: 'Sessao-6-Modulo-12-Estudo-de-Caso-Integrador.pdf', titulo: 'Sessão 6 — Módulo 12: Estudo de Caso Integrador', desc: 'A filial individual de cada aluno.' },
+      { arq: 'Sessao-7-Avaliacao-Final-e-Encerramento.pdf', titulo: 'Sessão 7 — Avaliação final e encerramento', desc: 'Nota Final do curso e fechamento.' },
+    ];
+    const cards = sessoes.map((s, i) => `
+      <div class="material-card">
+        <div class="label">${s.titulo}</div>
+        <div class="desc">${s.desc}</div>
+        <div class="content-toggle-row" style="margin-top:10px;">
+          <a class="btn secondary" href="Slides-Guia-do-Professor/${s.arq}" target="_blank" rel="noopener">↗ Abrir</a>
+          <a class="btn secondary" href="Slides-Guia-do-Professor/${s.arq}" download>⭳ Baixar</a>
+        </div>
+      </div>`).join('');
+
+    main.innerHTML = `
+      <button class="back-btn" onclick="goToModule(-1)">← Voltar ao início</button>
+      <div class="page-head">
+        <p class="code">Ajuda</p>
+        <h2>Guia Pedagógico</h2>
+        <p class="ementa">Slides prontos para projetar em sala (7 sessões, uma por bloco de módulos) e o documento de Metodologia de Aplicação Pedagógica, com a sequência didática completa. Visível apenas para Professor e Administrador.</p>
+      </div>
+
+      <section class="block">
+        <h3>Documento de referência</h3>
+        <div class="material-card" style="max-width:420px;">
+          <div class="label">Metodologia de Aplicação Pedagógica</div>
+          <div class="desc">Documento completo (14 páginas) com a proposta de sequência didática, orientações de aula e tabelas de apoio.</div>
+          <div class="content-toggle-row" style="margin-top:10px;">
+            <a class="btn secondary" href="Metodologia-de-Aplicacao-Pedagogica.pdf" target="_blank" rel="noopener">↗ Abrir</a>
+            <a class="btn secondary" href="Metodologia-de-Aplicacao-Pedagogica.pdf" download>⭳ Baixar</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Slides — Guia do Professor <span class="count-badge">${sessoes.length} sessões</span></h3>
+        <div class="materials-grid" style="grid-template-columns:repeat(2,1fr);">${cards}</div>
+      </section>
+    `;
+  }
+
   function renderRelatorios(){
     const main = document.getElementById('main');
     const cards = relatorios.map(r => `
@@ -5895,7 +5949,7 @@ ${isMestre ? `
   }
 
   function render(){
-    const mgmtKeys = ['turmas','usuarios','aprovacoes','entregas','relatorios','backup','auditoria','manual-professor'];
+    const mgmtKeys = ['turmas','usuarios','aprovacoes','entregas','relatorios','backup','auditoria','manual-professor','guia-pedagogico'];
     if(currentUser && currentUser.papelKey === 'aluno' && mgmtKeys.includes(activeIndex)){
       activeIndex = -1;
     }
@@ -5911,6 +5965,7 @@ ${isMestre ? `
     else if(activeIndex === 'auditoria'){ renderAuditoria(); }
     else if(activeIndex === 'manual-aluno'){ renderManual('aluno'); }
     else if(activeIndex === 'manual-professor'){ renderManual('professor'); }
+    else if(activeIndex === 'guia-pedagogico'){ renderGuiaPedagogico(); }
     else if(activeIndex === 'tutoriais'){ renderTutoriais(); }
     else if(activeIndex === 'suporte'){ renderSuporte(); }
     else { renderModule(); }
