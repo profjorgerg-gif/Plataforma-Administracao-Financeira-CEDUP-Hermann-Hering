@@ -957,6 +957,11 @@
     margin-bottom:10px;
   }
   .chamado-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .chamado-head-left{ display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+  .chamado-codigo{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--gold-text); background:rgba(201,154,62,0.1); border:1px solid rgba(201,154,62,0.3); padding:2px 7px; border-radius:5px; }
+  .chamado-select{ width:16px; height:16px; accent-color:var(--gold); cursor:pointer; }
+  .chamado-select-todos{ display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft); cursor:pointer; }
+  .chamado-selecao-contador{ font-size:11.5px; color:var(--ink-faint); }
   .chamado-assunto{ font-weight:600; font-size:14px; color:var(--ink); }
   .chamado-meta{ font-size:11.5px; color:var(--ink-faint); margin:0 0 8px 0; }
   .chamado-desc{ font-size:13px; color:var(--ink-soft); line-height:1.5; margin:0; }
@@ -1420,6 +1425,17 @@
     text-decoration:underline;
   }
   .logout-btn:hover{ border-color:var(--gold); color:var(--gold-text); }
+  @media print{
+    body *{ visibility:hidden; }
+    #chamados-lista, #chamados-lista *{ visibility:visible; }
+    #chamados-lista{ position:absolute; top:0; left:0; width:100%; }
+    .chamado-card{ page-break-before:always; page-break-inside:avoid; break-inside:avoid; border:1px solid #999; background:#fff; color:#000; margin-bottom:0; }
+    .chamado-card:first-of-type{ page-break-before:avoid; }
+    .chamado-card.print-excluido{ display:none !important; }
+    .chamado-assunto, .chamado-meta, .chamado-desc, .chamado-codigo{ color:#000 !important; }
+    .chamado-select, .chamado-controle{ display:none !important; }
+    .status-badge{ border:1px solid #999; background:#fff !important; color:#000 !important; }
+  }
 </style>
 </head>
 <body>
@@ -4582,6 +4598,11 @@
   // status: 'aberto' | 'em-analise' | 'encaminhado' | 'encerrado'
   let chamados = [];
 
+  function gerarCodigoChamado(id, dataObj){
+    const ano = dataObj.getFullYear();
+    return `CH-${ano}-${String(id).padStart(4, '0')}`;
+  }
+
   function abrirChamado(tipo){
     const prefixo = tipo === 'sistema' ? 'chamado-sistema' : 'chamado-pedagogico';
     const assuntoEl = document.getElementById(`${prefixo}-assunto`);
@@ -4592,8 +4613,11 @@
       alert('Preencha o assunto e a descrição do chamado.');
       return;
     }
+    const id = nextChamadoId++;
+    const agora = new Date();
     chamados.unshift({
-      id: nextChamadoId++,
+      id,
+      codigo: gerarCodigoChamado(id, agora),
       tipo,
       assunto,
       descricao,
@@ -4622,6 +4646,34 @@
     return { 'aberto':'Aberto', 'em-analise':'Em análise', 'encaminhado':'Encaminhado', 'encerrado':'Encerrado' }[status] || status;
   }
 
+  function selecionarTodosChamados(marcar){
+    document.querySelectorAll('.chamado-select').forEach(cb => { cb.checked = marcar; });
+    atualizarSelecaoChamados();
+  }
+
+  function atualizarSelecaoChamados(){
+    const marcados = document.querySelectorAll('.chamado-select:checked').length;
+    const total = document.querySelectorAll('.chamado-select').length;
+    const contador = document.getElementById('chamado-selecao-contador');
+    if(contador){
+      contador.textContent = marcados
+        ? `${marcados} chamado(s) selecionado(s) para o PDF`
+        : 'Nenhum selecionado — o PDF incluirá todos os chamados listados';
+    }
+    const selectAll = document.getElementById('chamado-select-all');
+    if(selectAll) selectAll.checked = total > 0 && marcados === total;
+  }
+
+  function imprimirChamadosSelecionados(){
+    const selecionados = Array.from(document.querySelectorAll('.chamado-select:checked')).map(cb => cb.value);
+    document.querySelectorAll('.chamado-card').forEach(card => {
+      const id = card.getAttribute('data-chamado-id');
+      const incluir = selecionados.length === 0 || selecionados.includes(id);
+      card.classList.toggle('print-excluido', !incluir);
+    });
+    window.print();
+  }
+
   function chamadoRowHtml(c, comControle){
     const controleHtml = comControle ? `
       <div class="chamado-controle">
@@ -4634,9 +4686,13 @@
         </select>
       </div>` : '';
     return `
-      <div class="chamado-card">
+      <div class="chamado-card" data-chamado-id="${c.id}">
         <div class="chamado-head">
-          <span class="chamado-assunto">${c.assunto}</span>
+          <div class="chamado-head-left">
+            ${comControle ? `<input type="checkbox" class="chamado-select" value="${c.id}" onchange="atualizarSelecaoChamados()">` : ''}
+            <span class="chamado-codigo">${c.codigo || ''}</span>
+            <span class="chamado-assunto">${c.assunto}</span>
+          </div>
           <span class="status-badge status-${c.status}">${statusChamadoLabel(c.status)}</span>
         </div>
         <p class="chamado-meta">${c.autorNome} (${c.autorPapel}) · ${c.turma} · ${c.criadoEm}</p>
@@ -4752,8 +4808,12 @@
         <p class="ementa">Chamados sobre o sistema, abertos por professores e alunos.</p>
       </div>
       <div class="tab-row">${filtrosHtml}</div>
-      <div class="status-row" style="margin:10px 0 18px;"><button class="btn secondary" onclick="window.print()">🖨 Imprimir / Salvar PDF</button></div>
-      <section class="block">
+      <div class="status-row" style="margin:10px 0 18px; gap:10px; flex-wrap:wrap;">
+        <label class="chamado-select-todos"><input type="checkbox" id="chamado-select-all" onchange="selecionarTodosChamados(this.checked)"> Selecionar todos</label>
+        <span id="chamado-selecao-contador" class="chamado-selecao-contador">Nenhum selecionado — o PDF incluirá todos os chamados listados</span>
+        <button class="btn secondary" onclick="imprimirChamadosSelecionados()">🖨 Imprimir / Salvar PDF</button>
+      </div>
+      <section class="block" id="chamados-lista">
         ${filtrados.length ? filtrados.map(c => chamadoRowHtml(c, true)).join('') : '<p class="ementa">Nenhum chamado neste filtro.</p>'}
       </section>
     `;
