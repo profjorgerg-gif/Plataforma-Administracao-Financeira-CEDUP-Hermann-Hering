@@ -1590,6 +1590,32 @@
       { tipo:"Verdadeiro ou Falso", texto:"O planejamento financeiro tem como função prever as necessidades de caixa e recursos para as atividades futuras da empresa.", correta:"Verdadeiro" },
       { tipo:"Discursiva", texto:"Descreva as três decisões financeiras (investimento, financiamento e dividendos) e dê um exemplo de cada uma no contexto de uma empresa fictícia." },
       { tipo:"Estudo de caso", texto:"Uma empresa quer abrir uma nova filial. Cite três informações financeiras que o administrador financeiro precisaria levantar antes de tomar essa decisão, e justifique por que cada uma delas é importante." },
+    ], exerciciosRecuperacao:[
+      { tipo:"Verdadeiro ou Falso", texto:"O planejamento financeiro é uma atividade que olha apenas para o passado da empresa, sem se preocupar com necessidades futuras de caixa.", correta:"Falso" },
+      { tipo:"Verdadeiro ou Falso", texto:"A geração de liquidez é um dos três principais objetivos do administrador financeiro, ao lado da maximização do lucro e da minimização de riscos.", correta:"Verdadeiro" },
+      { tipo:"Múltipla escolha", texto:"Assinale a alternativa que descreve corretamente a atividade de \"Controle financeiro\":", correta:"A", opcoes:[
+        "Monitorar e avaliar o desempenho financeiro, ajustando estratégias conforme necessário.",
+        "Alocar recursos de forma eficiente, buscando maximizar o retorno sobre investimentos.",
+        "Prever as necessidades de caixa e recursos para as atividades futuras da empresa.",
+        "Registrar os fatos financeiros já ocorridos na empresa.",
+      ] },
+      { tipo:"Múltipla escolha", texto:"Qual atividade do administrador financeiro consiste em alocar recursos de forma eficiente, buscando otimizar o retorno sobre investimentos e maximizar o valor do negócio?", correta:"D", opcoes:[
+        "Planejamento financeiro",
+        "Orçamento",
+        "Controle financeiro",
+        "Gestão de recursos e investimentos",
+      ] },
+      { tipo:"Múltipla escolha", texto:"Assinale a alternativa correta sobre a relação entre Contabilidade e Administração Financeira:", correta:"B", opcoes:[
+        "A Contabilidade usa os dados da Administração Financeira para decidir sobre o futuro da empresa.",
+        "A Administração Financeira usa as informações registradas pela Contabilidade como base para decidir sobre o futuro da empresa.",
+        "Contabilidade e Administração Financeira tratam exatamente dos mesmos assuntos, sem nenhuma diferença.",
+        "A Administração Financeira não depende de nenhuma informação produzida pela Contabilidade.",
+      ] },
+      { tipo:"Discursiva", texto:"Explique, com suas próprias palavras, a diferença entre \"liquidez\" e \"lucro\" como objetivos do administrador financeiro." },
+      { tipo:"Discursiva", texto:"Cite e explique duas das quatro atividades essenciais do administrador financeiro (planejamento financeiro, orçamento, controle financeiro, gestão de recursos e investimentos)." },
+      { tipo:"Verdadeiro ou Falso", texto:"A decisão de financiamento trata de definir em quais projetos ou ativos a empresa vai investir seus recursos.", correta:"Falso" },
+      { tipo:"Discursiva", texto:"Dê um exemplo de decisão de financiamento e um exemplo de decisão de dividendos, no contexto de uma empresa fictícia." },
+      { tipo:"Estudo de caso", texto:"Uma empresa está avaliando se deve financiar sua expansão com capital próprio ou com empréstimo bancário. Cite duas informações financeiras que o administrador financeiro precisaria levantar antes de tomar essa decisão, e justifique por que cada uma delas é importante." },
     ], content:[
       {
         heading:"O que é Administração Financeira?",
@@ -1730,6 +1756,92 @@
           "Calcule o Fluxo de Caixa Operacional (FCO). Fórmula: FCO = Recebimentos Totais − Pagamentos Totais.",
           "Calcule o Fluxo de Caixa Livre (FCL). Fórmula: FCL = FCO − Investimentos.",
           "Análise interpretativa: o saldo de caixa final é positivo ou negativo? A empresa está financeiramente saudável neste trimestre? Proponha duas ações para otimizar o fluxo de caixa da AgroVerde.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"BioLimpa Produtos de Higiene",
+        contexto:"A BioLimpa fabrica produtos de limpeza biodegradáveis e está encerrando o terceiro trimestre de 2025. Você foi contratado(a) como analista financeiro para avaliar a situação do fluxo de caixa da empresa.",
+        dados:[
+          { label:"Recebimentos", itens:["Recebimentos de clientes: R$ 98.000,00","Entrada de financiamento bancário: R$ 15.000,00"] },
+          { label:"Pagamentos", itens:["Fornecedores: R$ 41.000,00","Despesas operacionais: R$ 24.000,00","Impostos: R$ 7.200,00","Pagamento de parcelas de empréstimos: R$ 6.800,00"] },
+          { label:"Investimentos", itens:["Compra de nova linha de envase: R$ 26.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Operacional (FCO). Fórmula: FCO = Recebimentos Totais − Pagamentos Totais.",
+          "Calcule o Fluxo de Caixa Livre (FCL). Fórmula: FCL = FCO − Investimentos.",
+          "Análise interpretativa: o saldo de caixa final é positivo ou negativo? A empresa está gerando caixa suficiente para manter seus investimentos? Quais medidas podem ser tomadas para melhorar o fluxo de caixa da BioLimpa?",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"UrbanBike Mobilidade Sustentável",
+        contexto:"A UrbanBike aluga bicicletas elétricas por assinatura em grandes cidades. No encerramento do 4º trimestre de 2025, cabe a você, como analista financeiro, avaliar o desempenho do fluxo de caixa e propor ações de melhoria.",
+        dados:[
+          { label:"Recebimentos", itens:["Recebimentos de assinaturas: R$ 105.000,00","Aporte de capital de investidor-anjo: R$ 22.000,00"] },
+          { label:"Pagamentos", itens:["Fornecedores de peças: R$ 48.000,00","Despesas operacionais: R$ 29.000,00","Tributos diversos: R$ 8.200,00","Pagamento de empréstimo: R$ 7.000,00"] },
+          { label:"Investimentos", itens:["Aquisição de novas bicicletas elétricas: R$ 33.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Operacional (FCO). Fórmula: FCO = Recebimentos Totais − Pagamentos Totais.",
+          "Calcule o Fluxo de Caixa Livre (FCL). Fórmula: FCL = FCO − Investimentos.",
+          "Análise interpretativa: o saldo de caixa final é positivo ou negativo? A UrbanBike está financeiramente saudável neste trimestre? Proponha duas ações para otimizar seu fluxo de caixa.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Doce Sabor Confeitaria Industrial",
+        contexto:"A Doce Sabor produz doces e conservas em escala industrial e está encerrando o 1º trimestre de 2025. Como analista financeiro, avalie os dados abaixo, calcule os indicadores de fluxo de caixa e proponha recomendações.",
+        dados:[
+          { label:"Recebimentos", itens:["Vendas a prazo: R$ 81.000,00","Entrada de financiamento para capital de giro: R$ 12.000,00"] },
+          { label:"Pagamentos", itens:["Fornecedores: R$ 31.000,00","Despesas administrativas: R$ 19.000,00","Tributos: R$ 5.400,00","Parcelas do financiamento: R$ 3.600,00"] },
+          { label:"Investimentos", itens:["Aquisição de fornos industriais: R$ 22.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Operacional (FCO). Fórmula: FCO = Recebimentos Totais − Pagamentos Totais.",
+          "Calcule o Fluxo de Caixa Livre (FCL). Fórmula: FCL = FCO − Investimentos.",
+          "Análise interpretativa: o saldo de caixa final é positivo ou negativo? A empresa está financeiramente saudável neste trimestre? Proponha duas ações para otimizar o fluxo de caixa da Doce Sabor.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"BioLimpa Produtos de Higiene",
+        contexto:"A BioLimpa fabrica produtos de limpeza biodegradáveis e está encerrando o terceiro trimestre de 2025. Você foi contratado(a) como analista financeiro para avaliar a situação do fluxo de caixa da empresa.",
+        dados:[
+          { label:"Recebimentos", itens:["Recebimentos de clientes: R$ 98.000,00","Entrada de financiamento bancário: R$ 15.000,00"] },
+          { label:"Pagamentos", itens:["Fornecedores: R$ 41.000,00","Despesas operacionais: R$ 24.000,00","Impostos: R$ 7.200,00","Pagamento de parcelas de empréstimos: R$ 6.800,00"] },
+          { label:"Investimentos", itens:["Compra de nova linha de envase: R$ 26.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Operacional (FCO). Fórmula: FCO = Recebimentos Totais − Pagamentos Totais.",
+          "Calcule o Fluxo de Caixa Livre (FCL). Fórmula: FCL = FCO − Investimentos.",
+          "Análise interpretativa: o saldo de caixa final é positivo ou negativo? A empresa está gerando caixa suficiente para manter seus investimentos? Quais medidas podem ser tomadas para melhorar o fluxo de caixa da BioLimpa?",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"UrbanBike Mobilidade Sustentável",
+        contexto:"A UrbanBike aluga bicicletas elétricas por assinatura em grandes cidades. No encerramento do 4º trimestre de 2025, cabe a você, como analista financeiro, avaliar o desempenho do fluxo de caixa e propor ações de melhoria.",
+        dados:[
+          { label:"Recebimentos", itens:["Recebimentos de assinaturas: R$ 105.000,00","Aporte de capital de investidor-anjo: R$ 22.000,00"] },
+          { label:"Pagamentos", itens:["Fornecedores de peças: R$ 48.000,00","Despesas operacionais: R$ 29.000,00","Tributos diversos: R$ 8.200,00","Pagamento de empréstimo: R$ 7.000,00"] },
+          { label:"Investimentos", itens:["Aquisição de novas bicicletas elétricas: R$ 33.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Operacional (FCO). Fórmula: FCO = Recebimentos Totais − Pagamentos Totais.",
+          "Calcule o Fluxo de Caixa Livre (FCL). Fórmula: FCL = FCO − Investimentos.",
+          "Análise interpretativa: o saldo de caixa final é positivo ou negativo? A UrbanBike está financeiramente saudável neste trimestre? Proponha duas ações para otimizar seu fluxo de caixa.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Doce Sabor Confeitaria Industrial",
+        contexto:"A Doce Sabor produz doces e conservas em escala industrial e está encerrando o 1º trimestre de 2025. Como analista financeiro, avalie os dados abaixo, calcule os indicadores de fluxo de caixa e proponha recomendações.",
+        dados:[
+          { label:"Recebimentos", itens:["Vendas a prazo: R$ 81.000,00","Entrada de financiamento para capital de giro: R$ 12.000,00"] },
+          { label:"Pagamentos", itens:["Fornecedores: R$ 31.000,00","Despesas administrativas: R$ 19.000,00","Tributos: R$ 5.400,00","Parcelas do financiamento: R$ 3.600,00"] },
+          { label:"Investimentos", itens:["Aquisição de fornos industriais: R$ 22.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Operacional (FCO). Fórmula: FCO = Recebimentos Totais − Pagamentos Totais.",
+          "Calcule o Fluxo de Caixa Livre (FCL). Fórmula: FCL = FCO − Investimentos.",
+          "Análise interpretativa: o saldo de caixa final é positivo ou negativo? A empresa está financeiramente saudável neste trimestre? Proponha duas ações para otimizar o fluxo de caixa da Doce Sabor.",
         ]
       },
     ] },
@@ -1880,6 +1992,98 @@
           "Calcule o Retorno Médio Ponderado da carteira. Fórmula: Rm = Σ(Valor Aplicado × Rnominal) / Valor Total.",
           "Calcule o Índice de Sharpe de cada investimento. Fórmula: Sharpe = (R − Rf) / σ.",
           "Análise interpretativa: qual investimento apresenta o maior Valor Futuro? Qual apresenta a melhor relação risco/retorno? Que recomendação você faria à Vitalle Saúde e Bem-estar?",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Nexo Capital Participações",
+        contexto:"A Nexo Capital dispõe de R$ 180.000,00 em caixa e deseja aplicar esse capital no mercado de capitais. Você foi contratado(a) como analista financeiro para avaliar quatro alternativas de investimento. Admita inflação de 4,2% a.a. e taxa livre de risco (Rf) de 6,2% a.a.",
+        dados:[
+          { label:"Alternativas de investimento", itens:["CDB Pré-fixado: R$ 45.000,00 · retorno 8,8% a.a. · prazo 2 anos · risco (σ) 0,4%","LCA: R$ 40.000,00 · retorno 7,2% a.a. · prazo 3 anos · risco (σ) 0,3%","Ações (Carteira Nexo): R$ 65.000,00 · retorno 14,0% a.a. · prazo 3 anos · risco (σ) 7,8%","Fundo Multimercado: R$ 30.000,00 · retorno 10,5% a.a. · prazo 4 anos · risco (σ) 3,6%"] },
+          { label:"Premissas", itens:["Inflação: 4,2% a.a.","Taxa livre de risco (Rf): 6,2% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Futuro (VF) de cada investimento. Fórmula: VF = VP × (1 + i)ⁿ.",
+          "Calcule o Retorno Real (%) de cada investimento. Fórmula: Rreal = (1 + Rnominal) / (1 + inflação) − 1.",
+          "Calcule o Retorno Médio Ponderado da carteira. Fórmula: Rm = Σ(Valor Aplicado × Rnominal) / Valor Total.",
+          "Calcule o Índice de Sharpe de cada investimento. Fórmula: Sharpe = (R − Rf) / σ.",
+          "Análise interpretativa: qual investimento apresenta o maior Valor Futuro? Qual apresenta a melhor relação risco/retorno? Que recomendação você faria à Nexo Capital Participações?",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Bright Energy Renováveis",
+        contexto:"A Bright Energy dispõe de R$ 260.000,00 e avalia quatro alternativas de investimento no mercado de capitais para diversificar sua carteira. Admita inflação de 4,8% a.a. e taxa livre de risco (Rf) de 6,8% a.a.",
+        dados:[
+          { label:"Alternativas de investimento", itens:["Tesouro IPCA+: R$ 70.000,00 · retorno 9,4% a.a. · prazo 3 anos · risco (σ) 0,6%","Debênture Incentivada: R$ 60.000,00 · retorno 11,5% a.a. · prazo 4 anos · risco (σ) 1,1%","Ações (Carteira Solar): R$ 95.000,00 · retorno 16,8% a.a. · prazo 5 anos · risco (σ) 9,8%","FII Logístico: R$ 35.000,00 · retorno 10,2% a.a. · prazo 3 anos · risco (σ) 3,2%"] },
+          { label:"Premissas", itens:["Inflação: 4,8% a.a.","Taxa livre de risco (Rf): 6,8% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Futuro (VF) de cada investimento. Fórmula: VF = VP × (1 + i)ⁿ.",
+          "Calcule o Retorno Real (%) de cada investimento. Fórmula: Rreal = (1 + Rnominal) / (1 + inflação) − 1.",
+          "Calcule o Retorno Médio Ponderado da carteira. Fórmula: Rm = Σ(Valor Aplicado × Rnominal) / Valor Total.",
+          "Calcule o Índice de Sharpe de cada investimento. Fórmula: Sharpe = (R − Rf) / σ.",
+          "Análise interpretativa: qual investimento apresenta o maior Valor Futuro? Qual apresenta a melhor relação risco/retorno? Que recomendação você faria à Bright Energy Renováveis?",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Coral Investimentos Imobiliários",
+        contexto:"A Coral Investimentos dispõe de R$ 110.000,00 e deseja aplicar esse capital para reforçar seu caixa de longo prazo. Você foi contratado(a) como analista financeiro para avaliar quatro alternativas de investimento. Admita inflação de 3,8% a.a. e taxa livre de risco (Rf) de 5,8% a.a.",
+        dados:[
+          { label:"Alternativas de investimento", itens:["CDB Pós-fixado (CDI): R$ 30.000,00 · retorno 8,4% a.a. · prazo 2 anos · risco (σ) 0,5%","LCI: R$ 25.000,00 · retorno 7,8% a.a. · prazo 2 anos · risco (σ) 0,4%","Ações (Carteira Coral): R$ 35.000,00 · retorno 15,0% a.a. · prazo 4 anos · risco (σ) 8,3%","Fundo Imobiliário: R$ 20.000,00 · retorno 9,9% a.a. · prazo 3 anos · risco (σ) 3,3%"] },
+          { label:"Premissas", itens:["Inflação: 3,8% a.a.","Taxa livre de risco (Rf): 5,8% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Futuro (VF) de cada investimento. Fórmula: VF = VP × (1 + i)ⁿ.",
+          "Calcule o Retorno Real (%) de cada investimento. Fórmula: Rreal = (1 + Rnominal) / (1 + inflação) − 1.",
+          "Calcule o Retorno Médio Ponderado da carteira. Fórmula: Rm = Σ(Valor Aplicado × Rnominal) / Valor Total.",
+          "Calcule o Índice de Sharpe de cada investimento. Fórmula: Sharpe = (R − Rf) / σ.",
+          "Análise interpretativa: qual investimento apresenta o maior Valor Futuro? Qual apresenta a melhor relação risco/retorno? Que recomendação você faria à Coral Investimentos Imobiliários?",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Nexo Capital Participações",
+        contexto:"A Nexo Capital dispõe de R$ 180.000,00 em caixa e deseja aplicar esse capital no mercado de capitais. Você foi contratado(a) como analista financeiro para avaliar quatro alternativas de investimento. Admita inflação de 4,2% a.a. e taxa livre de risco (Rf) de 6,2% a.a.",
+        dados:[
+          { label:"Alternativas de investimento", itens:["CDB Pré-fixado: R$ 45.000,00 · retorno 8,8% a.a. · prazo 2 anos · risco (σ) 0,4%","LCA: R$ 40.000,00 · retorno 7,2% a.a. · prazo 3 anos · risco (σ) 0,3%","Ações (Carteira Nexo): R$ 65.000,00 · retorno 14,0% a.a. · prazo 3 anos · risco (σ) 7,8%","Fundo Multimercado: R$ 30.000,00 · retorno 10,5% a.a. · prazo 4 anos · risco (σ) 3,6%"] },
+          { label:"Premissas", itens:["Inflação: 4,2% a.a.","Taxa livre de risco (Rf): 6,2% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Futuro (VF) de cada investimento. Fórmula: VF = VP × (1 + i)ⁿ.",
+          "Calcule o Retorno Real (%) de cada investimento. Fórmula: Rreal = (1 + Rnominal) / (1 + inflação) − 1.",
+          "Calcule o Retorno Médio Ponderado da carteira. Fórmula: Rm = Σ(Valor Aplicado × Rnominal) / Valor Total.",
+          "Calcule o Índice de Sharpe de cada investimento. Fórmula: Sharpe = (R − Rf) / σ.",
+          "Análise interpretativa: qual investimento apresenta o maior Valor Futuro? Qual apresenta a melhor relação risco/retorno? Que recomendação você faria à Nexo Capital Participações?",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Bright Energy Renováveis",
+        contexto:"A Bright Energy dispõe de R$ 260.000,00 e avalia quatro alternativas de investimento no mercado de capitais para diversificar sua carteira. Admita inflação de 4,8% a.a. e taxa livre de risco (Rf) de 6,8% a.a.",
+        dados:[
+          { label:"Alternativas de investimento", itens:["Tesouro IPCA+: R$ 70.000,00 · retorno 9,4% a.a. · prazo 3 anos · risco (σ) 0,6%","Debênture Incentivada: R$ 60.000,00 · retorno 11,5% a.a. · prazo 4 anos · risco (σ) 1,1%","Ações (Carteira Solar): R$ 95.000,00 · retorno 16,8% a.a. · prazo 5 anos · risco (σ) 9,8%","FII Logístico: R$ 35.000,00 · retorno 10,2% a.a. · prazo 3 anos · risco (σ) 3,2%"] },
+          { label:"Premissas", itens:["Inflação: 4,8% a.a.","Taxa livre de risco (Rf): 6,8% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Futuro (VF) de cada investimento. Fórmula: VF = VP × (1 + i)ⁿ.",
+          "Calcule o Retorno Real (%) de cada investimento. Fórmula: Rreal = (1 + Rnominal) / (1 + inflação) − 1.",
+          "Calcule o Retorno Médio Ponderado da carteira. Fórmula: Rm = Σ(Valor Aplicado × Rnominal) / Valor Total.",
+          "Calcule o Índice de Sharpe de cada investimento. Fórmula: Sharpe = (R − Rf) / σ.",
+          "Análise interpretativa: qual investimento apresenta o maior Valor Futuro? Qual apresenta a melhor relação risco/retorno? Que recomendação você faria à Bright Energy Renováveis?",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Coral Investimentos Imobiliários",
+        contexto:"A Coral Investimentos dispõe de R$ 110.000,00 e deseja aplicar esse capital para reforçar seu caixa de longo prazo. Você foi contratado(a) como analista financeiro para avaliar quatro alternativas de investimento. Admita inflação de 3,8% a.a. e taxa livre de risco (Rf) de 5,8% a.a.",
+        dados:[
+          { label:"Alternativas de investimento", itens:["CDB Pós-fixado (CDI): R$ 30.000,00 · retorno 8,4% a.a. · prazo 2 anos · risco (σ) 0,5%","LCI: R$ 25.000,00 · retorno 7,8% a.a. · prazo 2 anos · risco (σ) 0,4%","Ações (Carteira Coral): R$ 35.000,00 · retorno 15,0% a.a. · prazo 4 anos · risco (σ) 8,3%","Fundo Imobiliário: R$ 20.000,00 · retorno 9,9% a.a. · prazo 3 anos · risco (σ) 3,3%"] },
+          { label:"Premissas", itens:["Inflação: 3,8% a.a.","Taxa livre de risco (Rf): 5,8% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Futuro (VF) de cada investimento. Fórmula: VF = VP × (1 + i)ⁿ.",
+          "Calcule o Retorno Real (%) de cada investimento. Fórmula: Rreal = (1 + Rnominal) / (1 + inflação) − 1.",
+          "Calcule o Retorno Médio Ponderado da carteira. Fórmula: Rm = Σ(Valor Aplicado × Rnominal) / Valor Total.",
+          "Calcule o Índice de Sharpe de cada investimento. Fórmula: Sharpe = (R − Rf) / σ.",
+          "Análise interpretativa: qual investimento apresenta o maior Valor Futuro? Qual apresenta a melhor relação risco/retorno? Que recomendação você faria à Coral Investimentos Imobiliários?",
         ]
       },
     ] },
@@ -2084,6 +2288,122 @@
           "Conclusão: com base nos indicadores calculados, avalie a saúde financeira da Nordeste Alimentos e proponha recomendações para a política de crédito e cobrança.",
         ]
       },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Rota Sul Autopeças",
+        contexto:"A Rota Sul Autopeças trabalha com vendas majoritariamente a prazo e deseja revisar sua política de crédito e seus processos de cobrança. Utilize 360 dias como base anual.",
+        dados:[
+          { label:"Indicadores contábeis", itens:["Ativo Circulante (AC): R$ 610.000,00","Passivo Circulante (PC): R$ 420.000,00","Ativo Total (AT): R$ 1.900.000,00","Passivo Total (PT): R$ 1.140.000,00","Lucro Operacional (LO): R$ 230.000,00","Despesas Financeiras (DF): R$ 76.000,00"] },
+          { label:"Contas a receber e cobrança", itens:["Vendas a Prazo (ano): R$ 1.650.000,00","Duplicatas a Receber (DR): R$ 412.000,00","Duplicatas Emitidas (DE): R$ 1.320.000,00","Duplicatas Vencidas (DV): R$ 105.000,00","Créditos Recuperados (CR): R$ 66.000,00"] },
+          { label:"Política de crédito proposta", itens:["Carteira potencial anual: R$ 2.000.000,00","% de aprovação de crédito: 70%","% de inadimplência estimada: 5,0%","Termos de pagamento: 2/10, n/40 (38% pagam com desconto no 10º dia; 62% pagam no 40º dia)","Custo de capital: 18% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Índice de Liquidez Corrente (ILC). Fórmula: ILC = AC / PC.",
+          "Calcule o Índice de Endividamento Geral (IEG). Fórmula: IEG = PT / AT.",
+          "Calcule o Índice de Cobertura de Juros (ICJ). Fórmula: ICJ = LO / DF.",
+          "Calcule o Prazo Médio de Recebimento (PMR) e o Giro de Contas a Receber (GCR).",
+          "Calcule o Índice de Inadimplência (II) e a Taxa de Recuperação de Créditos (TRC).",
+          "Calcule o Valor do Crédito Concedido (VC) e o Custo do Crédito (CC) com base na política proposta.",
+          "Calcule o PMR ponderado com os novos termos de pagamento e o efeito líquido anual (economia de capital menos custo do desconto).",
+          "Conclusão: com base nos indicadores calculados, avalie a saúde financeira da Rota Sul e proponha recomendações para a política de crédito e cobrança.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Fibra Têxtil Distribuidora",
+        contexto:"A Fibra Têxtil Distribuidora realiza grande parte de suas vendas a prazo e deseja avaliar sua situação financeira e sua política de crédito e cobrança. Utilize 360 dias como base anual.",
+        dados:[
+          { label:"Indicadores contábeis", itens:["Ativo Circulante (AC): R$ 820.000,00","Passivo Circulante (PC): R$ 560.000,00","Ativo Total (AT): R$ 2.700.000,00","Passivo Total (PT): R$ 1.620.000,00","Lucro Operacional (LO): R$ 340.000,00","Despesas Financeiras (DF): R$ 113.000,00"] },
+          { label:"Contas a receber e cobrança", itens:["Vendas a Prazo (ano): R$ 2.300.000,00","Duplicatas a Receber (DR): R$ 575.000,00","Duplicatas Emitidas (DE): R$ 1.840.000,00","Duplicatas Vencidas (DV): R$ 165.000,00","Créditos Recuperados (CR): R$ 104.000,00"] },
+          { label:"Política de crédito proposta", itens:["Carteira potencial anual: R$ 2.800.000,00","% de aprovação de crédito: 65%","% de inadimplência estimada: 6,0%","Termos de pagamento: 3/15, n/45 (42% pagam com desconto no 15º dia; 58% pagam no 45º dia)","Custo de capital: 16% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Índice de Liquidez Corrente (ILC). Fórmula: ILC = AC / PC.",
+          "Calcule o Índice de Endividamento Geral (IEG). Fórmula: IEG = PT / AT.",
+          "Calcule o Índice de Cobertura de Juros (ICJ). Fórmula: ICJ = LO / DF.",
+          "Calcule o Prazo Médio de Recebimento (PMR) e o Giro de Contas a Receber (GCR).",
+          "Calcule o Índice de Inadimplência (II) e a Taxa de Recuperação de Créditos (TRC).",
+          "Calcule o Valor do Crédito Concedido (VC) e o Custo do Crédito (CC) com base na política proposta.",
+          "Calcule o PMR ponderado com os novos termos de pagamento e o efeito líquido anual (economia de capital menos custo do desconto).",
+          "Conclusão: com base nos indicadores calculados, avalie a saúde financeira da Fibra Têxtil e proponha recomendações para a política de crédito e cobrança.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Mercado Central Atacadista",
+        contexto:"O Mercado Central Atacadista opera com vendas a prazo para pequenos varejistas e deseja revisar sua política de crédito e cobrança. Utilize 360 dias como base anual.",
+        dados:[
+          { label:"Indicadores contábeis", itens:["Ativo Circulante (AC): R$ 430.000,00","Passivo Circulante (PC): R$ 300.000,00","Ativo Total (AT): R$ 1.250.000,00","Passivo Total (PT): R$ 750.000,00","Lucro Operacional (LO): R$ 170.000,00","Despesas Financeiras (DF): R$ 51.000,00"] },
+          { label:"Contas a receber e cobrança", itens:["Vendas a Prazo (ano): R$ 1.020.000,00","Duplicatas a Receber (DR): R$ 255.000,00","Duplicatas Emitidas (DE): R$ 816.000,00","Duplicatas Vencidas (DV): R$ 61.000,00","Créditos Recuperados (CR): R$ 41.000,00"] },
+          { label:"Política de crédito proposta", itens:["Carteira potencial anual: R$ 1.150.000,00","% de aprovação de crédito: 78%","% de inadimplência estimada: 3,0%","Termos de pagamento: 2/10, n/30 (48% pagam com desconto no 10º dia; 52% pagam no 30º dia)","Custo de capital: 15% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Índice de Liquidez Corrente (ILC). Fórmula: ILC = AC / PC.",
+          "Calcule o Índice de Endividamento Geral (IEG). Fórmula: IEG = PT / AT.",
+          "Calcule o Índice de Cobertura de Juros (ICJ). Fórmula: ICJ = LO / DF.",
+          "Calcule o Prazo Médio de Recebimento (PMR) e o Giro de Contas a Receber (GCR).",
+          "Calcule o Índice de Inadimplência (II) e a Taxa de Recuperação de Créditos (TRC).",
+          "Calcule o Valor do Crédito Concedido (VC) e o Custo do Crédito (CC) com base na política proposta.",
+          "Calcule o PMR ponderado com os novos termos de pagamento e o efeito líquido anual (economia de capital menos custo do desconto).",
+          "Conclusão: com base nos indicadores calculados, avalie a saúde financeira do Mercado Central e proponha recomendações para a política de crédito e cobrança.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Rota Sul Autopeças",
+        contexto:"A Rota Sul Autopeças trabalha com vendas majoritariamente a prazo e deseja revisar sua política de crédito e seus processos de cobrança. Utilize 360 dias como base anual.",
+        dados:[
+          { label:"Indicadores contábeis", itens:["Ativo Circulante (AC): R$ 610.000,00","Passivo Circulante (PC): R$ 420.000,00","Ativo Total (AT): R$ 1.900.000,00","Passivo Total (PT): R$ 1.140.000,00","Lucro Operacional (LO): R$ 230.000,00","Despesas Financeiras (DF): R$ 76.000,00"] },
+          { label:"Contas a receber e cobrança", itens:["Vendas a Prazo (ano): R$ 1.650.000,00","Duplicatas a Receber (DR): R$ 412.000,00","Duplicatas Emitidas (DE): R$ 1.320.000,00","Duplicatas Vencidas (DV): R$ 105.000,00","Créditos Recuperados (CR): R$ 66.000,00"] },
+          { label:"Política de crédito proposta", itens:["Carteira potencial anual: R$ 2.000.000,00","% de aprovação de crédito: 70%","% de inadimplência estimada: 5,0%","Termos de pagamento: 2/10, n/40 (38% pagam com desconto no 10º dia; 62% pagam no 40º dia)","Custo de capital: 18% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Índice de Liquidez Corrente (ILC). Fórmula: ILC = AC / PC.",
+          "Calcule o Índice de Endividamento Geral (IEG). Fórmula: IEG = PT / AT.",
+          "Calcule o Índice de Cobertura de Juros (ICJ). Fórmula: ICJ = LO / DF.",
+          "Calcule o Prazo Médio de Recebimento (PMR) e o Giro de Contas a Receber (GCR).",
+          "Calcule o Índice de Inadimplência (II) e a Taxa de Recuperação de Créditos (TRC).",
+          "Calcule o Valor do Crédito Concedido (VC) e o Custo do Crédito (CC) com base na política proposta.",
+          "Calcule o PMR ponderado com os novos termos de pagamento e o efeito líquido anual (economia de capital menos custo do desconto).",
+          "Conclusão: com base nos indicadores calculados, avalie a saúde financeira da Rota Sul e proponha recomendações para a política de crédito e cobrança.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Fibra Têxtil Distribuidora",
+        contexto:"A Fibra Têxtil Distribuidora realiza grande parte de suas vendas a prazo e deseja avaliar sua situação financeira e sua política de crédito e cobrança. Utilize 360 dias como base anual.",
+        dados:[
+          { label:"Indicadores contábeis", itens:["Ativo Circulante (AC): R$ 820.000,00","Passivo Circulante (PC): R$ 560.000,00","Ativo Total (AT): R$ 2.700.000,00","Passivo Total (PT): R$ 1.620.000,00","Lucro Operacional (LO): R$ 340.000,00","Despesas Financeiras (DF): R$ 113.000,00"] },
+          { label:"Contas a receber e cobrança", itens:["Vendas a Prazo (ano): R$ 2.300.000,00","Duplicatas a Receber (DR): R$ 575.000,00","Duplicatas Emitidas (DE): R$ 1.840.000,00","Duplicatas Vencidas (DV): R$ 165.000,00","Créditos Recuperados (CR): R$ 104.000,00"] },
+          { label:"Política de crédito proposta", itens:["Carteira potencial anual: R$ 2.800.000,00","% de aprovação de crédito: 65%","% de inadimplência estimada: 6,0%","Termos de pagamento: 3/15, n/45 (42% pagam com desconto no 15º dia; 58% pagam no 45º dia)","Custo de capital: 16% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Índice de Liquidez Corrente (ILC). Fórmula: ILC = AC / PC.",
+          "Calcule o Índice de Endividamento Geral (IEG). Fórmula: IEG = PT / AT.",
+          "Calcule o Índice de Cobertura de Juros (ICJ). Fórmula: ICJ = LO / DF.",
+          "Calcule o Prazo Médio de Recebimento (PMR) e o Giro de Contas a Receber (GCR).",
+          "Calcule o Índice de Inadimplência (II) e a Taxa de Recuperação de Créditos (TRC).",
+          "Calcule o Valor do Crédito Concedido (VC) e o Custo do Crédito (CC) com base na política proposta.",
+          "Calcule o PMR ponderado com os novos termos de pagamento e o efeito líquido anual (economia de capital menos custo do desconto).",
+          "Conclusão: com base nos indicadores calculados, avalie a saúde financeira da Fibra Têxtil e proponha recomendações para a política de crédito e cobrança.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Mercado Central Atacadista",
+        contexto:"O Mercado Central Atacadista opera com vendas a prazo para pequenos varejistas e deseja revisar sua política de crédito e cobrança. Utilize 360 dias como base anual.",
+        dados:[
+          { label:"Indicadores contábeis", itens:["Ativo Circulante (AC): R$ 430.000,00","Passivo Circulante (PC): R$ 300.000,00","Ativo Total (AT): R$ 1.250.000,00","Passivo Total (PT): R$ 750.000,00","Lucro Operacional (LO): R$ 170.000,00","Despesas Financeiras (DF): R$ 51.000,00"] },
+          { label:"Contas a receber e cobrança", itens:["Vendas a Prazo (ano): R$ 1.020.000,00","Duplicatas a Receber (DR): R$ 255.000,00","Duplicatas Emitidas (DE): R$ 816.000,00","Duplicatas Vencidas (DV): R$ 61.000,00","Créditos Recuperados (CR): R$ 41.000,00"] },
+          { label:"Política de crédito proposta", itens:["Carteira potencial anual: R$ 1.150.000,00","% de aprovação de crédito: 78%","% de inadimplência estimada: 3,0%","Termos de pagamento: 2/10, n/30 (48% pagam com desconto no 10º dia; 52% pagam no 30º dia)","Custo de capital: 15% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Índice de Liquidez Corrente (ILC). Fórmula: ILC = AC / PC.",
+          "Calcule o Índice de Endividamento Geral (IEG). Fórmula: IEG = PT / AT.",
+          "Calcule o Índice de Cobertura de Juros (ICJ). Fórmula: ICJ = LO / DF.",
+          "Calcule o Prazo Médio de Recebimento (PMR) e o Giro de Contas a Receber (GCR).",
+          "Calcule o Índice de Inadimplência (II) e a Taxa de Recuperação de Créditos (TRC).",
+          "Calcule o Valor do Crédito Concedido (VC) e o Custo do Crédito (CC) com base na política proposta.",
+          "Calcule o PMR ponderado com os novos termos de pagamento e o efeito líquido anual (economia de capital menos custo do desconto).",
+          "Conclusão: com base nos indicadores calculados, avalie a saúde financeira do Mercado Central e proponha recomendações para a política de crédito e cobrança.",
+        ]
+      },
     ] },
     { code:"5.0",  title:"Prazos e Ciclo Operacional",                     ementa:"Ciclo operacional e financeiro, prazos médios de estoque, recebimento e pagamento.", subtopics:[
       "Prazo Médio de Estocagem (PME)",
@@ -2217,6 +2537,98 @@
         contexto:"A Serra Verde Distribuidora apresentou os seguintes dados no último ano. Adote ano comercial de 360 dias.",
         dados:[
           { label:"Dados do cenário", itens:["Estoque Médio: R$ 410.000,00","Custo das Mercadorias Vendidas (CMV): R$ 2.460.000,00","Duplicatas a Receber: R$ 260.000,00","Vendas a Prazo: R$ 2.080.000,00","Duplicatas a Pagar: R$ 180.000,00","Compras a Prazo: R$ 1.440.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Prazo Médio de Estocagem (PME). Fórmula: PME = (Estoque Médio / CMV) × 360.",
+          "Calcule o Prazo Médio de Recebimento (PMR). Fórmula: PMR = (Duplicatas a Receber / Vendas a Prazo) × 360.",
+          "Calcule o Prazo Médio de Pagamento (PMP). Fórmula: PMP = (Duplicatas a Pagar / Compras a Prazo) × 360.",
+          "Com base nos resultados anteriores, calcule o Ciclo Operacional (CO). Fórmula: CO = PME + PMR.",
+          "Calcule o Ciclo Financeiro (CF). Fórmula: CF = CO − PMP.",
+          "Questão final (interpretação): a empresa apresenta boa gestão do capital de giro? Há necessidade de reduzir algum prazo? Qual? O ciclo financeiro indica dependência de capital próprio ou de terceiros? Explique.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Doce Vida Panificadora",
+        contexto:"A Doce Vida Panificadora apresentou os seguintes dados no último ano. Adote ano comercial de 360 dias.",
+        dados:[
+          { label:"Dados do cenário", itens:["Estoque Médio: R$ 210.000,00","Custo das Mercadorias Vendidas (CMV): R$ 1.470.000,00","Duplicatas a Receber: R$ 120.000,00","Vendas a Prazo: R$ 1.200.000,00","Duplicatas a Pagar: R$ 90.000,00","Compras a Prazo: R$ 750.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Prazo Médio de Estocagem (PME). Fórmula: PME = (Estoque Médio / CMV) × 360.",
+          "Calcule o Prazo Médio de Recebimento (PMR). Fórmula: PMR = (Duplicatas a Receber / Vendas a Prazo) × 360.",
+          "Calcule o Prazo Médio de Pagamento (PMP). Fórmula: PMP = (Duplicatas a Pagar / Compras a Prazo) × 360.",
+          "Com base nos resultados anteriores, calcule o Ciclo Operacional (CO). Fórmula: CO = PME + PMR.",
+          "Calcule o Ciclo Financeiro (CF). Fórmula: CF = CO − PMP.",
+          "Questão final (interpretação): a empresa apresenta boa gestão do capital de giro? Há necessidade de reduzir algum prazo? Qual? O ciclo financeiro indica dependência de capital próprio ou de terceiros? Explique.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Constrular Materiais",
+        contexto:"A Constrular Materiais apresentou os seguintes dados no último ano. Adote ano comercial de 360 dias.",
+        dados:[
+          { label:"Dados do cenário", itens:["Estoque Médio: R$ 350.000,00","Custo das Mercadorias Vendidas (CMV): R$ 2.100.000,00","Duplicatas a Receber: R$ 190.000,00","Vendas a Prazo: R$ 1.710.000,00","Duplicatas a Pagar: R$ 130.000,00","Compras a Prazo: R$ 1.040.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Prazo Médio de Estocagem (PME). Fórmula: PME = (Estoque Médio / CMV) × 360.",
+          "Calcule o Prazo Médio de Recebimento (PMR). Fórmula: PMR = (Duplicatas a Receber / Vendas a Prazo) × 360.",
+          "Calcule o Prazo Médio de Pagamento (PMP). Fórmula: PMP = (Duplicatas a Pagar / Compras a Prazo) × 360.",
+          "Com base nos resultados anteriores, calcule o Ciclo Operacional (CO). Fórmula: CO = PME + PMR.",
+          "Calcule o Ciclo Financeiro (CF). Fórmula: CF = CO − PMP.",
+          "Questão final (interpretação): a empresa apresenta boa gestão do capital de giro? Há necessidade de reduzir algum prazo? Qual? O ciclo financeiro indica dependência de capital próprio ou de terceiros? Explique.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"ModaFit Confecções",
+        contexto:"A ModaFit Confecções apresentou os seguintes dados no último ano. Adote ano comercial de 360 dias.",
+        dados:[
+          { label:"Dados do cenário", itens:["Estoque Médio: R$ 180.000,00","Custo das Mercadorias Vendidas (CMV): R$ 1.080.000,00","Duplicatas a Receber: R$ 135.000,00","Vendas a Prazo: R$ 1.215.000,00","Duplicatas a Pagar: R$ 75.000,00","Compras a Prazo: R$ 600.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Prazo Médio de Estocagem (PME). Fórmula: PME = (Estoque Médio / CMV) × 360.",
+          "Calcule o Prazo Médio de Recebimento (PMR). Fórmula: PMR = (Duplicatas a Receber / Vendas a Prazo) × 360.",
+          "Calcule o Prazo Médio de Pagamento (PMP). Fórmula: PMP = (Duplicatas a Pagar / Compras a Prazo) × 360.",
+          "Com base nos resultados anteriores, calcule o Ciclo Operacional (CO). Fórmula: CO = PME + PMR.",
+          "Calcule o Ciclo Financeiro (CF). Fórmula: CF = CO − PMP.",
+          "Questão final (interpretação): a empresa apresenta boa gestão do capital de giro? Há necessidade de reduzir algum prazo? Qual? O ciclo financeiro indica dependência de capital próprio ou de terceiros? Explique.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Doce Vida Panificadora",
+        contexto:"A Doce Vida Panificadora apresentou os seguintes dados no último ano. Adote ano comercial de 360 dias.",
+        dados:[
+          { label:"Dados do cenário", itens:["Estoque Médio: R$ 210.000,00","Custo das Mercadorias Vendidas (CMV): R$ 1.470.000,00","Duplicatas a Receber: R$ 120.000,00","Vendas a Prazo: R$ 1.200.000,00","Duplicatas a Pagar: R$ 90.000,00","Compras a Prazo: R$ 750.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Prazo Médio de Estocagem (PME). Fórmula: PME = (Estoque Médio / CMV) × 360.",
+          "Calcule o Prazo Médio de Recebimento (PMR). Fórmula: PMR = (Duplicatas a Receber / Vendas a Prazo) × 360.",
+          "Calcule o Prazo Médio de Pagamento (PMP). Fórmula: PMP = (Duplicatas a Pagar / Compras a Prazo) × 360.",
+          "Com base nos resultados anteriores, calcule o Ciclo Operacional (CO). Fórmula: CO = PME + PMR.",
+          "Calcule o Ciclo Financeiro (CF). Fórmula: CF = CO − PMP.",
+          "Questão final (interpretação): a empresa apresenta boa gestão do capital de giro? Há necessidade de reduzir algum prazo? Qual? O ciclo financeiro indica dependência de capital próprio ou de terceiros? Explique.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Constrular Materiais",
+        contexto:"A Constrular Materiais apresentou os seguintes dados no último ano. Adote ano comercial de 360 dias.",
+        dados:[
+          { label:"Dados do cenário", itens:["Estoque Médio: R$ 350.000,00","Custo das Mercadorias Vendidas (CMV): R$ 2.100.000,00","Duplicatas a Receber: R$ 190.000,00","Vendas a Prazo: R$ 1.710.000,00","Duplicatas a Pagar: R$ 130.000,00","Compras a Prazo: R$ 1.040.000,00"] },
+        ],
+        tarefas:[
+          "Calcule o Prazo Médio de Estocagem (PME). Fórmula: PME = (Estoque Médio / CMV) × 360.",
+          "Calcule o Prazo Médio de Recebimento (PMR). Fórmula: PMR = (Duplicatas a Receber / Vendas a Prazo) × 360.",
+          "Calcule o Prazo Médio de Pagamento (PMP). Fórmula: PMP = (Duplicatas a Pagar / Compras a Prazo) × 360.",
+          "Com base nos resultados anteriores, calcule o Ciclo Operacional (CO). Fórmula: CO = PME + PMR.",
+          "Calcule o Ciclo Financeiro (CF). Fórmula: CF = CO − PMP.",
+          "Questão final (interpretação): a empresa apresenta boa gestão do capital de giro? Há necessidade de reduzir algum prazo? Qual? O ciclo financeiro indica dependência de capital próprio ou de terceiros? Explique.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"ModaFit Confecções",
+        contexto:"A ModaFit Confecções apresentou os seguintes dados no último ano. Adote ano comercial de 360 dias.",
+        dados:[
+          { label:"Dados do cenário", itens:["Estoque Médio: R$ 180.000,00","Custo das Mercadorias Vendidas (CMV): R$ 1.080.000,00","Duplicatas a Receber: R$ 135.000,00","Vendas a Prazo: R$ 1.215.000,00","Duplicatas a Pagar: R$ 75.000,00","Compras a Prazo: R$ 600.000,00"] },
         ],
         tarefas:[
           "Calcule o Prazo Médio de Estocagem (PME). Fórmula: PME = (Estoque Médio / CMV) × 360.",
@@ -2399,6 +2811,104 @@
           "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Estrela do Sul Utilidades.",
         ]
       },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Lumina Iluminação LED",
+        contexto:"A Lumina Iluminação LED atua no setor de iluminação e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 96.000,00","Preço de Venda Unitário (PVU): R$ 84,00","Custo Variável Unitário (CVU): R$ 48,00","Lucro Alvo Desejado (RL): R$ 48.000,00","Despesas sem desembolso (Depreciação): R$ 15.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Lumina Iluminação LED.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Pontual Papelaria Industrial",
+        contexto:"A Pontual Papelaria Industrial atua no setor de material de escritório e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 73.500,00","Preço de Venda Unitário (PVU): R$ 62,00","Custo Variável Unitário (CVU): R$ 37,00","Lucro Alvo Desejado (RL): R$ 36.750,00","Despesas sem desembolso (Depreciação): R$ 10.500,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Pontual Papelaria Industrial.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Vento Norte Ventiladores",
+        contexto:"A Vento Norte Ventiladores atua no setor de eletrodomésticos e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 112.000,00","Preço de Venda Unitário (PVU): R$ 210,00","Custo Variável Unitário (CVU): R$ 126,00","Lucro Alvo Desejado (RL): R$ 56.000,00","Despesas sem desembolso (Depreciação): R$ 21.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Vento Norte Ventiladores.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Lumina Iluminação LED",
+        contexto:"A Lumina Iluminação LED atua no setor de iluminação e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 96.000,00","Preço de Venda Unitário (PVU): R$ 84,00","Custo Variável Unitário (CVU): R$ 48,00","Lucro Alvo Desejado (RL): R$ 48.000,00","Despesas sem desembolso (Depreciação): R$ 15.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Lumina Iluminação LED.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Pontual Papelaria Industrial",
+        contexto:"A Pontual Papelaria Industrial atua no setor de material de escritório e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 73.500,00","Preço de Venda Unitário (PVU): R$ 62,00","Custo Variável Unitário (CVU): R$ 37,00","Lucro Alvo Desejado (RL): R$ 36.750,00","Despesas sem desembolso (Depreciação): R$ 10.500,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Pontual Papelaria Industrial.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Vento Norte Ventiladores",
+        contexto:"A Vento Norte Ventiladores atua no setor de eletrodomésticos e deseja avaliar sua situação financeira utilizando a análise do ponto de equilíbrio.",
+        dados:[
+          { label:"Dados do cenário", itens:["Custos Fixos (CF): R$ 112.000,00","Preço de Venda Unitário (PVU): R$ 210,00","Custo Variável Unitário (CVU): R$ 126,00","Lucro Alvo Desejado (RL): R$ 56.000,00","Despesas sem desembolso (Depreciação): R$ 21.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Margem de Contribuição Unitária (MCU). Fórmula: MCU = PVU − CVU.",
+          "Calcule o Ponto de Equilíbrio Contábil (PEC) em unidades. Fórmula: PEC = CF / MCU.",
+          "Calcule a Margem de Contribuição Percentual (MC%). Fórmula: MC% = MCU / PVU.",
+          "Calcule o Ponto de Equilíbrio em Receita (PER). Fórmula: PER = CF / MC%.",
+          "Calcule o Ponto de Equilíbrio Econômico (PEE), considerando o lucro alvo (RL) informado. Fórmula: PEE = (CF + RL) / MCU.",
+          "Calcule o Ponto de Equilíbrio Financeiro (PEF), considerando as despesas sem desembolso informadas. Fórmula: PEF = (CF − Despesas sem desembolso) / MCU.",
+          "Interpretação: compare o PEC, o PEE e o PEF e explique o que cada resultado indica sobre a situação da Vento Norte Ventiladores.",
+        ]
+      },
     ] },
     { code:"7.0",  title:"Administração de Ativos Permanentes",            ementa:"Gestão de ativos imobilizados, depreciação e decisões de investimento em capital fixo.", subtopics:[
       "Conceito e classificação dos ativos permanentes",
@@ -2566,6 +3076,98 @@
           "Calcule a Depreciação Acumulada (DA) até o momento. Fórmula: DA = QAD × t.",
           "Calcule o Valor Contábil Líquido (VCL) atual. Fórmula: VCL = VA − DA.",
           "Interpretação: considerando que restam apenas 3 anos de vida útil contábil, recomende à Horizonte Gráfica Industrial se ela deve iniciar o planejamento financeiro para a substituição do equipamento.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Forja Sul Usinagem",
+        contexto:"A Forja Sul Usinagem adquiriu um novo torno CNC e deseja calcular sua depreciação pelo método linear para fins contábeis e gerenciais.",
+        dados:[
+          { label:"Dados do cenário", itens:["Valor de Aquisição (VA): R$ 240.000,00","Valor Residual estimado (VR): R$ 40.000,00","Vida útil estimada (n): 5 anos","Tempo decorrido desde a aquisição (t): 3 anos"] },
+        ],
+        tarefas:[
+          "Calcule o Valor Depreciável (VD). Fórmula: VD = VA − VR.",
+          "Calcule a Taxa Anual de Depreciação (TD%). Fórmula: TD% = 1 / n.",
+          "Calcule a Quota Anual de Depreciação (QAD). Fórmula: QAD = VD / n.",
+          "Calcule a Depreciação Acumulada (DA) até o momento. Fórmula: DA = QAD × t.",
+          "Calcule o Valor Contábil Líquido (VCL) atual. Fórmula: VCL = VA − DA.",
+          "Interpretação: com base no VCL calculado, avalie se a Forja Sul Usinagem já deveria começar a planejar a substituição dessa máquina.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Recicla Mais Reciclagem Industrial",
+        contexto:"A Recicla Mais comprou uma prensa industrial e precisa apurar a depreciação acumulada e o valor contábil líquido para seu balanço patrimonial.",
+        dados:[
+          { label:"Dados do cenário", itens:["Valor de Aquisição (VA): R$ 150.000,00","Valor Residual estimado (VR): R$ 30.000,00","Vida útil estimada (n): 4 anos","Tempo decorrido desde a aquisição (t): 1 ano"] },
+        ],
+        tarefas:[
+          "Calcule o Valor Depreciável (VD). Fórmula: VD = VA − VR.",
+          "Calcule a Taxa Anual de Depreciação (TD%). Fórmula: TD% = 1 / n.",
+          "Calcule a Quota Anual de Depreciação (QAD). Fórmula: QAD = VD / n.",
+          "Calcule a Depreciação Acumulada (DA) até o momento. Fórmula: DA = QAD × t.",
+          "Calcule o Valor Contábil Líquido (VCL) atual. Fórmula: VCL = VA − DA.",
+          "Interpretação: explique o que os resultados indicam sobre o estágio da vida útil da prensa da Recicla Mais Reciclagem Industrial.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"TransCarga Logística",
+        contexto:"A TransCarga Logística investiu em um novo caminhão para sua frota e quer projetar a depreciação para os próximos anos e decidir sobre uma possível substituição futura.",
+        dados:[
+          { label:"Dados do cenário", itens:["Valor de Aquisição (VA): R$ 280.000,00","Valor Residual estimado (VR): R$ 50.000,00","Vida útil estimada (n): 7 anos","Tempo decorrido desde a aquisição (t): 6 anos"] },
+        ],
+        tarefas:[
+          "Calcule o Valor Depreciável (VD). Fórmula: VD = VA − VR.",
+          "Calcule a Taxa Anual de Depreciação (TD%). Fórmula: TD% = 1 / n.",
+          "Calcule a Quota Anual de Depreciação (QAD). Fórmula: QAD = VD / n.",
+          "Calcule a Depreciação Acumulada (DA) até o momento. Fórmula: DA = QAD × t.",
+          "Calcule o Valor Contábil Líquido (VCL) atual. Fórmula: VCL = VA − DA.",
+          "Interpretação: considerando que resta apenas 1 ano de vida útil contábil, recomende à TransCarga Logística se ela deve iniciar o planejamento financeiro para a substituição do caminhão.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Forja Sul Usinagem",
+        contexto:"A Forja Sul Usinagem adquiriu um novo torno CNC e deseja calcular sua depreciação pelo método linear para fins contábeis e gerenciais.",
+        dados:[
+          { label:"Dados do cenário", itens:["Valor de Aquisição (VA): R$ 240.000,00","Valor Residual estimado (VR): R$ 40.000,00","Vida útil estimada (n): 5 anos","Tempo decorrido desde a aquisição (t): 3 anos"] },
+        ],
+        tarefas:[
+          "Calcule o Valor Depreciável (VD). Fórmula: VD = VA − VR.",
+          "Calcule a Taxa Anual de Depreciação (TD%). Fórmula: TD% = 1 / n.",
+          "Calcule a Quota Anual de Depreciação (QAD). Fórmula: QAD = VD / n.",
+          "Calcule a Depreciação Acumulada (DA) até o momento. Fórmula: DA = QAD × t.",
+          "Calcule o Valor Contábil Líquido (VCL) atual. Fórmula: VCL = VA − DA.",
+          "Interpretação: com base no VCL calculado, avalie se a Forja Sul Usinagem já deveria começar a planejar a substituição dessa máquina.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Recicla Mais Reciclagem Industrial",
+        contexto:"A Recicla Mais comprou uma prensa industrial e precisa apurar a depreciação acumulada e o valor contábil líquido para seu balanço patrimonial.",
+        dados:[
+          { label:"Dados do cenário", itens:["Valor de Aquisição (VA): R$ 150.000,00","Valor Residual estimado (VR): R$ 30.000,00","Vida útil estimada (n): 4 anos","Tempo decorrido desde a aquisição (t): 1 ano"] },
+        ],
+        tarefas:[
+          "Calcule o Valor Depreciável (VD). Fórmula: VD = VA − VR.",
+          "Calcule a Taxa Anual de Depreciação (TD%). Fórmula: TD% = 1 / n.",
+          "Calcule a Quota Anual de Depreciação (QAD). Fórmula: QAD = VD / n.",
+          "Calcule a Depreciação Acumulada (DA) até o momento. Fórmula: DA = QAD × t.",
+          "Calcule o Valor Contábil Líquido (VCL) atual. Fórmula: VCL = VA − DA.",
+          "Interpretação: explique o que os resultados indicam sobre o estágio da vida útil da prensa da Recicla Mais Reciclagem Industrial.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"TransCarga Logística",
+        contexto:"A TransCarga Logística investiu em um novo caminhão para sua frota e quer projetar a depreciação para os próximos anos e decidir sobre uma possível substituição futura.",
+        dados:[
+          { label:"Dados do cenário", itens:["Valor de Aquisição (VA): R$ 280.000,00","Valor Residual estimado (VR): R$ 50.000,00","Vida útil estimada (n): 7 anos","Tempo decorrido desde a aquisição (t): 6 anos"] },
+        ],
+        tarefas:[
+          "Calcule o Valor Depreciável (VD). Fórmula: VD = VA − VR.",
+          "Calcule a Taxa Anual de Depreciação (TD%). Fórmula: TD% = 1 / n.",
+          "Calcule a Quota Anual de Depreciação (QAD). Fórmula: QAD = VD / n.",
+          "Calcule a Depreciação Acumulada (DA) até o momento. Fórmula: DA = QAD × t.",
+          "Calcule o Valor Contábil Líquido (VCL) atual. Fórmula: VCL = VA − DA.",
+          "Interpretação: considerando que resta apenas 1 ano de vida útil contábil, recomende à TransCarga Logística se ela deve iniciar o planejamento financeiro para a substituição do caminhão.",
         ]
       },
     ] },
@@ -2743,6 +3345,98 @@
           "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
           "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
           "Interpretação: considerando que a diferença entre a TIR e o WACC é pequena, avalie o grau de risco dessa decisão para a Vertente Alimentos Naturais.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Vetor Engenharia S.A.",
+        contexto:"A Vetor Engenharia avalia um projeto de expansão com TIR estimada de 13,0% a.a. e deseja calcular o WACC de sua estrutura de capital atual para decidir sobre o investimento.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 1.400.000,00","Capital de Terceiros (D): R$ 700.000,00","Taxa livre de risco (Rf): 5,5% a.a.","Retorno de mercado (Rm): 13,5% a.a.","Beta (β): 1,0","Custo da dívida antes do IR (Kd): 11,5% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 13,0% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: explique, com base nos pesos E/V e D/V, como a estrutura de capital da Vetor Engenharia influenciou o resultado do WACC.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Bioplast Embalagens",
+        contexto:"A Bioplast Embalagens possui uma estrutura de capital mais alavancada que a de outras empresas do setor e avalia o mesmo tipo de projeto, com TIR estimada de 13,0% a.a.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 850.000,00","Capital de Terceiros (D): R$ 1.150.000,00","Taxa livre de risco (Rf): 5,5% a.a.","Retorno de mercado (Rm): 13,5% a.a.","Beta (β): 1,4","Custo da dívida antes do IR (Kd): 13,5% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 13,0% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: compare o β, o Kd e o WACC da Bioplast Embalagens com os resultados obtidos para a Vetor Engenharia e explique o efeito da maior alavancagem sobre a decisão de investimento.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Rede Alfa Telecomunicações",
+        contexto:"A Rede Alfa Telecomunicações planeja um investimento em nova infraestrutura, com TIR estimada de 11,5% a.a., e precisa avaliar se sua estrutura de capital atual sustenta esse projeto.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 1.600.000,00","Capital de Terceiros (D): R$ 500.000,00","Taxa livre de risco (Rf): 6,5% a.a.","Retorno de mercado (Rm): 14,5% a.a.","Beta (β): 0,7","Custo da dívida antes do IR (Kd): 9,5% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 11,5% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: considerando que a diferença entre a TIR e o WACC é pequena, avalie o grau de risco dessa decisão para a Rede Alfa Telecomunicações.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Vetor Engenharia S.A.",
+        contexto:"A Vetor Engenharia avalia um projeto de expansão com TIR estimada de 13,0% a.a. e deseja calcular o WACC de sua estrutura de capital atual para decidir sobre o investimento.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 1.400.000,00","Capital de Terceiros (D): R$ 700.000,00","Taxa livre de risco (Rf): 5,5% a.a.","Retorno de mercado (Rm): 13,5% a.a.","Beta (β): 1,0","Custo da dívida antes do IR (Kd): 11,5% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 13,0% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: explique, com base nos pesos E/V e D/V, como a estrutura de capital da Vetor Engenharia influenciou o resultado do WACC.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Bioplast Embalagens",
+        contexto:"A Bioplast Embalagens possui uma estrutura de capital mais alavancada que a de outras empresas do setor e avalia o mesmo tipo de projeto, com TIR estimada de 13,0% a.a.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 850.000,00","Capital de Terceiros (D): R$ 1.150.000,00","Taxa livre de risco (Rf): 5,5% a.a.","Retorno de mercado (Rm): 13,5% a.a.","Beta (β): 1,4","Custo da dívida antes do IR (Kd): 13,5% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 13,0% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: compare o β, o Kd e o WACC da Bioplast Embalagens com os resultados obtidos para a Vetor Engenharia e explique o efeito da maior alavancagem sobre a decisão de investimento.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Rede Alfa Telecomunicações",
+        contexto:"A Rede Alfa Telecomunicações planeja um investimento em nova infraestrutura, com TIR estimada de 11,5% a.a., e precisa avaliar se sua estrutura de capital atual sustenta esse projeto.",
+        dados:[
+          { label:"Dados do cenário", itens:["Capital Próprio (E): R$ 1.600.000,00","Capital de Terceiros (D): R$ 500.000,00","Taxa livre de risco (Rf): 6,5% a.a.","Retorno de mercado (Rm): 14,5% a.a.","Beta (β): 0,7","Custo da dívida antes do IR (Kd): 9,5% a.a.","Alíquota de Imposto de Renda (IR): 25%","TIR do projeto: 11,5% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Valor Total do Capital (V) e os pesos E/V e D/V. Fórmulas: V = E + D.",
+          "Calcule o Custo do Capital Próprio (Ke) pelo modelo CAPM. Fórmula: Ke = Rf + β (Rm − Rf).",
+          "Calcule o Custo do Capital de Terceiros após o benefício fiscal (Kd_líquido). Fórmula: Kd_líquido = Kd × (1 − IR).",
+          "Calcule o Custo Médio Ponderado de Capital (WACC). Fórmula: WACC = (E/V × Ke) + (D/V × Kd_líquido).",
+          "Compare a TIR do projeto com o WACC calculado e decida se o projeto deve ser aceito ou rejeitado.",
+          "Interpretação: considerando que a diferença entre a TIR e o WACC é pequena, avalie o grau de risco dessa decisão para a Rede Alfa Telecomunicações.",
         ]
       },
     ] },
@@ -2926,6 +3620,108 @@
           "Interpretação: considerando o FC, o LC e o VPL calculados, explique por que a Cristal Embalagens Sustentáveis deveria repensar tanto seu planejamento de caixa quanto o investimento proposto.",
         ]
       },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Horizonte Solar Energia",
+        contexto:"A Horizonte Solar Energia está elaborando seu planejamento financeiro para o próximo período e avalia, ao mesmo tempo, um projeto de investimento em novos painéis solares.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 510.000,00","Saídas Previstas: R$ 430.000,00","Contas a Receber: R$ 72.000,00","Estoques: R$ 105.000,00","Contas a Pagar: R$ 84.000,00","Ativo Circulante: R$ 210.000,00","Passivo Circulante: R$ 140.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 72.000,00","Fluxo de Caixa Anual: R$ 21.000,00","Duração do projeto: 5 anos","Taxa Mínima de Atratividade (TMA): 11% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Calcule o Índice de Lucratividade (IL). Fórmula: IL = Valor Presente dos Fluxos de Caixa ÷ I0.",
+          "Interpretação: com base no LC e no VPL calculados, avalie se a Horizonte Solar Energia está em condições financeiras de realizar esse investimento.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"GranFarma Distribuidora",
+        contexto:"A GranFarma Distribuidora projeta seu fluxo de caixa para o próximo exercício e avalia um investimento em expansão da capacidade de armazenagem.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 760.000,00","Saídas Previstas: R$ 690.000,00","Contas a Receber: R$ 110.000,00","Estoques: R$ 160.000,00","Contas a Pagar: R$ 125.000,00","Ativo Circulante: R$ 340.000,00","Passivo Circulante: R$ 280.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 140.000,00","Fluxo de Caixa Anual: R$ 39.000,00","Duração do projeto: 6 anos","Taxa Mínima de Atratividade (TMA): 13% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Calcule o Índice de Lucratividade (IL). Fórmula: IL = Valor Presente dos Fluxos de Caixa ÷ I0.",
+          "Interpretação: compare o resultado do VPL e do IL da GranFarma Distribuidora com os da Horizonte Solar Energia e explique qual dos dois projetos é mais eficiente por real investido.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Aquário Piscicultura",
+        contexto:"A Aquário Piscicultura enfrenta um período de aperto no caixa e avalia se deve seguir adiante com um projeto de investimento já orçado.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 300.000,00","Saídas Previstas: R$ 318.000,00","Contas a Receber: R$ 42.000,00","Estoques: R$ 60.000,00","Contas a Pagar: R$ 82.000,00","Ativo Circulante: R$ 120.000,00","Passivo Circulante: R$ 138.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 38.000,00","Fluxo de Caixa Anual: R$ 9.000,00","Duração do projeto: 5 anos","Taxa Mínima de Atratividade (TMA): 12% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Interpretação: considerando o FC, o LC e o VPL calculados, explique por que a Aquário Piscicultura deveria repensar tanto seu planejamento de caixa quanto o investimento proposto.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Horizonte Solar Energia",
+        contexto:"A Horizonte Solar Energia está elaborando seu planejamento financeiro para o próximo período e avalia, ao mesmo tempo, um projeto de investimento em novos painéis solares.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 510.000,00","Saídas Previstas: R$ 430.000,00","Contas a Receber: R$ 72.000,00","Estoques: R$ 105.000,00","Contas a Pagar: R$ 84.000,00","Ativo Circulante: R$ 210.000,00","Passivo Circulante: R$ 140.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 72.000,00","Fluxo de Caixa Anual: R$ 21.000,00","Duração do projeto: 5 anos","Taxa Mínima de Atratividade (TMA): 11% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Calcule o Índice de Lucratividade (IL). Fórmula: IL = Valor Presente dos Fluxos de Caixa ÷ I0.",
+          "Interpretação: com base no LC e no VPL calculados, avalie se a Horizonte Solar Energia está em condições financeiras de realizar esse investimento.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"GranFarma Distribuidora",
+        contexto:"A GranFarma Distribuidora projeta seu fluxo de caixa para o próximo exercício e avalia um investimento em expansão da capacidade de armazenagem.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 760.000,00","Saídas Previstas: R$ 690.000,00","Contas a Receber: R$ 110.000,00","Estoques: R$ 160.000,00","Contas a Pagar: R$ 125.000,00","Ativo Circulante: R$ 340.000,00","Passivo Circulante: R$ 280.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 140.000,00","Fluxo de Caixa Anual: R$ 39.000,00","Duração do projeto: 6 anos","Taxa Mínima de Atratividade (TMA): 13% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Calcule o Índice de Lucratividade (IL). Fórmula: IL = Valor Presente dos Fluxos de Caixa ÷ I0.",
+          "Interpretação: compare o resultado do VPL e do IL da GranFarma Distribuidora com os da Horizonte Solar Energia e explique qual dos dois projetos é mais eficiente por real investido.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Aquário Piscicultura",
+        contexto:"A Aquário Piscicultura enfrenta um período de aperto no caixa e avalia se deve seguir adiante com um projeto de investimento já orçado.",
+        dados:[
+          { label:"Planejamento financeiro", itens:["Entradas Previstas: R$ 300.000,00","Saídas Previstas: R$ 318.000,00","Contas a Receber: R$ 42.000,00","Estoques: R$ 60.000,00","Contas a Pagar: R$ 82.000,00","Ativo Circulante: R$ 120.000,00","Passivo Circulante: R$ 138.000,00"] },
+          { label:"Análise de investimento", itens:["Investimento Inicial (I0): R$ 38.000,00","Fluxo de Caixa Anual: R$ 9.000,00","Duração do projeto: 5 anos","Taxa Mínima de Atratividade (TMA): 12% a.a."] },
+        ],
+        tarefas:[
+          "Calcule o Fluxo de Caixa Projetado (FC). Fórmula: FC = Entradas − Saídas.",
+          "Calcule a Necessidade de Capital de Giro (NCG). Fórmula: NCG = (Contas a Receber + Estoques) − Contas a Pagar.",
+          "Calcule o Índice de Liquidez Corrente (LC). Fórmula: LC = Ativo Circulante ÷ Passivo Circulante.",
+          "Calcule o Payback do investimento. Fórmula: Payback = I0 ÷ Fluxo de Caixa Anual.",
+          "Calcule o Valor Presente Líquido (VPL) do projeto, descontando cada fluxo anual pela TMA. Fórmula: VPL = Σ [FCt ÷ (1+i)ᵗ] − I0.",
+          "Interpretação: considerando o FC, o LC e o VPL calculados, explique por que a Aquário Piscicultura deveria repensar tanto seu planejamento de caixa quanto o investimento proposto.",
+        ]
+      },
     ] },
     { code:"10.0", title:"Análise Horizontal e Vertical",                  ementa:"Técnicas de análise das demonstrações contábeis por evolução temporal e por composição.", subtopics:[
       "Análise Horizontal (AH): evolução das contas entre períodos",
@@ -3076,6 +3872,104 @@
           "Calcule a Análise Vertical (AV) do Balanço Patrimonial de 2024, dividindo cada conta pelo Ativo Total (ou Passivo + PL). Fórmula: AV(%) = Valor da conta ÷ Valor do total × 100.",
           "Calcule a Análise Vertical (AV) da DRE de 2024, dividindo cada conta pela Receita Líquida de Vendas.",
           "Interpretação: compare a evolução do endividamento (Passivo Circulante e Empréstimos) e do Patrimônio Líquido da Cristalina Cosméticos Naturais com a da Rio Bonito Equipamentos Agrícolas, e explique qual das duas empresas está em situação financeira mais sólida.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Ferro Nobre Metalurgia S.A.",
+        contexto:"A Ferro Nobre Metalurgia S.A. apresenta os demonstrativos simplificados de 2023 e 2024 a seguir e deseja aplicar a Análise Horizontal e a Análise Vertical para avaliar sua evolução financeira.",
+        dados:[
+          { label:"Balanço Patrimonial Simplificado (em R$)", itens:["Caixa: 2023 R$ 30.000,00 → 2024 R$ 42.000,00","Clientes: 2023 R$ 48.000,00 → 2024 R$ 66.000,00","Estoques: 2023 R$ 42.000,00 → 2024 R$ 36.000,00","Ativo Circulante: 2023 R$ 120.000,00 → 2024 R$ 144.000,00","Imobilizado: 2023 R$ 108.000,00 → 2024 R$ 120.000,00","Ativo Total: 2023 R$ 228.000,00 → 2024 R$ 264.000,00","Fornecedores: 2023 R$ 60.000,00 → 2024 R$ 72.000,00","Empréstimos CP: 2023 R$ 18.000,00 → 2024 R$ 24.000,00","Passivo Circulante: 2023 R$ 78.000,00 → 2024 R$ 96.000,00","Empréstimos LP: 2023 R$ 30.000,00 → 2024 R$ 36.000,00","Patrimônio Líquido: 2023 R$ 120.000,00 → 2024 R$ 132.000,00"] },
+          { label:"DRE Simplificada (em R$)", itens:["Receita Líquida de Vendas: 2023 R$ 264.000,00 → 2024 R$ 312.000,00","Custo das Mercadorias Vendidas: 2023 R$ 168.000,00 → 2024 R$ 192.000,00","Lucro Bruto: 2023 R$ 96.000,00 → 2024 R$ 120.000,00","Despesas Operacionais: 2023 R$ 42.000,00 → 2024 R$ 54.000,00","Lucro Líquido: 2023 R$ 54.000,00 → 2024 R$ 66.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Análise Horizontal (AH) das contas do Ativo (Caixa, Clientes, Estoques, Ativo Circulante e Ativo Total). Fórmula: AH(%) = (Valor Atual − Valor Base) ÷ Valor Base × 100.",
+          "Calcule a Análise Horizontal (AH) das contas do Passivo e do Patrimônio Líquido.",
+          "Calcule a Análise Horizontal (AH) das contas da DRE (Receita, CMV, Lucro Bruto, Despesas Operacionais e Lucro Líquido).",
+          "Calcule a Análise Vertical (AV) do Balanço Patrimonial de 2024, dividindo cada conta pelo Ativo Total (ou Passivo + PL). Fórmula: AV(%) = Valor da conta ÷ Valor do total × 100.",
+          "Calcule a Análise Vertical (AV) da DRE de 2024, dividindo cada conta pela Receita Líquida de Vendas.",
+          "Interpretação: com base na AH e na AV calculadas, avalie se a evolução financeira da Ferro Nobre Metalurgia entre 2023 e 2024 foi positiva, considerando o crescimento de vendas, endividamento e patrimônio líquido.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Campo Aberto Agropecuária",
+        contexto:"A Campo Aberto Agropecuária apresenta os demonstrativos simplificados de 2023 e 2024 a seguir. A diretoria suspeita que a empresa esteja se tornando mais dependente de capital de terceiros e pede uma análise horizontal e vertical completa.",
+        dados:[
+          { label:"Balanço Patrimonial Simplificado (em R$)", itens:["Caixa: 2023 R$ 72.000,00 → 2024 R$ 54.000,00","Clientes: 2023 R$ 108.000,00 → 2024 R$ 156.000,00","Estoques: 2023 R$ 120.000,00 → 2024 R$ 174.000,00","Ativo Circulante: 2023 R$ 300.000,00 → 2024 R$ 384.000,00","Imobilizado: 2023 R$ 180.000,00 → 2024 R$ 216.000,00","Ativo Total: 2023 R$ 480.000,00 → 2024 R$ 600.000,00","Fornecedores: 2023 R$ 96.000,00 → 2024 R$ 168.000,00","Empréstimos CP: 2023 R$ 48.000,00 → 2024 R$ 84.000,00","Passivo Circulante: 2023 R$ 144.000,00 → 2024 R$ 252.000,00","Empréstimos LP: 2023 R$ 72.000,00 → 2024 R$ 108.000,00","Patrimônio Líquido: 2023 R$ 264.000,00 → 2024 R$ 240.000,00"] },
+          { label:"DRE Simplificada (em R$)", itens:["Receita Líquida de Vendas: 2023 R$ 576.000,00 → 2024 R$ 624.000,00","Custo das Mercadorias Vendidas: 2023 R$ 360.000,00 → 2024 R$ 420.000,00","Lucro Bruto: 2023 R$ 216.000,00 → 2024 R$ 204.000,00","Despesas Operacionais: 2023 R$ 108.000,00 → 2024 R$ 132.000,00","Lucro Líquido: 2023 R$ 108.000,00 → 2024 R$ 72.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Análise Horizontal (AH) das contas do Ativo (Caixa, Clientes, Estoques, Ativo Circulante e Ativo Total). Fórmula: AH(%) = (Valor Atual − Valor Base) ÷ Valor Base × 100.",
+          "Calcule a Análise Horizontal (AH) das contas do Passivo e do Patrimônio Líquido.",
+          "Calcule a Análise Horizontal (AH) das contas da DRE (Receita, CMV, Lucro Bruto, Despesas Operacionais e Lucro Líquido).",
+          "Calcule a Análise Vertical (AV) do Balanço Patrimonial de 2024, dividindo cada conta pelo Ativo Total (ou Passivo + PL). Fórmula: AV(%) = Valor da conta ÷ Valor do total × 100.",
+          "Calcule a Análise Vertical (AV) da DRE de 2024, dividindo cada conta pela Receita Líquida de Vendas.",
+          "Interpretação: com base na queda do Caixa, no crescimento dos Empréstimos e do Passivo Circulante, na redução do Patrimônio Líquido e na queda do Lucro Líquido, avalie se a suspeita da diretoria da Campo Aberto Agropecuária está correta e explique os riscos dessa situação.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Estação Mar Turismo",
+        contexto:"A Estação Mar Turismo apresenta os demonstrativos simplificados de 2023 e 2024 a seguir, após um período de reinvestimento de lucros na expansão do negócio.",
+        dados:[
+          { label:"Balanço Patrimonial Simplificado (em R$)", itens:["Caixa: 2023 R$ 48.000,00 → 2024 R$ 84.000,00","Clientes: 2023 R$ 66.000,00 → 2024 R$ 72.000,00","Estoques: 2023 R$ 54.000,00 → 2024 R$ 60.000,00","Ativo Circulante: 2023 R$ 168.000,00 → 2024 R$ 216.000,00","Imobilizado: 2023 R$ 132.000,00 → 2024 R$ 156.000,00","Ativo Total: 2023 R$ 300.000,00 → 2024 R$ 372.000,00","Fornecedores: 2023 R$ 42.000,00 → 2024 R$ 46.000,00","Empréstimos CP: 2023 R$ 18.000,00 → 2024 R$ 14.000,00","Passivo Circulante: 2023 R$ 60.000,00 → 2024 R$ 60.000,00","Empréstimos LP: 2023 R$ 48.000,00 → 2024 R$ 42.000,00","Patrimônio Líquido: 2023 R$ 192.000,00 → 2024 R$ 270.000,00"] },
+          { label:"DRE Simplificada (em R$)", itens:["Receita Líquida de Vendas: 2023 R$ 360.000,00 → 2024 R$ 432.000,00","Custo das Mercadorias Vendidas: 2023 R$ 204.000,00 → 2024 R$ 234.000,00","Lucro Bruto: 2023 R$ 156.000,00 → 2024 R$ 198.000,00","Despesas Operacionais: 2023 R$ 84.000,00 → 2024 R$ 90.000,00","Lucro Líquido: 2023 R$ 72.000,00 → 2024 R$ 108.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Análise Horizontal (AH) das contas do Ativo (Caixa, Clientes, Estoques, Ativo Circulante e Ativo Total). Fórmula: AH(%) = (Valor Atual − Valor Base) ÷ Valor Base × 100.",
+          "Calcule a Análise Horizontal (AH) das contas do Passivo e do Patrimônio Líquido.",
+          "Calcule a Análise Horizontal (AH) das contas da DRE (Receita, CMV, Lucro Bruto, Despesas Operacionais e Lucro Líquido).",
+          "Calcule a Análise Vertical (AV) do Balanço Patrimonial de 2024, dividindo cada conta pelo Ativo Total (ou Passivo + PL). Fórmula: AV(%) = Valor da conta ÷ Valor do total × 100.",
+          "Calcule a Análise Vertical (AV) da DRE de 2024, dividindo cada conta pela Receita Líquida de Vendas.",
+          "Interpretação: compare a evolução do endividamento (Passivo Circulante e Empréstimos) e do Patrimônio Líquido da Estação Mar Turismo com a da Campo Aberto Agropecuária, e explique qual das duas empresas está em situação financeira mais sólida.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Ferro Nobre Metalurgia S.A.",
+        contexto:"A Ferro Nobre Metalurgia S.A. apresenta os demonstrativos simplificados de 2023 e 2024 a seguir e deseja aplicar a Análise Horizontal e a Análise Vertical para avaliar sua evolução financeira.",
+        dados:[
+          { label:"Balanço Patrimonial Simplificado (em R$)", itens:["Caixa: 2023 R$ 30.000,00 → 2024 R$ 42.000,00","Clientes: 2023 R$ 48.000,00 → 2024 R$ 66.000,00","Estoques: 2023 R$ 42.000,00 → 2024 R$ 36.000,00","Ativo Circulante: 2023 R$ 120.000,00 → 2024 R$ 144.000,00","Imobilizado: 2023 R$ 108.000,00 → 2024 R$ 120.000,00","Ativo Total: 2023 R$ 228.000,00 → 2024 R$ 264.000,00","Fornecedores: 2023 R$ 60.000,00 → 2024 R$ 72.000,00","Empréstimos CP: 2023 R$ 18.000,00 → 2024 R$ 24.000,00","Passivo Circulante: 2023 R$ 78.000,00 → 2024 R$ 96.000,00","Empréstimos LP: 2023 R$ 30.000,00 → 2024 R$ 36.000,00","Patrimônio Líquido: 2023 R$ 120.000,00 → 2024 R$ 132.000,00"] },
+          { label:"DRE Simplificada (em R$)", itens:["Receita Líquida de Vendas: 2023 R$ 264.000,00 → 2024 R$ 312.000,00","Custo das Mercadorias Vendidas: 2023 R$ 168.000,00 → 2024 R$ 192.000,00","Lucro Bruto: 2023 R$ 96.000,00 → 2024 R$ 120.000,00","Despesas Operacionais: 2023 R$ 42.000,00 → 2024 R$ 54.000,00","Lucro Líquido: 2023 R$ 54.000,00 → 2024 R$ 66.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Análise Horizontal (AH) das contas do Ativo (Caixa, Clientes, Estoques, Ativo Circulante e Ativo Total). Fórmula: AH(%) = (Valor Atual − Valor Base) ÷ Valor Base × 100.",
+          "Calcule a Análise Horizontal (AH) das contas do Passivo e do Patrimônio Líquido.",
+          "Calcule a Análise Horizontal (AH) das contas da DRE (Receita, CMV, Lucro Bruto, Despesas Operacionais e Lucro Líquido).",
+          "Calcule a Análise Vertical (AV) do Balanço Patrimonial de 2024, dividindo cada conta pelo Ativo Total (ou Passivo + PL). Fórmula: AV(%) = Valor da conta ÷ Valor do total × 100.",
+          "Calcule a Análise Vertical (AV) da DRE de 2024, dividindo cada conta pela Receita Líquida de Vendas.",
+          "Interpretação: com base na AH e na AV calculadas, avalie se a evolução financeira da Ferro Nobre Metalurgia entre 2023 e 2024 foi positiva, considerando o crescimento de vendas, endividamento e patrimônio líquido.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Campo Aberto Agropecuária",
+        contexto:"A Campo Aberto Agropecuária apresenta os demonstrativos simplificados de 2023 e 2024 a seguir. A diretoria suspeita que a empresa esteja se tornando mais dependente de capital de terceiros e pede uma análise horizontal e vertical completa.",
+        dados:[
+          { label:"Balanço Patrimonial Simplificado (em R$)", itens:["Caixa: 2023 R$ 72.000,00 → 2024 R$ 54.000,00","Clientes: 2023 R$ 108.000,00 → 2024 R$ 156.000,00","Estoques: 2023 R$ 120.000,00 → 2024 R$ 174.000,00","Ativo Circulante: 2023 R$ 300.000,00 → 2024 R$ 384.000,00","Imobilizado: 2023 R$ 180.000,00 → 2024 R$ 216.000,00","Ativo Total: 2023 R$ 480.000,00 → 2024 R$ 600.000,00","Fornecedores: 2023 R$ 96.000,00 → 2024 R$ 168.000,00","Empréstimos CP: 2023 R$ 48.000,00 → 2024 R$ 84.000,00","Passivo Circulante: 2023 R$ 144.000,00 → 2024 R$ 252.000,00","Empréstimos LP: 2023 R$ 72.000,00 → 2024 R$ 108.000,00","Patrimônio Líquido: 2023 R$ 264.000,00 → 2024 R$ 240.000,00"] },
+          { label:"DRE Simplificada (em R$)", itens:["Receita Líquida de Vendas: 2023 R$ 576.000,00 → 2024 R$ 624.000,00","Custo das Mercadorias Vendidas: 2023 R$ 360.000,00 → 2024 R$ 420.000,00","Lucro Bruto: 2023 R$ 216.000,00 → 2024 R$ 204.000,00","Despesas Operacionais: 2023 R$ 108.000,00 → 2024 R$ 132.000,00","Lucro Líquido: 2023 R$ 108.000,00 → 2024 R$ 72.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Análise Horizontal (AH) das contas do Ativo (Caixa, Clientes, Estoques, Ativo Circulante e Ativo Total). Fórmula: AH(%) = (Valor Atual − Valor Base) ÷ Valor Base × 100.",
+          "Calcule a Análise Horizontal (AH) das contas do Passivo e do Patrimônio Líquido.",
+          "Calcule a Análise Horizontal (AH) das contas da DRE (Receita, CMV, Lucro Bruto, Despesas Operacionais e Lucro Líquido).",
+          "Calcule a Análise Vertical (AV) do Balanço Patrimonial de 2024, dividindo cada conta pelo Ativo Total (ou Passivo + PL). Fórmula: AV(%) = Valor da conta ÷ Valor do total × 100.",
+          "Calcule a Análise Vertical (AV) da DRE de 2024, dividindo cada conta pela Receita Líquida de Vendas.",
+          "Interpretação: com base na queda do Caixa, no crescimento dos Empréstimos e do Passivo Circulante, na redução do Patrimônio Líquido e na queda do Lucro Líquido, avalie se a suspeita da diretoria da Campo Aberto Agropecuária está correta e explique os riscos dessa situação.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Estação Mar Turismo",
+        contexto:"A Estação Mar Turismo apresenta os demonstrativos simplificados de 2023 e 2024 a seguir, após um período de reinvestimento de lucros na expansão do negócio.",
+        dados:[
+          { label:"Balanço Patrimonial Simplificado (em R$)", itens:["Caixa: 2023 R$ 48.000,00 → 2024 R$ 84.000,00","Clientes: 2023 R$ 66.000,00 → 2024 R$ 72.000,00","Estoques: 2023 R$ 54.000,00 → 2024 R$ 60.000,00","Ativo Circulante: 2023 R$ 168.000,00 → 2024 R$ 216.000,00","Imobilizado: 2023 R$ 132.000,00 → 2024 R$ 156.000,00","Ativo Total: 2023 R$ 300.000,00 → 2024 R$ 372.000,00","Fornecedores: 2023 R$ 42.000,00 → 2024 R$ 46.000,00","Empréstimos CP: 2023 R$ 18.000,00 → 2024 R$ 14.000,00","Passivo Circulante: 2023 R$ 60.000,00 → 2024 R$ 60.000,00","Empréstimos LP: 2023 R$ 48.000,00 → 2024 R$ 42.000,00","Patrimônio Líquido: 2023 R$ 192.000,00 → 2024 R$ 270.000,00"] },
+          { label:"DRE Simplificada (em R$)", itens:["Receita Líquida de Vendas: 2023 R$ 360.000,00 → 2024 R$ 432.000,00","Custo das Mercadorias Vendidas: 2023 R$ 204.000,00 → 2024 R$ 234.000,00","Lucro Bruto: 2023 R$ 156.000,00 → 2024 R$ 198.000,00","Despesas Operacionais: 2023 R$ 84.000,00 → 2024 R$ 90.000,00","Lucro Líquido: 2023 R$ 72.000,00 → 2024 R$ 108.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Análise Horizontal (AH) das contas do Ativo (Caixa, Clientes, Estoques, Ativo Circulante e Ativo Total). Fórmula: AH(%) = (Valor Atual − Valor Base) ÷ Valor Base × 100.",
+          "Calcule a Análise Horizontal (AH) das contas do Passivo e do Patrimônio Líquido.",
+          "Calcule a Análise Horizontal (AH) das contas da DRE (Receita, CMV, Lucro Bruto, Despesas Operacionais e Lucro Líquido).",
+          "Calcule a Análise Vertical (AV) do Balanço Patrimonial de 2024, dividindo cada conta pelo Ativo Total (ou Passivo + PL). Fórmula: AV(%) = Valor da conta ÷ Valor do total × 100.",
+          "Calcule a Análise Vertical (AV) da DRE de 2024, dividindo cada conta pela Receita Líquida de Vendas.",
+          "Interpretação: compare a evolução do endividamento (Passivo Circulante e Empréstimos) e do Patrimônio Líquido da Estação Mar Turismo com a da Campo Aberto Agropecuária, e explique qual das duas empresas está em situação financeira mais sólida.",
         ]
       },
     ] },
@@ -3250,6 +4144,98 @@
           "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
           "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
           "Interpretação: mesmo com bons resultados gerais, identifique se algum quociente da Estação Verde Alimentos Orgânicos merece atenção e explique por quê.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Costa Azul Pescados",
+        contexto:"A Costa Azul Pescados deseja avaliar sua saúde financeira com um conjunto completo de quocientes de liquidez, endividamento, rentabilidade e eficiência operacional.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 360.000,00","Estoques: R$ 96.000,00","Passivo Circulante: R$ 180.000,00","Empréstimos de Longo Prazo: R$ 120.000,00","Patrimônio Líquido: R$ 420.000,00","Ativo Total: R$ 720.000,00","Receita Líquida de Vendas: R$ 1.080.000,00","Lucro Líquido: R$ 108.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: com base nos resultados ideais de cada quociente, avalie se a Costa Azul Pescados está em boa situação financeira, destacando qualquer ponto de atenção.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Serra Alta Móveis Rústicos",
+        contexto:"A Serra Alta Móveis Rústicos enfrenta dificuldades financeiras e contratou uma consultoria para calcular seus quocientes financeiros e identificar os principais riscos.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 240.000,00","Estoques: R$ 108.000,00","Passivo Circulante: R$ 216.000,00","Empréstimos de Longo Prazo: R$ 144.000,00","Patrimônio Líquido: R$ 180.000,00","Ativo Total: R$ 540.000,00","Receita Líquida de Vendas: R$ 624.000,00","Lucro Líquido: R$ 18.700,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: compare cada quociente calculado com os resultados ideais e liste, em ordem de gravidade, os principais riscos financeiros da Serra Alta Móveis Rústicos.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Vitrine Norte Cosméticos",
+        contexto:"A Vitrine Norte Cosméticos é reconhecida por seu bom desempenho financeiro e quer usar seus quocientes como referência de boas práticas para outras unidades da rede.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 216.000,00","Estoques: R$ 36.000,00","Passivo Circulante: R$ 120.000,00","Empréstimos de Longo Prazo: R$ 60.000,00","Patrimônio Líquido: R$ 276.000,00","Ativo Total: R$ 456.000,00","Receita Líquida de Vendas: R$ 672.000,00","Lucro Líquido: R$ 94.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: mesmo com bons resultados gerais, identifique se algum quociente da Vitrine Norte Cosméticos merece atenção e explique por quê.",
+        ]
+      },
+    ], exerciciosRecuperacao:[
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Costa Azul Pescados",
+        contexto:"A Costa Azul Pescados deseja avaliar sua saúde financeira com um conjunto completo de quocientes de liquidez, endividamento, rentabilidade e eficiência operacional.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 360.000,00","Estoques: R$ 96.000,00","Passivo Circulante: R$ 180.000,00","Empréstimos de Longo Prazo: R$ 120.000,00","Patrimônio Líquido: R$ 420.000,00","Ativo Total: R$ 720.000,00","Receita Líquida de Vendas: R$ 1.080.000,00","Lucro Líquido: R$ 108.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: com base nos resultados ideais de cada quociente, avalie se a Costa Azul Pescados está em boa situação financeira, destacando qualquer ponto de atenção.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Serra Alta Móveis Rústicos",
+        contexto:"A Serra Alta Móveis Rústicos enfrenta dificuldades financeiras e contratou uma consultoria para calcular seus quocientes financeiros e identificar os principais riscos.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 240.000,00","Estoques: R$ 108.000,00","Passivo Circulante: R$ 216.000,00","Empréstimos de Longo Prazo: R$ 144.000,00","Patrimônio Líquido: R$ 180.000,00","Ativo Total: R$ 540.000,00","Receita Líquida de Vendas: R$ 624.000,00","Lucro Líquido: R$ 18.700,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: compare cada quociente calculado com os resultados ideais e liste, em ordem de gravidade, os principais riscos financeiros da Serra Alta Móveis Rústicos.",
+        ]
+      },
+      {
+        tipo:"Estudo de caso · Cálculo", empresa:"Vitrine Norte Cosméticos",
+        contexto:"A Vitrine Norte Cosméticos é reconhecida por seu bom desempenho financeiro e quer usar seus quocientes como referência de boas práticas para outras unidades da rede.",
+        dados:[
+          { label:"Dados do cenário", itens:["Ativo Circulante: R$ 216.000,00","Estoques: R$ 36.000,00","Passivo Circulante: R$ 120.000,00","Empréstimos de Longo Prazo: R$ 60.000,00","Patrimônio Líquido: R$ 276.000,00","Ativo Total: R$ 456.000,00","Receita Líquida de Vendas: R$ 672.000,00","Lucro Líquido: R$ 94.000,00"] },
+        ],
+        tarefas:[
+          "Calcule a Liquidez Corrente (LC) e a Liquidez Seca (LS). Fórmulas: LC = AC ÷ PC; LS = (AC − Estoques) ÷ PC.",
+          "Calcule a Participação de Capitais de Terceiros (PCT), considerando Passivo Exigível = Passivo Circulante + Empréstimos de Longo Prazo. Fórmula: PCT = Passivo Exigível ÷ PL.",
+          "Calcule a Composição do Endividamento (CE), considerando Passivo Total = Passivo Exigível. Fórmula: CE = Passivo Circulante ÷ Passivo Total.",
+          "Calcule a Margem Líquida (ML), a Rentabilidade do Ativo (ROA) e a Rentabilidade do Patrimônio Líquido (ROE).",
+          "Calcule o Giro do Ativo (GA). Fórmula: GA = Receita Líquida ÷ Ativo Total.",
+          "Interpretação: mesmo com bons resultados gerais, identifique se algum quociente da Vitrine Norte Cosméticos merece atenção e explique por quê.",
         ]
       },
     ] },
@@ -3846,35 +4832,44 @@
     return p ? p.status : 'liberado';
   }
 
-  function coletarRespostasModulo(moduloIndex, registroExistente){
+  // Retorna o conjunto de exercícios que deve ser exibido/corrigido: o regular,
+  // ou — durante uma Recuperação Paralela — um conjunto diferente com o mesmo
+  // conteúdo do módulo, para que o aluno não refaça exatamente as mesmas questões.
+  function exerciciosAtivos(moduloIndex, emRecuperacao){
     const m = modules[moduloIndex];
+    if(!m) return [];
+    return (emRecuperacao && m.exerciciosRecuperacao) ? m.exerciciosRecuperacao : (m.exercicios || []);
+  }
+
+  function coletarRespostasModulo(moduloIndex, registroExistente){
+    const emRecuperacao = !!(registroExistente && registroExistente.emRecuperacao);
+    const exercicios = exerciciosAtivos(moduloIndex, emRecuperacao);
     const respostasObjetivas = {};
     const respostasDiscursivas = {};
-    if(m.exercicios){
-      m.exercicios.forEach((q, i) => {
-        if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso'){
-          const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
-          if(sel) respostasObjetivas[i] = sel.value;
-        } else {
-          const el = document.getElementById(`resp-${moduloIndex}-${i}`);
-          if(el) respostasDiscursivas[i] = el.value.trim();
-        }
-      });
-    }
+    exercicios.forEach((q, i) => {
+      if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso'){
+        const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
+        if(sel) respostasObjetivas[i] = sel.value;
+      } else {
+        const el = document.getElementById(`resp-${moduloIndex}-${i}`);
+        if(el) respostasDiscursivas[i] = el.value.trim();
+      }
+    });
     return { respostasObjetivas, respostasDiscursivas };
   }
 
   // Confere se todas as questões obrigatórias foram respondidas antes de
   // permitir o envio. Questões objetivas já travadas (enviadas antes) não
-  // precisam ser checadas de novo — já têm resposta salva.
+  // precisam ser checadas de novo — já têm resposta salva. Durante uma
+  // Recuperação Paralela, nada conta como "já travado" (é uma tentativa nova).
   function validarPendenciasModulo(moduloIndex, registroExistente){
-    const m = modules[moduloIndex];
+    const emRecuperacao = !!(registroExistente && registroExistente.emRecuperacao);
+    const exercicios = exerciciosAtivos(moduloIndex, emRecuperacao);
     const pendencias = [];
-    if(!m.exercicios) return pendencias;
-    m.exercicios.forEach((q, i) => {
+    exercicios.forEach((q, i) => {
       const numero = i + 1;
       if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso'){
-        const jaTravada = registroExistente && registroExistente.respostasObjetivas && registroExistente.respostasObjetivas[i] !== undefined;
+        const jaTravada = !emRecuperacao && registroExistente && registroExistente.respostasObjetivas && registroExistente.respostasObjetivas[i] !== undefined;
         if(!jaTravada){
           const sel = document.querySelector(`input[name="resp-${moduloIndex}-${i}"]:checked`);
           if(!sel) pendencias.push(`Questão ${numero}: selecione uma resposta`);
@@ -3882,7 +4877,7 @@
       } else {
         const el = document.getElementById(`resp-${moduloIndex}-${i}`);
         const valorDigitado = el ? el.value.trim() : '';
-        const valorSalvo = registroExistente && registroExistente.respostasDiscursivas ? (registroExistente.respostasDiscursivas[i] || '').trim() : '';
+        const valorSalvo = (!emRecuperacao && registroExistente && registroExistente.respostasDiscursivas) ? (registroExistente.respostasDiscursivas[i] || '').trim() : '';
         if(!valorDigitado && !valorSalvo) pendencias.push(`Questão ${numero}: escreva sua resposta`);
       }
     });
@@ -3901,8 +4896,8 @@
       return;
     }
     const { respostasObjetivas, respostasDiscursivas } = coletarRespostasModulo(moduloIndex, registroExistente);
-    const composicao = composicaoModulo(moduloIndex);
-    const correcao = corrigirObjetivas(moduloIndex, respostasObjetivas);
+    const composicao = composicaoModulo(moduloIndex, emRecuperacao);
+    const correcao = corrigirObjetivas(moduloIndex, respostasObjetivas, emRecuperacao);
     const notaRegularBase = registroExistente ? (registroExistente.notaRegular != null ? registroExistente.notaRegular : registroExistente.nota) : null;
 
     let registro;
@@ -3958,6 +4953,11 @@
     if(registro.notaRegular == null) registro.notaRegular = registro.nota;
     registro.emRecuperacao = true;
     registro.status = 'liberado';
+    // Limpa as respostas da avaliação regular guardadas no registro — a nota
+    // regular já foi salva acima (notaRegular), mas as respostas em si não
+    // devem "vazar" para o formulário da recuperação (que é uma tentativa nova).
+    registro.respostasObjetivas = {};
+    registro.respostasDiscursivas = {};
     logAudit('Recuperação', currentUser.turma, `${currentUser.nome} iniciou a recuperação paralela do módulo ${modules[moduloIndex].code} (nota regular: ${registro.notaRegular.toFixed(1)})`);
     renderModule();
   }
@@ -4617,7 +5617,9 @@
     } else if(m.exercicios && m.exercicios.length){
       const statusAtualEx = isAlunoAtual ? statusEfetivoModulo(currentUser.id, activeIndex) : null;
       const registroEx = isAlunoAtual ? progressoDoAluno(currentUser.id, activeIndex) : null;
-      const perguntasHtml = m.exercicios.map((q, i) => {
+      const emRecuperacaoEx = !!(registroEx && registroEx.emRecuperacao);
+      const exerciciosExibidos = isAlunoAtual ? exerciciosAtivos(activeIndex, emRecuperacaoEx) : m.exercicios;
+      const perguntasHtml = exerciciosExibidos.map((q, i) => {
         const tipoClass = 'tipo-' + q.tipo.toLowerCase().replace(/[^a-zà-ú]+/g, '-').replace(/^-+|-+$/g, '');
         const respostaHtml = isAlunoAtual ? renderRespostaWidget(q, activeIndex, i, statusAtualEx, registroEx) : '';
 
@@ -4656,15 +5658,19 @@
         </li>`;
       }).join('');
 
-      const downloadBtn = m.exerciciosArquivo
+      const downloadBtn = (m.exerciciosArquivo && !emRecuperacaoEx)
         ? `<a class="btn primary exercise-download" href="${m.exerciciosArquivo}" download>⭳ Baixar exercícios (Word) — preencha seu nome e envie ao professor</a>`
+        : '';
+      const avisoRecuperacaoHtml = emRecuperacaoEx
+        ? `<p class="panel-note" style="margin-bottom:14px;">🔁 Estas são as questões da <strong>Recuperação Paralela</strong> — um conjunto diferente do que você respondeu na avaliação regular, sobre o mesmo conteúdo do módulo.</p>`
         : '';
 
       exerciciosHtml = `<section class="block">
-        <h3>Exercícios</h3>
-        <details class="content-card">
-          <summary><h4>${m.exercicios.length} questões — clique para abrir</h4></summary>
+        <h3>Exercícios${emRecuperacaoEx ? ' — Recuperação Paralela' : ''}</h3>
+        <details class="content-card" ${emRecuperacaoEx ? 'open' : ''}>
+          <summary><h4>${exerciciosExibidos.length} questões — clique para abrir</h4></summary>
           <div class="content-card-body">
+            ${avisoRecuperacaoHtml}
             ${downloadBtn}
             <ol class="exercise-list">${perguntasHtml}</ol>
           </div>
@@ -4800,11 +5806,11 @@
   // (corrigidas automaticamente) e quantas dependem do professor (discursivas,
   // estudo de caso, cálculo com anexo). Os 10 pontos do módulo são divididos
   // proporcionalmente entre as duas partes.
-  function composicaoModulo(moduloIndex){
-    const m = modules[moduloIndex];
+  function composicaoModulo(moduloIndex, emRecuperacao){
+    const exercicios = exerciciosAtivos(moduloIndex, emRecuperacao);
     const objetivas = [];
     const naoObjetivas = [];
-    (m.exercicios || []).forEach((q, i) => {
+    exercicios.forEach((q, i) => {
       const tipoCalculo = q.dados || /Cálculo|Estudo de caso/i.test(q.tipo);
       if(tipoCalculo) naoObjetivas.push(i);
       else if((q.opcoes && q.opcoes.length) || q.tipo === 'Verdadeiro ou Falso') objetivas.push(i);
@@ -4818,14 +5824,14 @@
 
   // Corrige as questões objetivas comparando com o gabarito (campo `correta`
   // de cada questão) e devolve a pontuação proporcional (0 a maxObjetiva).
-  function corrigirObjetivas(moduloIndex, respostasObjetivas){
-    const m = modules[moduloIndex];
-    const { objetivas, maxObjetiva } = composicaoModulo(moduloIndex);
+  function corrigirObjetivas(moduloIndex, respostasObjetivas, emRecuperacao){
+    const exercicios = exerciciosAtivos(moduloIndex, emRecuperacao);
+    const { objetivas, maxObjetiva } = composicaoModulo(moduloIndex, emRecuperacao);
     if(!objetivas.length) return { acertos:0, total:0, nota:0, detalhe:{} };
     let acertos = 0;
     const detalhe = {};
     objetivas.forEach(i => {
-      const q = m.exercicios[i];
+      const q = exercicios[i];
       const respostaAluno = respostasObjetivas ? respostasObjetivas[i] : undefined;
       const correta = q.correta !== undefined && respostaAluno !== undefined && respostaAluno === q.correta;
       detalhe[i] = correta;
@@ -5462,8 +6468,10 @@ ${isMestre ? `
   }
 
   function renderRespostasResumoProfessor(p, m){
-    if(!m.exercicios || !m.exercicios.length) return '';
-    const linhas = m.exercicios.map((q, i) => {
+    const emRecuperacao = !!(p && p.emRecuperacao);
+    const exercicios = exerciciosAtivos(p.moduloIndex, emRecuperacao);
+    if(!exercicios || !exercicios.length) return '';
+    const linhas = exercicios.map((q, i) => {
       if(q.opcoes || q.tipo === 'Verdadeiro ou Falso'){
         const resp = p.respostasObjetivas ? p.respostasObjetivas[i] : null;
         if(!resp) return '';
