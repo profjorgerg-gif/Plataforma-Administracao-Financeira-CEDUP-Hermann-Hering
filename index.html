@@ -5210,11 +5210,27 @@
   }
 
   // Carrega o estado inicial da nuvem (com fallback para o cache local se a rede falhar).
+  // Migração: chamados criados antes da função de código existir ficaram sem
+  // o campo `codigo` salvo. Preenche esses casos de uma vez e devolve se algo mudou.
+  function migrarCodigosChamadosFaltantes(){
+    let mudou = false;
+    chamados.forEach(c => {
+      if(!c.codigo){
+        c.codigo = gerarCodigoChamado(c.id, new Date());
+        mudou = true;
+      }
+    });
+    return mudou;
+  }
+
   async function carregarEstadoInicial(){
     try {
       const snap = await estadoDocRef.get();
       if(snap.exists){
         aplicarEstadoRecebido(snap.data());
+        if(migrarCodigosChamadosFaltantes()){
+          await estadoDocRef.set({ ...payloadAtual(), atualizadoEm: firebase.firestore.FieldValue.serverTimestamp() });
+        }
       } else {
         // Primeira execução: sobe os dados padrão (usuários/turmas iniciais) para o Firestore.
         await estadoDocRef.set({ ...payloadAtual(), atualizadoEm: firebase.firestore.FieldValue.serverTimestamp() });
@@ -5223,6 +5239,7 @@
       console.error('Não foi possível carregar dados do Firestore, usando cache local:', e);
       const cache = carregarCacheLocal();
       if(cache) aplicarEstadoRecebido(cache);
+      migrarCodigosChamadosFaltantes();
     }
     estadoCarregado = true;
   }
